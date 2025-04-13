@@ -23,11 +23,40 @@ namespace NetDexTest_01.Models.Entities
         [StringLength(25)]
         public string? Pronouns { get; set; } = String.Empty;
 
-        public int Ratings { get; set; } = 0;
+        public int Ratings { get; set; } = 0; // Eventually convert into an enum
 
         public bool Favorite { get; set; } = false;
-
+        /// <summary>
+        /// FK to DexHolderId
+        /// </summary>
+        public int DexHolderId { get; set; } 
+        /// <summary>
+        /// Navigation property from Person to DexHolder
+        /// </summary>
         public DexHolder DexHolder { get; set; }
+
+
+        //// one - to - one required
+        //// place the FK of these into the respective models, not nesc. here
+        //public FullName FullName { get; set; }
+        //public RecordCollector RecordCollector { get; set; }
+        //public ContactInfo ContactInfo { get; set; }
+        
+
+//        public ICollection<Person> People { get; set; }
+ //           = new List<Person>();
+
+
+
+        ///// <summary>
+        ///// FK to ApplicationUser
+        ///// </summary>
+        ////public string ApplicationUserId { get; set; }
+        /////<summary>
+        ///// Navigation property from Person to ApplicationUser
+        /////</summary>
+        //public ApplicationUser ApplicationUser { get; set; }
+
 
         // public ContactInfo ContactInfo { get; set; }
         // public PersonName PersonName { get; set; }
