@@ -20,6 +20,64 @@ namespace NetDexTest_01.Services
 
             base.OnModelCreating(modelBuilder);
 
+
+
+
+            // SocialMedia (M) - ContactInfo (1)
+            modelBuilder.Entity<ContactInfo>()
+                .HasMany(ci => ci.SocialMedias) // prin -> depend
+                .WithOne(sm => sm.ContactInfo) // depend -> prin
+                .HasForeignKey(sm => sm.ContactInfoId) // depend -> prin
+                .IsRequired() // indicates that ContactInfoId in SocialMedia is req'd
+                .OnDelete(DeleteBehavior.Cascade); // cascade delete when a ContactInfo is deleted
+
+
+
+            // EntryItem (M) - RecordCollector (1)
+            modelBuilder.Entity<RecordCollector>()
+                .HasMany(rc => rc.EntryItems) // prin -> depend
+                .WithOne(ei => ei.RecordCollector) // depend -> prin
+                .HasForeignKey(ei => ei.RecordCollectorId) // depend -> prin
+                .IsRequired() // indicates that RecordCollector in EntryItem is req'd
+                .OnDelete(DeleteBehavior.Cascade); // cascade delete when a RecordCollector is deleted
+
+
+            // Person (M) - DexHolder (1)
+            modelBuilder.Entity<DexHolder>()
+                .HasMany(dh => dh.People) // prin -> depend
+                .WithOne(p => p.DexHolder) // depend -> prin
+                .HasForeignKey(p => p.DexHolderId) // depend -> prin
+                .IsRequired() // indicates that DexHolderId in Person is req'd
+                .OnDelete(DeleteBehavior.Cascade); // cascade delete when a DexHolder is deleted
+
+
+            // ------------------ [ [ 1-1 ] ExtensionTables -> Person ] ----------------
+            modelBuilder.Entity<RecordCollector>()
+                .HasOne(rc => rc.Person) // prin -> depend
+                .WithOne(p => p.RecordCollector) // depend -> prin
+                .HasForeignKey<RecordCollector>(rc => rc.PersonId) // depend -> prin
+                .IsRequired() // indicates that PersonId in RecordCollector is req'd
+                .OnDelete(DeleteBehavior.Cascade); // cascade delete when a Person is deleted
+            
+            modelBuilder.Entity<ContactInfo>()
+                .HasOne(ci => ci.Person) // prin -> depend
+                .WithOne(p => p.ContactInfo) // depend -> prin
+                .HasForeignKey<ContactInfo>(ci => ci.PersonId) // depend -> prin
+                .IsRequired() // indicates that PersonId in ContactInfo is req'd
+                .OnDelete(DeleteBehavior.Cascade); // cascade delete when a Person is deleted
+
+            modelBuilder.Entity<FullName>()
+                .HasOne(fn => fn.Person) // prin -> depend
+                .WithOne(p => p.FullName) // depend -> prin
+                .HasForeignKey<FullName>(fn => fn.PersonId) // depend -> prin
+                .IsRequired() // indicates that PersonId in FullName is req'd
+                .OnDelete(DeleteBehavior.Cascade); // cascade delete when a Person is deleted
+
+            // -- END ----------- [ [ 1-1 ] ExtensionTables -> Person ] ----------------
+
+
+
+
             // CHATGPT
             // Ensure DexHolder has a required one-to-one relationship with ApplicationUser
             modelBuilder.Entity<DexHolder>()
@@ -53,6 +111,7 @@ namespace NetDexTest_01.Services
         public DbSet<DexHolder> DexHolder => Set<DexHolder>();
         public DbSet<Person> Person => Set<Person>();
 
+        
 
         //protected override void OnModelCreating(ModelBuilder modelBuilder)
         //{
