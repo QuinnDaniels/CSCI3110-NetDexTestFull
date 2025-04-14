@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using NetDexTest_01.Services;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -8,12 +9,16 @@ namespace NetDexTest_01.Models.Entities
     [Index(nameof(Nickname), IsUnique = true)]
     public class Person
     {
+
+
+
+        [Key]
         public int Id { get; set; }
 
         [Required]
-        
+
         [StringLength(256)]
-        public string Nickname { get; set; }
+        public string Nickname { get; set; } = string.Empty;
 
 
 
@@ -25,8 +30,9 @@ namespace NetDexTest_01.Models.Entities
         [StringLength(25)]
         public string? Pronouns { get; set; } = String.Empty;
 
-        public int Ratings { get; set; } = 0; // Eventually convert into an enum
-
+        [Range(0.0, 10.0, ErrorMessage = "Must be a value from 0 to 10")]
+        public int Rating { get; set; } = 0; // Eventually convert into an enum
+        
         public bool Favorite { get; set; } = false;
         /// <summary>
         /// FK to DexHolderId
@@ -41,9 +47,11 @@ namespace NetDexTest_01.Models.Entities
         //// one - to - one required
         //// place the FK of these into the respective models, not nesc. here
         public virtual FullName FullName { get; set; }
-        //public RecordCollector RecordCollector { get; set; }
-        //public ContactInfo ContactInfo { get; set; }
+        public RecordCollector RecordCollector { get; set; } //  = new RecordCollector();  
+        public ContactInfo ContactInfo { get; set; }
         
+
+
 
 //        public ICollection<Person> People { get; set; }
  //           = new List<Person>();

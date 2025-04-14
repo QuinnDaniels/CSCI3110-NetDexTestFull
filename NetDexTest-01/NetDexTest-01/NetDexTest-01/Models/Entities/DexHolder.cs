@@ -1,4 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.EntityFrameworkCore;
+using NetDexTest_01.Services;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 
@@ -11,6 +13,17 @@ namespace NetDexTest_01.Models.Entities
     [Table("DexHolder")]
     public class DexHolder 
     {
+        public DexHolder() { }
+
+        private DexHolder(ApplicationDbContext context)
+        {
+            Context = context;
+        }
+
+        private ApplicationDbContext Context { get; set; }
+
+        // ------------
+
         [Key]
         public int Id { get; set; }
 
@@ -46,6 +59,17 @@ namespace NetDexTest_01.Models.Entities
         // Navigation property
         [ForeignKey("ApplicationUserId")]
         public virtual ApplicationUser ApplicationUser { get; set; }// = null!;
+
+        /// <summary>
+        /// <para>Count of the number of People that are associated with the DexHolder</para>
+        /// </summary>
+        /// <remarks>
+        /// <see href="https://learn.microsoft.com/en-us/ef/core/modeling/contructors">Source - "Injecting Services"</see>
+        /// </remarks>
+        public int PeopleCount
+            => People?.Count
+                ?? Context?.Set<Person>().Count(p => Id == EF.Property<int?>(p, "DexHolderId"))
+                ?? 0;
 
         [NotMapped]
         [DataType(DataType.Date)]

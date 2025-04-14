@@ -33,4 +33,9 @@ namespace NetDexTest_01.Models.Entities
         public virtual Person Person { get; set; }
 
     }
+
+
+
+    // LATER: research viability of converting into a ComplexType
+    // EF Core Complex Type https://www.learnentityframeworkcore.com/model/complex-type
 }
