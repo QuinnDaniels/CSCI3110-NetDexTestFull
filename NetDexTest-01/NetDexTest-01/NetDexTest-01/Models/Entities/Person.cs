@@ -1,8 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace NetDexTest_01.Models.Entities
 {
+    [Table("Person")]
     [Index(nameof(Nickname), IsUnique = true)]
     public class Person
     {
@@ -33,12 +35,12 @@ namespace NetDexTest_01.Models.Entities
         /// <summary>
         /// Navigation property from Person to DexHolder
         /// </summary>
-        public DexHolder DexHolder { get; set; }
+        public virtual DexHolder DexHolder { get; set; }
 
 
         //// one - to - one required
         //// place the FK of these into the respective models, not nesc. here
-        //public FullName FullName { get; set; }
+        public virtual FullName FullName { get; set; }
         //public RecordCollector RecordCollector { get; set; }
         //public ContactInfo ContactInfo { get; set; }
         

@@ -40,8 +40,8 @@ namespace NetDexTest_01.Models.Entities
         //      // unique dexname?
         // People -- collection
 
-        //public ICollection<Person> People { get; set; }
-       //     = new List<Person>();
+        public ICollection<Person> People { get; set; }
+            = new List<Person>();
 
         // Navigation property
         [ForeignKey("ApplicationUserId")]
