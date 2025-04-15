@@ -7,7 +7,8 @@ namespace NetDexTest_01.Models.Entities
     [Table("SocialMedia")]
     public class SocialMedia
     {
-        public string Id { get; set; }
+        [Key]
+        public Int64 Id { get; set; }
         [StringLength(120)]
         public string CategoryField { get; set; } = string.Empty;
         public string? SocialHandle { get; set; }
@@ -17,7 +18,7 @@ namespace NetDexTest_01.Models.Entities
         /// <summary>
         /// FK to ContactInfo
         /// </summary>
-        public string ContactInfoId { get; set; }
+        public Int64 ContactInfoId { get; set; }
         ///<summary>
         /// Navigation property from SocialMedia to ContactInfo
         ///</summary>

@@ -27,7 +27,7 @@ namespace NetDexTest_01.Models.Entities
 
 
         [Key]
-        public string Id { get; set; }
+        public Int64 Id { get; set; }
 
         [StringLength(456)]
         public string NoteText { get; set; } = string.Empty;
@@ -52,7 +52,7 @@ namespace NetDexTest_01.Models.Entities
         /// <inheritdoc cref="NetDexTest_01.Models.Entities.DexHolder.PeopleCount"/>
         public int SocialMediasCount
         => SocialMedias?.Count
-            ?? Context?.Set<SocialMedia>().Count(p => Id == EF.Property<string?>(p, "ContactInfoId"))
+            ?? Context?.Set<SocialMedia>().Count(p => Id == EF.Property<Int64?>(p, "ContactInfoId"))
             ?? 0;
 
     }

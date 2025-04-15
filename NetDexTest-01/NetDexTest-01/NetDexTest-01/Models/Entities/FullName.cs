@@ -12,7 +12,7 @@ namespace NetDexTest_01.Models.Entities
     public class FullName 
     {
         [Key]
-        public int Id { get; set; }
+        public Int64 Id { get; set; }
 
 
         [StringLength(120)]

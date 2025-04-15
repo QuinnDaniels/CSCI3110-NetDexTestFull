@@ -108,15 +108,15 @@ namespace NetDexTest_01.Services
             //    .IsRequired();
         }
         #endregion
-        public DbSet<ContactInfo> ContactInfo => Set<ContactInfo>();
         public DbSet<DexHolder> DexHolder => Set<DexHolder>();
 
-        public DbSet<EntryItem> EntryItem => Set<EntryItem>();
+        public DbSet<Person> Person => Set<Person>();
 
         public DbSet<FullName> FullName => Set<FullName>();
-        public DbSet<Person> Person => Set<Person>();
         public DbSet<RecordCollector> RecordCollector => Set<RecordCollector>();
+        public DbSet<EntryItem> EntryItem => Set<EntryItem>();
 
+        public DbSet<ContactInfo> ContactInfo => Set<ContactInfo>();
         public DbSet<SocialMedia> SocialMedia => Set<SocialMedia>();
 
         //protected override void OnModelCreating(ModelBuilder modelBuilder)

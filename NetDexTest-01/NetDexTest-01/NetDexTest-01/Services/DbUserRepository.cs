@@ -449,9 +449,28 @@ namespace NetDexTest_01.Services
                 dex!.ApplicationUserName = userName;
 
                 // 
-                await AddDexHolderAsync(dex); // in DbUserRepository
-                await SaveChangesAsync();
-                
+                try
+                {
+
+                    await AddDexHolderAsync(dex); // in DbUserRepository
+                    await SaveChangesAsync();
+                }
+                catch (Exception ex)
+                {
+                    var logger = _logger;
+                    logger.LogError(
+                         $"\n\n---------------- CreateUserDexHolder (batch) --- log ---------\n\n"
+                        + $"An error occurred while adding lists to the database. {ex.Message}"
+                        //        +$"\n\n---------------- SEED DATA ASYNC --- log ---------\n\n");
+                        //    Console.WriteLine(
+                        + $"\n\n----- 1 -------- CreateUserDexHolder (batch) --- console ----\n\n"
+                        //        + $"An error occurred while adding lists to the database. {ex.Message}"
+                        //        + $"\n\n----- 2 -------- SEED DATA ASYNC --- console ----\n\n"
+                        + $"{ex}"
+                        + $"\n\n---- end ------- CreateUserDexHolder (batch) --- console ----\n\n");
+                }
+
+
                 var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                 code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
             

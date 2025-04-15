@@ -52,8 +52,8 @@ namespace NetDexTest_01
             {
                 var services = scope.ServiceProvider;
                 var loggerFactory = services.GetRequiredService<ILoggerFactory>();
-                try
-                {
+                //////try
+                //////{
                     //Seed Default Users - NOTE: JWT Tutorial Method
                     //var userManager = services.GetRequiredService<UserManager<ApplicationUser>>();
                     //var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
@@ -61,12 +61,18 @@ namespace NetDexTest_01
 
                     //Seed the Database - QUINN's method
                     await SeedDataAsync(services);
-                }
-                catch (Exception ex)
-                {
-                    var logger = loggerFactory.CreateLogger<Program>();
-                    logger.LogError(ex, "An error occurred seeding the DB.");
-                }
+                //////}
+                //////catch (Exception ex)
+                //////{
+                //////    var logger = loggerFactory.CreateLogger<Program>();
+                //////    logger.LogError(ex, "An error occurred seeding the DB.");
+                //////    Console.WriteLine($"\n\n-----------------------\n\n"
+                //////        + $"An error occurred while seeding the database. {ex.Message}"
+                //////        + $"\n\n-----------------------\n\n"
+                //////        + $"{ex}"
+                //////        + $"\n\n-----------------------\n\n");
+
+                //////}
             }
             host.Run();
 
@@ -85,24 +91,32 @@ namespace NetDexTest_01
         /// <returns></returns>
         static async Task SeedDataAsync(IServiceProvider servicesIn)
         {
-            
-            //var services = scope.ServiceProvider;
+
+            ////var services = scope.ServiceProvider;
             try
             {
                 var initializer = servicesIn.GetRequiredService<Initializer>();
                 await initializer.SeedUsersAsync();
-            }
+        }
             catch (Exception ex)
             {
                 var logger = servicesIn.GetRequiredService<ILogger<Program>>();
                 logger.LogError(
-                    $"An error occurred while seeding the database. {ex.Message}");
+                     $"\n\n---------------- SEED DATA ASYNC --- log ---------\n\n"
+                    +$"An error occurred while seeding the database. {ex.Message}"
+            //        +$"\n\n---------------- SEED DATA ASYNC --- log ---------\n\n");
+            //    Console.WriteLine(
+                    +$"\n\n----- 1 -------- SEED DATA ASYNC --- console ----\n\n"
+            //        + $"An error occurred while seeding the database. {ex.Message}"
+            //        + $"\n\n----- 2 -------- SEED DATA ASYNC --- console ----\n\n"
+                    + $"{ex}"
+                    + $"\n\n---- end ------- SEED DATA ASYNC --- console ----\n\n");
             }
-        }
+}
 
     }
 
-    public class Startup
+        public class Startup
     {
 
         public Startup(IConfiguration configuration)

@@ -232,6 +232,30 @@ namespace NetDexTest_01.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
+            modelBuilder.Entity("NetDexTest_01.Models.Entities.ContactInfo", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
+
+                    b.Property<string>("NoteText")
+                        .IsRequired()
+                        .HasMaxLength(456)
+                        .HasColumnType("nvarchar(456)");
+
+                    b.Property<int>("PersonId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PersonId")
+                        .IsUnique();
+
+                    b.ToTable("ContactInfo");
+                });
+
             modelBuilder.Entity("NetDexTest_01.Models.Entities.DexHolder", b =>
                 {
                     b.Property<int>("Id")
@@ -281,6 +305,79 @@ namespace NetDexTest_01.Migrations
                     b.ToTable("DexHolder");
                 });
 
+            modelBuilder.Entity("NetDexTest_01.Models.Entities.EntryItem", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
+
+                    b.Property<string>("FlavorText")
+                        .IsRequired()
+                        .HasMaxLength(456)
+                        .HasColumnType("nvarchar(456)");
+
+                    b.Property<DateTime>("LogTimestamp")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long>("RecordCollectorId")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("ShortTitle")
+                        .HasMaxLength(240)
+                        .HasColumnType("nvarchar(240)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("RecordCollectorId");
+
+                    b.ToTable("EntryItem");
+                });
+
+            modelBuilder.Entity("NetDexTest_01.Models.Entities.FullName", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
+
+                    b.Property<string>("NameFirst")
+                        .HasMaxLength(120)
+                        .HasColumnType("nvarchar(120)");
+
+                    b.Property<string>("NameLast")
+                        .HasMaxLength(120)
+                        .HasColumnType("nvarchar(120)");
+
+                    b.Property<string>("NameMiddle")
+                        .HasMaxLength(120)
+                        .HasColumnType("nvarchar(120)");
+
+                    b.Property<int>("PersonId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("PhNameFirst")
+                        .HasMaxLength(120)
+                        .HasColumnType("nvarchar(120)");
+
+                    b.Property<string>("PhNameLast")
+                        .HasMaxLength(120)
+                        .HasColumnType("nvarchar(120)");
+
+                    b.Property<string>("PhNameMiddle")
+                        .HasMaxLength(120)
+                        .HasColumnType("nvarchar(120)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PersonId")
+                        .IsUnique();
+
+                    b.ToTable("FullName");
+                });
+
             modelBuilder.Entity("NetDexTest_01.Models.Entities.Person", b =>
                 {
                     b.Property<int>("Id")
@@ -311,7 +408,7 @@ namespace NetDexTest_01.Migrations
                         .HasMaxLength(25)
                         .HasColumnType("nvarchar(25)");
 
-                    b.Property<int>("Ratings")
+                    b.Property<int>("Rating")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -322,6 +419,54 @@ namespace NetDexTest_01.Migrations
                         .IsUnique();
 
                     b.ToTable("Person");
+                });
+
+            modelBuilder.Entity("NetDexTest_01.Models.Entities.RecordCollector", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
+
+                    b.Property<int>("PersonId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PersonId")
+                        .IsUnique();
+
+                    b.ToTable("RecordCollector");
+                });
+
+            modelBuilder.Entity("NetDexTest_01.Models.Entities.SocialMedia", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
+
+                    b.Property<string>("CategoryField")
+                        .IsRequired()
+                        .HasMaxLength(120)
+                        .HasColumnType("nvarchar(120)");
+
+                    b.Property<long>("ContactInfoId")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime>("LogTimestamp")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("SocialHandle")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ContactInfoId");
+
+                    b.ToTable("SocialMedia");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -375,6 +520,17 @@ namespace NetDexTest_01.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("NetDexTest_01.Models.Entities.ContactInfo", b =>
+                {
+                    b.HasOne("NetDexTest_01.Models.Entities.Person", "Person")
+                        .WithOne("ContactInfo")
+                        .HasForeignKey("NetDexTest_01.Models.Entities.ContactInfo", "PersonId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Person");
+                });
+
             modelBuilder.Entity("NetDexTest_01.Models.Entities.DexHolder", b =>
                 {
                     b.HasOne("NetDexTest_01.Models.Entities.ApplicationUser", "ApplicationUser")
@@ -386,10 +542,32 @@ namespace NetDexTest_01.Migrations
                     b.Navigation("ApplicationUser");
                 });
 
+            modelBuilder.Entity("NetDexTest_01.Models.Entities.EntryItem", b =>
+                {
+                    b.HasOne("NetDexTest_01.Models.Entities.RecordCollector", "RecordCollector")
+                        .WithMany("EntryItems")
+                        .HasForeignKey("RecordCollectorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("RecordCollector");
+                });
+
+            modelBuilder.Entity("NetDexTest_01.Models.Entities.FullName", b =>
+                {
+                    b.HasOne("NetDexTest_01.Models.Entities.Person", "Person")
+                        .WithOne("FullName")
+                        .HasForeignKey("NetDexTest_01.Models.Entities.FullName", "PersonId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Person");
+                });
+
             modelBuilder.Entity("NetDexTest_01.Models.Entities.Person", b =>
                 {
                     b.HasOne("NetDexTest_01.Models.Entities.DexHolder", "DexHolder")
-                        .WithMany()
+                        .WithMany("People")
                         .HasForeignKey("DexHolderId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -397,9 +575,58 @@ namespace NetDexTest_01.Migrations
                     b.Navigation("DexHolder");
                 });
 
+            modelBuilder.Entity("NetDexTest_01.Models.Entities.RecordCollector", b =>
+                {
+                    b.HasOne("NetDexTest_01.Models.Entities.Person", "Person")
+                        .WithOne("RecordCollector")
+                        .HasForeignKey("NetDexTest_01.Models.Entities.RecordCollector", "PersonId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Person");
+                });
+
+            modelBuilder.Entity("NetDexTest_01.Models.Entities.SocialMedia", b =>
+                {
+                    b.HasOne("NetDexTest_01.Models.Entities.ContactInfo", "ContactInfo")
+                        .WithMany("SocialMedias")
+                        .HasForeignKey("ContactInfoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ContactInfo");
+                });
+
             modelBuilder.Entity("NetDexTest_01.Models.Entities.ApplicationUser", b =>
                 {
                     b.Navigation("DexHolder");
+                });
+
+            modelBuilder.Entity("NetDexTest_01.Models.Entities.ContactInfo", b =>
+                {
+                    b.Navigation("SocialMedias");
+                });
+
+            modelBuilder.Entity("NetDexTest_01.Models.Entities.DexHolder", b =>
+                {
+                    b.Navigation("People");
+                });
+
+            modelBuilder.Entity("NetDexTest_01.Models.Entities.Person", b =>
+                {
+                    b.Navigation("ContactInfo")
+                        .IsRequired();
+
+                    b.Navigation("FullName")
+                        .IsRequired();
+
+                    b.Navigation("RecordCollector")
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("NetDexTest_01.Models.Entities.RecordCollector", b =>
+                {
+                    b.Navigation("EntryItems");
                 });
 #pragma warning restore 612, 618
         }

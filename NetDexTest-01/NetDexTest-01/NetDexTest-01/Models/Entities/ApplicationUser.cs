@@ -21,7 +21,7 @@ namespace NetDexTest_01.Models.Entities
             return Roles.Any(r => r == roleName);
         }
 
-        public string RefreshToken { get; internal set; }
+        public string RefreshToken { get; internal set; } = string.Empty;
 
         // Navigation property for DexHolder
         public virtual DexHolder? DexHolder { get; set; }

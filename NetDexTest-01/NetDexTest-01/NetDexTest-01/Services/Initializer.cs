@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using NetDexTest_01.Contexts;
 using NetDexTest_01.Constants;
 using System.Net;
+using System;
 
 
 namespace NetDexTest_01.Services
@@ -111,6 +112,8 @@ namespace NetDexTest_01.Services
             };
 
 
+            
+
             /*begin default users*/
             if (!_db.Users.Any(u => u.UserName == adminUser.UserName))
             {
@@ -138,9 +141,96 @@ namespace NetDexTest_01.Services
                 passes.Add("Pass123!");
 
             }
+            
+            if (!_db.Users.Any(u => u.UserName == "Cossack"))
+            {
+                users.Add(new ApplicationUser
+                {
+                    Email = "Cossack@CossackIndustries.com",
+                    UserName = "Cossack",
+                });
+                dexHolders.Add(new DexHolder { FirstName = "Dr", LastName = "Cossack", Gender = "Man" });
+                passes.Add("Pass123!");
+
+            };
+
+            if (!_db.Users.Any(u => u.UserName == "Wily"))
+            {
+                users.Add(new ApplicationUser
+                {
+                    Email = "Wily@dwn.com",
+                    UserName = "Wily",
+                });
+                dexHolders.Add(new DexHolder 
+                {
+                    FirstName = "Dr",
+                    LastName = "Wily",
+                    Gender = "Man"
+                    
+                });
+                passes.Add("Pass123!");
+
+            };
+
+
 
 
             await _userRepository.CreateUserDexHolderAsync(users, dexHolders, passes);
+
+            Console.WriteLine($"\n\n\n---------------------------------"
+                   + $"\n\n\n"
+                   + $"NOTICE:\tATTEMPTING TO FIND A DEXHOLDER\n\n"
+                   + $"\"Cossack\"\n\n-------------------------------\n");
+
+            var drillman = await _userRepository.GetDexHolderByUserNameAsync("Cossack");
+            if (drillman != null)
+            {
+                Console.WriteLine($"\n\n\n---------------------------------"
+                   + $"\n\n\n"
+                   + $"NOTICE:\tInstantiating a person for DEXHOLDER\n\n"
+                   + $"\"{drillman}\"\n\n-------------------------------\n");
+
+                var person = new Person
+                {
+                    Nickname = "PipeBurstingRobot",
+                    DexHolder = drillman,
+                    FullName = new FullName()
+                    {
+                        NameFirst = "Drill",
+                        NameLast = "Man",
+                        PhNameLast = "Drillman"
+                    },
+                    RecordCollector = new RecordCollector()
+                    {
+                        NoteText = "Testing a new way to add multiple things at once",
+                        EntryItems = new List<EntryItem> 
+                        {
+                            new EntryItem { ShortTitle = "Creation" , FlavorText = "Created by Dr Cossack (me!)" },
+                            new EntryItem { ShortTitle = "Conversion in MM4" , FlavorText = "Modified by Dr. Wily and reclassified as DWN 027" },
+                            new EntryItem { ShortTitle = "Defeat", FlavorText = "Defeated at the hands of Megaman" }
+                        }
+                    },
+                    ContactInfo = new ContactInfo()
+                    {
+                        NoteText = "Testing a new way to add multiple things at once",
+                        SocialMedias = new List<SocialMedia>
+                        { 
+                            new SocialMedia { CategoryField = "Reddit", SocialHandle = "u/dwn027" },
+                            new SocialMedia { CategoryField = "Twitter", SocialHandle = "@DrillBabyDrillMan" },
+                            new SocialMedia { CategoryField = "Email", SocialHandle = "drillman027@dwn.com" }
+                        }
+                    }
+
+                };
+                Console.WriteLine($"\n\n\n---------------------------------"
+                                   +$"\n\n\n"
+                                   +$"NOTICE:\tATTEMPTING TO ADD A PERSON\n\n"
+                                   +$"{person}\n\n\tTO THE DEXHOLDER\n"
+                                   +$"{drillman}\n\n-------------------------------\n");
+                var newAdd = await _db.Person.AddAsync(person);
+                await _db.SaveChangesAsync();
+            }
+
 
             if (users.Contains(adminUser)) { await _userManager.AddToRoleAsync(adminUser, "Administrator"); }
             if (users.Contains(fakeUser)) { await _userManager.AddToRoleAsync(fakeUser, "Fake"); }

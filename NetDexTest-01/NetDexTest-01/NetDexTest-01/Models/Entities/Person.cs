@@ -9,7 +9,7 @@ namespace NetDexTest_01.Models.Entities
     [Index(nameof(Nickname), IsUnique = true)]
     public class Person
     {
-
+        // public Person() {}
 
 
         [Key]
@@ -47,8 +47,8 @@ namespace NetDexTest_01.Models.Entities
         //// one - to - one required
         //// place the FK of these into the respective models, not nesc. here
         public virtual FullName FullName { get; set; }
-        public RecordCollector RecordCollector { get; set; } //  = new RecordCollector();  
-        public ContactInfo ContactInfo { get; set; }
+        public virtual RecordCollector RecordCollector { get; set; } //  = new RecordCollector();  
+        public virtual ContactInfo ContactInfo { get; set; }
         
 
 

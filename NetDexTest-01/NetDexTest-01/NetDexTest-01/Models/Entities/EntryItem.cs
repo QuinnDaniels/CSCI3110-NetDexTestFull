@@ -8,7 +8,7 @@ namespace NetDexTest_01.Models.Entities
     public class EntryItem
     {
         [Key]
-        public string Id { get; set; }
+        public Int64 Id { get; set; }
         /// <summary>
         /// A short title to easily identify an Entry. Nullable, because on
         /// the frontend, if null, it should be replaced with a breif preview of flavortext 
@@ -25,7 +25,7 @@ namespace NetDexTest_01.Models.Entities
         /// <summary>
         /// FK to RecordCollector
         /// </summary>
-        public string RecordCollectorId { get; set; }
+        public Int64 RecordCollectorId { get; set; }
         ///<summary>
         /// Navigation property from EntryItem to RecordCollector
         ///</summary>
