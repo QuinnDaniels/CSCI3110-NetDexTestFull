@@ -6,7 +6,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace NetDexTest_01.Models.Entities
 {
     [Table("Person")]
-    [Index(nameof(Nickname), IsUnique = true)]
+    [Index(nameof(Nickname), nameof(DexHolderId), IsUnique = true)]
     public class Person
     {
         // public Person() {}
@@ -15,7 +15,7 @@ namespace NetDexTest_01.Models.Entities
         [Key]
         public int Id { get; set; }
 
-        [Required]
+        //[Required]
 
         [StringLength(256)]
         public string Nickname { get; set; } = string.Empty;

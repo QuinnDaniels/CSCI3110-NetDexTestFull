@@ -35,9 +35,67 @@ namespace NetDexTest_01.Services
         email
     }
 
+
+    /// <summary>
+    /// QoL class for logging errors and bugs
+    /// </summary>
+    public class QuinnException
+    {
+        public QuinnException(string? exceptionTitle, Exception ex)
+        {
+            if (exceptionTitle != null)
+            {
+                ExceptionTitle = exceptionTitle;
+            }
+            Message = $"\n\n---------------- {exceptionTitle} --- log ---------\n\n"
+                        + $"An error occurred. {ex.Message}"
+                        //        +$"\n\n---------------- SEED DATA ASYNC --- log ---------\n\n");
+                        //    Console.WriteLine(
+                        + $"\n\n----- 1 -------- {exceptionTitle} --- console ----\n\n"
+                        //        + $"An error occurred while adding lists to the database. {ex.Message}"
+                        //        + $"\n\n----- 2 -------- SEED DATA ASYNC --- console ----\n\n"
+                        + $"{ex}"
+                        + $"\n\n---- end ------- {exceptionTitle} --- console ----\n\n"; 
+        }
+
+        public QuinnException(string? exceptionTitle, string? exceptionFlavor, Exception ex)
+        {
+            if (exceptionTitle != null)
+            {
+                ExceptionTitle = exceptionTitle;
+            }
+            if (exceptionFlavor != null)
+            {
+                ExceptionFlavor = exceptionFlavor;
+            }
+            Message = $"\n\n---------------- {exceptionTitle} --- log ---------\n\n"
+                        + $"An error occurred {exceptionFlavor}. {ex.Message}"
+                        //        +$"\n\n---------------- SEED DATA ASYNC --- log ---------\n\n");
+                        //    Console.WriteLine(
+                        + $"\n\n----- 1 -------- {exceptionTitle} --- console ----\n\n"
+                        //        + $"An error occurred while adding lists to the database. {ex.Message}"
+                        //        + $"\n\n----- 2 -------- SEED DATA ASYNC --- console ----\n\n"
+                        + $"{ex}"
+                        + $"\n\n---- end ------- {exceptionTitle} --- console ----\n\n" ;
+        }
+
+
+
+        public string Message { get; set; }
+        public string? ExceptionTitle { get; set; } = null;
+        public string? ExceptionFlavor { get; set; } = null;
+
+    }
+
+
+
+
+
+
     /// <summary>
     /// The user repository class that interacts with the Db.
     /// </summary>
+    /// <inheritdoc cref="IUserRepository"/>
     public partial class DbUserRepository : IUserRepository
     {
         private readonly ApplicationDbContext _db; //_context

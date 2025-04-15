@@ -289,6 +289,9 @@ namespace NetDexTest_01
             services.AddScoped<Authorization>();
             services.AddScoped<ApplicationDbContextSeed>();
             services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IPersonRepository, DbPersonRepository>();
+
+
 
 
             // Allow postman to send requests
