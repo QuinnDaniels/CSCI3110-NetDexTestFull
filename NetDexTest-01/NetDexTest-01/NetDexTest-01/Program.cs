@@ -276,8 +276,9 @@ namespace NetDexTest_01
                 .AddUserManager<UserManager<ApplicationUser>>()
                 .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
-            services.AddControllersWithViews().AddMvcOptions(options => options.EnableEndpointRouting = false);
-
+            services.AddControllersWithViews()
+                .AddMvcOptions(options => options.EnableEndpointRouting = false);
+                
             //services.AddMvc();
 
             // Setting to allow app.MapControllerRoute equivalent (app.UseMvc)
@@ -290,7 +291,7 @@ namespace NetDexTest_01
             services.AddScoped<ApplicationDbContextSeed>();
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IPersonRepository, DbPersonRepository>();
-
+            services.AddScoped<IDebugRepository, DbDebugRepository>();
 
 
 

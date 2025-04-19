@@ -16,6 +16,8 @@ namespace NetDexTest_01.Services
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly IUserRepository _userRepository;
+        private readonly IPersonRepository _personRepository;
+
         private readonly NetDexTest_01.Constants.Authorization _authorization;
 
         public Initializer(
@@ -23,6 +25,7 @@ namespace NetDexTest_01.Services
             UserManager<ApplicationUser> userManager,
             RoleManager<IdentityRole> roleManager,
             IUserRepository userRepository,
+            IPersonRepository personRepository,
             NetDexTest_01.Constants.Authorization authorization
             )
         {
@@ -30,6 +33,7 @@ namespace NetDexTest_01.Services
             _userManager = userManager;
             _roleManager = roleManager;
             _userRepository = userRepository;
+            _personRepository = personRepository;
             _authorization = authorization;
         }
 
@@ -182,6 +186,14 @@ namespace NetDexTest_01.Services
                    + $"NOTICE:\tATTEMPTING TO FIND A DEXHOLDER\n\n"
                    + $"\"Cossack\"\n\n-------------------------------\n");
 
+
+            Person? p1 = null;
+            Person? p2 = null;
+
+
+            string tempNickname1 = "PipeBurstingRobot";
+            string tempNickname2 = "skullybones";
+
             var drillman = await _userRepository.GetDexHolderByUserNameAsync("Cossack");
             if (drillman != null)
             {
@@ -192,7 +204,7 @@ namespace NetDexTest_01.Services
 
                 var person = new Person
                 {
-                    Nickname = "PipeBurstingRobot",
+                    Nickname = tempNickname1,
                     DexHolder = drillman,
                     FullName = new FullName()
                     {
@@ -222,13 +234,222 @@ namespace NetDexTest_01.Services
                     }
 
                 };
-                Console.WriteLine($"\n\n\n---------------------------------"
-                                   +$"\n\n\n"
-                                   +$"NOTICE:\tATTEMPTING TO ADD A PERSON\n\n"
-                                   +$"{person}\n\n\tTO THE DEXHOLDER\n"
-                                   +$"{drillman}\n\n-------------------------------\n");
-                var newAdd = await _db.Person.AddAsync(person);
+
+
+                //Person oldP = new();
+                var findOldPerson = !_db.Person.Any(p => p.Nickname == person.Nickname && p.DexHolder == drillman);
+                if (findOldPerson)
+                { 
+                
+                    Console.WriteLine($"\n\n\n---------------------------------"
+                                       +$"\n\n\n"
+                                       +$"NOTICE:\tATTEMPTING TO ADD A PERSON\n\n"
+                                       +$"{person}\n\n\tTO THE DEXHOLDER\n"
+                                       +$"{drillman}\n\n-------------------------------\n");
+                    var newAdd = await _db.Person.AddAsync(person);
+                    person = _db.Person.FirstOrDefault(p => p.Nickname == person.Nickname && p.DexHolder == person.DexHolder);
+
+                }
+                else
+                {
+                    Console.WriteLine($"\n\n\n---------------------------------"
+                   + $"\n\n\n"
+                   + $"NOTICE:\tEXISTING PipeBurstingRobot FOUND, MODIFYING person\n\n"
+                   + $"{person}\n\n\tTO THE DEXHOLDER\n"
+                   + $"{drillman}\n\n-------------------------------\n");
+
+                    person = _db.Person.FirstOrDefault(p => p.Nickname == person.Nickname && p.DexHolder == person.DexHolder);
+                }
+                
+                
+                
+                p1 = person;
+
+
+                if (drillman != null)
+                {
+                    var new2 = new Person(tempNickname2, drillman);
+                    
+                    Console.WriteLine($"\n\n\n---------------------------------"
+                   + $"\n\n\n"
+                   + $"NOTICE:\tATTEMPTING TO ADD A PERSON\n\n"
+                   + $"{new2}\n\n\tTO THE DEXHOLDER\n"
+                   + $"{drillman}\n\n-------------------------------\n");
+
+                    if (_db.Person.Any(p => p.Nickname == new2.Nickname && p.DexHolder == drillman))
+                    {
+                        //new2 = _db.Person.FirstOrDefault(p => p.Nickname == person.Nickname && p.DexHolder == person.DexHolder);
+
+
+                    }
+                    else
+                    {
+                        var newAdd2 = await _db.Person.AddAsync(new2);
+                        //new2 = _db.Person.FirstOrDefault(p => p.Nickname == person.Nickname && p.DexHolder == person.DexHolder);
+                    }
+
+                    //p2 = new2;
+                }
+
                 await _db.SaveChangesAsync();
+                //
+                //if (!_db.PersonPerson.Any())
+                //{
+
+                await Console.Out.WriteLineAsync("\n\n\n--------------------\n\n"
+                    +"Searching for p1 & p2..."
+                    +"\n\n"
+                    +"\n\n\n-------------------\n\n\n\n");
+
+
+                    p1 = _db.Person.FirstOrDefault(p => p.Nickname == tempNickname1 && p.DexHolder == drillman);
+                if (p1 == null) { await Console.Out.WriteLineAsync("ERROR: p1 IS NULL"); }
+                else
+                    await Console.Out.WriteLineAsync($"p1: \t {p1}"
+                            +$"{p1.Nickname} - dex: {p1.DexHolder.ApplicationUserName}"
+                            +"\n\n");
+                {
+                }
+
+
+
+
+                    p2 = _db.Person.FirstOrDefault(p => p.Nickname == tempNickname2 && p.DexHolder == drillman);
+                if (p2 == null) { await Console.Out.WriteLineAsync("ERROR: p2 IS NULL"); }
+                else
+                {
+                    await Console.Out.WriteLineAsync($"p1: \t {p2}"
+                        + $"{p2.Nickname} - dex: {p2.DexHolder.ApplicationUserName}"
+                        + "\n\n");
+                    await Console.Out.WriteLineAsync("\n\n\n--------------------\n\n");
+                }
+
+
+
+                if (p1 != null && p2 != null)
+                    {
+                    await Console.Out.WriteLineAsync("\n\n\n--------------------\n\n"
+                            + "p1 & p2 found!..."
+                            + "\n\n\n-------------------\n\n\n\n");
+
+
+
+                    await Console.Out.WriteLineAsync("\n\n\n--------------------\n\n"
+                        + "Re-getting p1 & p2..."
+                        + "\n\n"
+                        + "\n\n\n-------------------\n\n\n\n");
+
+
+
+                    p1 = await _personRepository.GetPersonByNickNameWithDex(p1.Nickname, p1.DexHolder);
+                        p2 = await _personRepository.GetPersonByNickNameWithDex(p2.Nickname, p2.DexHolder);
+
+                    await Console.Out.WriteLineAsync($"\n\n\np1: \t {p1}"
+                        + $"{p1.Nickname} - dex: {p1.DexHolder.ApplicationUserName}"
+                        + "\n\n");
+
+                    await Console.Out.WriteLineAsync($"\n\n\n\np2: \t {p2}"
+                        + $"{p2.Nickname} - dex: {p2.DexHolder.ApplicationUserName}"
+                        + "\n\n");
+
+
+                    await Console.Out.WriteLineAsync("\n\n\n--------------------\n\n"
+                        + "Attempting redundant check...."
+                        + "\n\n"
+                        + "\n\n\n-------------------\n\n\n\n");
+
+
+                    if (p1 == null) { await Console.Out.WriteLineAsync("ERROR: p1 IS NULL"); }
+                        if (p2 == null) { await Console.Out.WriteLineAsync("ERROR: p2 IS NULL"); }
+                        if (p1 != null && p2 != null)
+                        {
+
+                        await Console.Out.WriteLineAsync("\n\n\n--------------------\n\n"
+                            + "Entered conditional statement...."
+                            + "\n\n"
+                            + "\n\n\n-------------------\n\n\n\n");
+
+
+                        PersonPerson p3 = new PersonPerson(p1, p2);
+                        PersonPerson p4 = new PersonPerson(p2, p1);
+                        //p3!.RelationshipDescription = string.Empty;
+                        if (!_personRepository.FindMatch(p3))
+                            {
+                                p2.PersonParents.Add(p3);
+                                p1.PersonChildren.Add(p3);
+                                await Console.Out.WriteLineAsync("\n\n\nNOTICE: p1 & p2 added! Attempting to save changes\n\n\n");
+                                await _db.SaveChangesAsync();
+
+                            }
+
+
+                            // NOTICE FOR CODE:
+                            // --------------------------
+                            //   //p3!.RelationshipDescription = "Mother of";
+                            //   //_personRepository.AddPersonPersonCheck(p1, p2, p3);
+                            //   //await Console.Out.WriteLineAsync("NOTICE: p1 & p2 added! Attempting to save changes");
+                            //-->//await _db.SaveChangesAsync();
+                            // --------------------------------
+                            // An error occurred while seeding the database. The property 'PersonPerson.RelationshipDescription' is part of a key and so cannot be modified or marked as modified. To change the principal of an existing entity with an identifying foreign key, first delete the dependent and invoke 'SaveChanges', and then associate the dependent with the new principal.
+                            // -------------------------------
+
+
+                            string desc = string.Empty;
+                        string notice = "\n\n\n\nNOTICE: p1 & p2 added! Attempting to save changes\n";
+
+
+                            desc = "Mother of";         //  <----   /*p3!.RelationshipDescription = "Mother of";*/
+                        if (!_personRepository.FindMatch(p3, desc) && !_db.PersonPerson.Any(pp => pp.PersonParentId == p3.PersonParentId && pp.PersonChildId == p3.PersonChildId && pp.RelationshipDescription == desc))
+                        {
+                            var check = await _personRepository.AddPersonPersonCheckAsync(p3, desc); //p1, p2, p3);
+                            await Console.Out.WriteLineAsync($"\n\n----motherof-------\n\n\n{check}\n\n\n---------\n\n");
+                            await _db.SaveChangesAsync();
+                        }
+                            desc = "Daughter of";         //  <----   /*p3!.RelationshipDescription = "Daughter of";*/
+
+                        if (!_personRepository.FindMatch(p4, desc) && !_db.PersonPerson.Any(pp => pp.PersonParentId == p4.PersonParentId && pp.PersonChildId == p4.PersonChildId && pp.RelationshipDescription == desc))
+                        {
+                            await _personRepository.AddPersonPersonCheckAsync(p4, desc) ; //p2, p1, p3);
+                            await Console.Out.WriteLineAsync(notice);
+                        }
+
+                            desc = "Teaches to";         //  <----   /*p3!.RelationshipDescription = "Teaches to";*/
+                        if (!_personRepository.FindMatch(p3, desc) && !_db.PersonPerson.Any(pp => pp.PersonParentId == p3.PersonParentId && pp.PersonChildId == p3.PersonChildId && pp.RelationshipDescription == desc))
+                        {
+
+                            await _personRepository.AddPersonPersonCheckAsync(p3, desc) ; //p2, p1, p3);
+                            await Console.Out.WriteLineAsync(notice);
+                        }
+
+                            desc = "Learns from";         //  <----   /*p3!.RelationshipDescription = "Learns from";*/
+                        if (!_personRepository.FindMatch(p4, desc) && !_db.PersonPerson.Any(pp => pp.PersonParentId == p4.PersonParentId && pp.PersonChildId == p4.PersonChildId && pp.RelationshipDescription == desc))
+                        {
+                            await _personRepository.AddPersonPersonCheckAsync(p4, desc) ; //p1, p2, p3);
+                            await Console.Out.WriteLineAsync(notice);
+                        }
+
+                        await Console.Out.WriteLineAsync("\n\n\n--------------------\n\n"
+                            + "Exiting conditional statement...."
+                            + "\n\n"
+                            + "\n\n\n-------------------\n\n\n\n");
+
+                    }
+
+                }
+                    else
+                    {
+                    await Console.Out.WriteLineAsync("\n\n\n--------------------\n\n"
+                        + "p1 & p2 not found!..."
+                        + "\n\n\n-------------------\n\n\n\n");
+
+
+                    await Console.Out.WriteLineAsync("\n\nNOTICE: p1 and/or p2 were returned as null! PersonPerson entries were not added!!\n\n\n");
+                    }
+
+                //} // END if PersonPerson.Any()
+                
+
+
             }
 
 
@@ -237,6 +458,12 @@ namespace NetDexTest_01.Services
 
 
         }
+
+
+
+
+
+
 
 
         // TODO: Seed Persons 

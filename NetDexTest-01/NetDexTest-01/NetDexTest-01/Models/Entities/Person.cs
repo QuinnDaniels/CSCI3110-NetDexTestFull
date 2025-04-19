@@ -7,9 +7,31 @@ namespace NetDexTest_01.Models.Entities
 {
     [Table("Person")]
     [Index(nameof(Nickname), nameof(DexHolderId), IsUnique = true)]
-    public class Person
+    public partial class Person
     {
-        // public Person() {}
+        public Person() { }
+        public Person(string nickName, DexHolder dexHolder)
+        {
+            Nickname = nickName;
+            DexHolder = dexHolder;
+            FullName = new FullName();
+            RecordCollector = new RecordCollector()
+            {
+                EntryItems = new List<EntryItem>
+                {
+                    new EntryItem { ShortTitle = "Example", FlavorText = $"This is an example entry! It was automatically created on [ ${DateTime.Now} ]!" }
+                }
+            };
+            ContactInfo = new ContactInfo()
+            {
+                SocialMedias = new List<SocialMedia>
+                    {
+                        new SocialMedia {  CategoryField = "example category", SocialHandle = "@NetDexTest-01_Example_SocialHandle" }
+                    }
+            };
+
+        }
+
 
 
         [Key]

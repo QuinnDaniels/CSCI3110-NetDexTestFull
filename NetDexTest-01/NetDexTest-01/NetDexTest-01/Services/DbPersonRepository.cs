@@ -38,331 +38,9 @@ namespace NetDexTest_01.Services
             }
 
 
-        // create just a person
-
-        // create a person with ContactInfo, FullName, RecordCollector
-
-        public void CreatePersonAsync()
-        {
-
-        }
-
-
-
-        public async Task<Person?> CreatePersonAsync(ApplicationUser user, string personNickname)
-        {
-            var pp = await GetPersonByNickNameWithUser(personNickname, user);
-            if (pp != null)
-            {
-                var newPerson = new Person
-                {
-                    Nickname = personNickname,
-                    DexHolder = user.DexHolder,
-                    FullName = new FullName(),
-                    RecordCollector = new RecordCollector()
-                    {
-                        EntryItems = new List<EntryItem>
-                        {
-                            new EntryItem { ShortTitle = "Example", FlavorText = $"This is an example entry! It was automatically created on [ ${DateTime.Now} ]!" }
-                        }
-                    },
-                    ContactInfo = new ContactInfo()
-                    {
-                        SocialMedias = new List<SocialMedia>
-                        {
-                            new SocialMedia {  CategoryField = "example category", SocialHandle = "@NetDexTest-01_Example_SocialHandle" }
-                        }
-                    }
-                };
-
-                await _db.Person.AddAsync(newPerson);
-                await SaveChangesAsync();
-
-                try
-                {
-                    return await GetPersonByNickName(personNickname, user);
-
-                }
-                catch (Exception ex)
-                {
-                    string title = "CreatePersonAsync";
-                    QuinnException qEx = new QuinnException(title, ex);
-                    var logger = _logger;
-                    logger.LogError(
-                         $"\n\n---------------- GetPersonWithNickName --- log ---------\n\n"
-                        + $"An error occurred while adding lists to the database. {ex.Message}"
-                        //        +$"\n\n---------------- SEED DATA ASYNC --- log ---------\n\n");
-                        //    Console.WriteLine(
-                        + $"\n\n----- 1 -------- GetPersonWithNickName --- console ----\n\n"
-                        //        + $"An error occurred while adding lists to the database. {ex.Message}"
-                        //        + $"\n\n----- 2 -------- SEED DATA ASYNC --- console ----\n\n"
-                        + $"{ex}"
-                        + $"\n\n---- end ------- GetPersonWithNickName --- console ----\n\n");
-                    return null;
-                }
-
-
-
-
-
-            }
-            else { return null; }
-
-        }
-        public async Task<Person?> CreatePersonAsync(DexHolder dex, string personNickname)
-        {
-            var pp = await GetPersonByNickNameWithDex(personNickname, dex);
-            if (pp != null)
-            {
-                var newPerson = new Person(personNickname, dex);
-                await _db.Person.AddAsync(newPerson);
-                await SaveChangesAsync();
-
-                try
-                {
-                    return await GetPersonByNickName(personNickname, dex);
-
-                }
-                catch (Exception ex)
-                {
-                    string title = "CreatePersonAsync";
-                    QuinnException qEx = new QuinnException(title, ex);
-                    var logger = _logger;
-                    logger.LogError(qEx.Message);
-                    return null;
-                }
-            }
-            else
-            {
-                throw new NullReferenceException();
-            }
-
-
-        }
-
-
-            public async Task<Person?> CreatePersonAsync(PropertyField pType, string inputProperty, string personNickname)
-        {
-            DexHolder? dex = new DexHolder();
-            switch (pType)
-            {
-                case PropertyField.id:
-                    dex = await _userRepo.ReadDexByIdAsync(inputProperty);
-                    break;
-                case PropertyField.username:
-                    dex = await _userRepo.ReadDexByUsernameAsync(inputProperty);
-                    break;
-                case PropertyField.email:
-                    throw new ArgumentException();
-                default:
-                    throw new ArgumentException();
-            }
-
-            if (dex != null) 
-            {
-                var dexId = dex.Id;
-                var newPerson = new Person
-                {
-                    Nickname = personNickname,
-                    DexHolder = dex,
-                    FullName = new FullName(),
-                    RecordCollector = new RecordCollector()
-                    {
-                        EntryItems = new List<EntryItem>
-                        {
-                            new EntryItem { ShortTitle = "Example", FlavorText = $"This is an example entry! It was automatically created on [ ${DateTime.Now} ]!" }
-                        }
-                    },
-                    ContactInfo = new ContactInfo()
-                    {
-                        SocialMedias = new List<SocialMedia>
-                        { 
-                            new SocialMedia {  CategoryField = "example category", SocialHandle = "@NetDexTest-01_Example_SocialHandle" } 
-                        }
-                    }
-                };
-
-                await _db.Person.AddAsync(newPerson);
-                await SaveChangesAsync();
-
-
-                try
-                {
-                    return await GetPersonByNickName(personNickname, dex);
-
-                }
-                catch(Exception ex)
-                {
-                    string title = "CreatePersonAsync";
-                    QuinnException qEx = new QuinnException(title, ex);
-                    var logger = _logger;
-                    logger.LogError(
-                         $"\n\n---------------- GetPersonWithNickName --- log ---------\n\n"
-                        + $"An error occurred while adding lists to the database. {ex.Message}"
-                        //        +$"\n\n---------------- SEED DATA ASYNC --- log ---------\n\n");
-                        //    Console.WriteLine(
-                        + $"\n\n----- 1 -------- GetPersonWithNickName --- console ----\n\n"
-                        //        + $"An error occurred while adding lists to the database. {ex.Message}"
-                        //        + $"\n\n----- 2 -------- SEED DATA ASYNC --- console ----\n\n"
-                        + $"{ex}"
-                        + $"\n\n---- end ------- GetPersonWithNickName --- console ----\n\n");
-                    return null;
-                }
-            }
-            else
-            {
-                throw new NullReferenceException();
-            }
-
-
-        }
 
         // create a P & Ci,Fn,Rc using Authorixation
 
-        // read just a person
-
-        /// <summary>
-        /// <para>
-        /// Uses the Index on Person to find the appropriate record. Has many overloads.
-        /// </para>
-        /// <para>
-        /// Using a combination of data from ApplicationUser and/or DexHolder with Person.Nickname to find the unique ( Nickname, DexHolderId ) combination
-        /// </para>
-        /// </summary>
-        /// <remarks> NOTICE: Empty parameters is only for documentation purposes!!! </remarks>
-        /// <exception cref="NotImplementedException"></exception>
-        /// 
-        public void GetPersonByNickName() { throw new NotImplementedException(); }
-        /// <summary>
-        /// A Helper Method that supplements <see cref="GetPersonByNickName()"/>
-        /// </summary>
-        /// <exception cref="NotImplementedException"></exception>
-        /// <inheritdoc cref="GetPersonByNickName()" />
-        public void GetPersonByNickNameTool() { throw new NotImplementedException(); }
-
-
-        /// <remarks>
-        /// Uses an ApplicationUser object to access ApplicationUser.DexHolder directly to search for a person with the DexHolderId
-        /// </remarks>
-        /// <inheritdoc cref="GetPersonByNickName()" />
-        public async Task<Person?> GetPersonByNickName(string nickName, ApplicationUser user) 
-        {
-            return await GetPersonByNickNameWithUser(nickName, user); 
-        }
-        /// <remarks>
-        /// Uses a DexHolder object to access DexHolderId directly to search for a person with the DexHolderId
-        /// </remarks>
-        /// <inheritdoc cref="GetPersonByNickName()" />
-
-        public async Task<Person?> GetPersonByNickName(string nickName, DexHolder dex)
-        {
-            return await GetPersonByNickNameWithDex(nickName, dex);
-        }
-        /// <remarks>
-        /// Uses a
-        /// <see cref="PropertyField"/>
-        /// [ <see cref="PropertyField.id"/> | <see cref="PropertyField.username"/> ]
-        /// to search for a <see cref="DexHolder"/> with which it combines
-        /// with the nickName to find a <see cref="Person"/>
-        /// 
-        /// </remarks>
-        /// <inheritdoc cref="GetPersonByNickName()" />
-        public async Task<Person?> GetPersonByNickName(PropertyField pType, string inputProperty, string nickName)
-        {
-            var person = new Person();
-            switch (pType)
-            {
-                case PropertyField.id:
-                    person = await GetPersonByNickNameWithUserIdAsync(inputProperty, nickName);
-                    break;
-                case PropertyField.username:
-                    person = await GetPersonByNickNameWithUserNameAsync(inputProperty, nickName);
-                    break;
-                //case PropertyField.email:
-                //    break;
-                default:
-                    throw new ArgumentException();
-                    break;
-            }
-            return person;
-        }
-
-
-        /// <remarks> Used by: <code><seealso cref="GetPersonByNickName(string, ApplicationUser)"/></code> </remarks>
-        /// <inheritdoc cref="GetPersonByNickNameTool()" />
-        public async Task<Person?> GetPersonByNickNameWithUser(string nickName, ApplicationUser user)
-        {
-            var pp = await _db.Person
-                .Where(p => p.DexHolderId == user.DexHolder.Id)
-                .Where(p => p.Nickname == nickName).FirstOrDefaultAsync();
-            return pp;
-        }
-
-        /// <remarks> Used by: <code><seealso cref="GetPersonByNickName(string, DexHolder)"/></code> </remarks>
-        /// <inheritdoc cref="GetPersonByNickNameTool()" />
-        public async Task<Person?> GetPersonByNickNameWithDex(string nickName, DexHolder dexHolder)
-        {
-            var pp = await _db.Person
-                .Where(p => p.DexHolderId == dexHolder.Id)
-                .Where(p => p.Nickname == nickName).FirstOrDefaultAsync();
-            return pp;
-        }
-
-        /// <remarks>
-        /// Used by: <code><seealso cref="GetPersonByNickName(PropertyField, string, string)"/></code>
-        /// with <see cref="PropertyField.username" />
-        /// </remarks>
-        /// <inheritdoc cref="GetPersonByNickNameTool()" />
-        public async Task<Person?> GetPersonByNickNameWithUserNameAsync(string userName, string nickName)
-        {
-            var dex = await _userRepo.GetDexHolderByUserNameAsync(userName);
-
-            var pp = await _db.Person
-                .Where(p => p.DexHolderId == dex.Id)
-                .Where(p => p.Nickname == nickName).FirstOrDefaultAsync();
-            return pp;
-        }
-
-        /// <remarks>
-        /// Used by: <code><seealso cref="GetPersonByNickName(PropertyField, string, string)"/></code>
-        /// with <see cref="PropertyField.id" />
-        /// </remarks>
-        /// <inheritdoc cref="GetPersonByNickNameTool()" />
-        public async Task<Person?> GetPersonByNickNameWithUserIdAsync(string userId, string nickName)
-        {
-            var dex = await _userRepo.GetDexHolderByUserIdAsync(userId);
-
-            var pp = await _db.Person
-                .Where(p => p.DexHolderId == dex.Id)
-                .Where(p => p.Nickname == nickName).FirstOrDefaultAsync();
-            return pp;
-        }
-
-        /// <summary>
-        /// Uses the Index to find a Person. Looks for the record with a unique (NickName, DexId) combination
-        /// </summary>
-        /// <param name="dexHolderId"></param>
-        /// <param name="personNickname"></param>
-        /// <returns></returns>
-        public async Task<Person?> ReadPersonByNickNameAsync(int dexHolderId, string personNickname)
-        {
-            var pp = await _db.Person
-                .Where(p => p.DexHolderId == dexHolderId)
-                .Where(p => p.Nickname == personNickname).FirstOrDefaultAsync();
-            return pp;
-
-        }
-
-        /// <summary>
-        /// Find a Person using the primary key of Persons
-        /// </summary>
-        /// <param name="personId"></param>
-        /// <returns></returns>
-        public async Task<Person?> ReadPersonByIdAsync(int personId)
-        {
-            var person = await _db.Person.FirstOrDefaultAsync(p => p.Id == personId);
-            return person;
-        }
         //public async Task<Person?> GetPersonAsync(PropertyField pType, string input, string personNickname)
         //{
 
@@ -380,6 +58,116 @@ namespace NetDexTest_01.Services
         //}
 
 
+        /// NOTE
+        /// create()
+        /// person = Read PersonAsync
+        /// if person not null
+        /// person.Recommendations.add(object)
+        /// object.Person = person
+        /// db.savechanges
+        /// fi
+        /// return recommendation
+        /// end create()
+
+
+
+        /// in controller...
+        /// -------------
+        /// 
+        /// pub async Task<IAResult> Create([Bind(Prefix = "id")]int personId)
+        /// {
+        ///  var person = await _repo.ReadAsync(personId);
+        ///  if person null
+        ///      return redirect to action
+        ///  fi
+        ///  
+        /// CreateRecommendationVM vm = new()
+        /// {
+        ///     Person = person
+        /// };
+        /// 
+        /// return View(vm);
+        /// }
+        ///
+        /// 
+        /// in CreateRecommendationVM...
+        /// 
+        /// class CreReccomVM
+        /// {
+        ///     pub Person? Person
+        ///     pub Rating Rating { g s }
+        ///     
+        ///     ctor 
+        /// }
+        /// 
+        /// end NOTE
+        public void NOTEstopper() { }
+
+        public async Task<ICollection<Person>> ReadAllPeopleAsync()
+        {
+            return await _db.Person.ToListAsync(); // I/O Bound Operation
+        }
+        public async Task<ICollection<Person>> ReadAllPeopleAsync(DexHolder dexHolder)
+        {
+            return await _db.Person.Where(p => p.DexHolder == dexHolder).ToListAsync(); // I/O Bound Operation
+        }
+        /// <inheritdoc cref="ReadAllPeopleAsync()"/>
+        public async Task<ICollection<Person>> ReadAllPeopleAsync(ApplicationUser user)
+        {
+            return await _db.Person.Where(p => p.DexHolder == user.DexHolder).ToListAsync(); // I/O Bound Operation
+        }
+
+        /// <inheritdoc cref="ReadAllPeopleAsync()"/>
+        public async Task<ICollection<Person>> ReadAllPeopleAsync(string inputString)
+        {
+            DexHolder? dex = new();
+
+            dex = await _userRepo.GetDexHolderByUserNameAsync(inputString);
+            if (dex == null)
+            {
+                dex = await _userRepo.GetDexHolderByUserIdAsync(inputString);
+            }
+            if (dex == null)
+            {
+                dex = await _userRepo.GetDexHolderByEmailAsync(inputString);
+            }
+
+            if (dex != null)
+            {
+                return await _db.Person.Where(p => p.DexHolder == dex).ToListAsync(); // I/O Bound Operation
+
+            }
+            else
+            {
+                throw new NullReferenceException(nameof(dex));
+            }
+
+        }
+
+        public async Task<ICollection<Person>> ReadAllPeopleAsync(int dexHolderId)
+        {
+            DexHolder? dex = await _userRepo.ReadDexByIdAsync(dexHolderId);
+
+            if (dex != null)
+            {
+                return await _db.Person.Where(p => p.DexHolder == dex).ToListAsync(); // I/O Bound Operation
+
+            }
+            else
+            {
+                throw new NullReferenceException(nameof(dex));
+            }
+        }
+
+
+
+
+        // get personparent
+        // get personchildren
+        // get 
+
+
+
         // read all persons
 
         // read all persons by username
@@ -391,6 +179,189 @@ namespace NetDexTest_01.Services
 
 
         // delete a person
+
+
+
+
+        //public void AddPersonPersonAsync(Person parent, Person child, PersonPerson ppIn)
+        //{
+        //    parent.PersonParents.Add(ppIn);
+        //    child.PersonChildren.Add(ppIn);
+
+        //}
+
+
+
+
+        public async Task AddPersonPersonAsync(Person parent, Person child, PersonPerson ppIn)
+        {
+            await Console.Out.WriteLineAsync("\n\n\n--------- AddPersonAsync -----------\n\n");
+            await Console.Out.WriteLineAsync($"\n parent\t{parent.Nickname} \n");
+            await Console.Out.WriteLineAsync($"\n child\t{child.Nickname} \n");
+            await Console.Out.WriteLineAsync($"\n PersonPerson:\t{ppIn.RelationshipDescription}");
+            await Console.Out.WriteLineAsync($"\n PersonPerson:\t{ppIn.PersonParent.Nickname} -> {ppIn.PersonChild.Nickname}");
+
+
+            parent.PersonParents.Add(ppIn);
+            child.PersonChildren.Add(ppIn);
+            await Console.Out.WriteLineAsync("\n\n\n--------------------\n\n");
+            await SaveChangesAsync();
+            await Console.Out.WriteLineAsync("\n\n\n---attempted to add. check results-------\n\n");
+
+            await Console.Out.WriteLineAsync("\n\n\n--------------------\n\n");
+
+        }
+        public async Task<bool> AddPersonPersonCheckAsync(Person parent, Person child, PersonPerson ppIn)
+        {
+            bool noMatch = !FindMatch(ppIn);
+            if (noMatch)
+            {
+                await AddPersonPersonAsync(parent, child, ppIn);
+            }
+            return noMatch;
+        }
+        public async Task<bool> AddPersonPersonCheckAsync(Person parent, Person child, PersonPerson ppIn, string desc)
+        {
+            bool noMatch = !FindMatch(ppIn, desc);
+            if (noMatch)
+            {
+                ppIn!.RelationshipDescription = desc;
+                await AddPersonPersonAsync(parent, child, ppIn);
+            }
+            return noMatch;
+        }
+        public async Task<bool> AddPersonPersonCheckAsync(PersonPerson ppIn, string desc)
+        {
+            PersonPerson ppInNew = new PersonPerson(ppIn, desc);
+
+            bool noMatch1 = !FindMatch(ppInNew);
+            bool noMatch2 = !FindMatch(ppIn.PersonParent, ppIn.PersonChild, desc);
+            if (noMatch2) // && noMatch1)
+            {
+                await AddPersonPersonAsync(ppIn.PersonParent, ppIn.PersonChild, ppInNew);
+                return true;
+            }
+            else return false;
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        /*------------------------------------------------------------*/
+
+
+
+        public void AddPersonPerson(Person parent, Person child, PersonPerson ppIn)
+        {
+
+
+            Console.WriteLine("\n\n\n--------- AddPerson -----------\n\n");
+            Console.WriteLine($"\n parent\t{parent.Nickname} \n");
+            Console.WriteLine($"\n child\t{child.Nickname} \n");
+            Console.WriteLine($"\n PersonPerson:\t{ppIn.RelationshipDescription}");
+            Console.WriteLine($"\n PersonPerson:\t{ppIn.PersonParent.Nickname} -> {ppIn.PersonChild.Nickname}");
+
+            parent.PersonParents.Add(ppIn);
+            child.PersonChildren.Add(ppIn);
+            Console.WriteLine("\n\n\n--------------------\n\n");
+
+        }
+
+        public bool AddPersonPersonCheck(Person parent, Person child, PersonPerson ppIn)
+        {
+            bool noMatch = !FindMatch(ppIn);
+            if (noMatch)
+            {
+                AddPersonPerson(parent, child, ppIn);
+            }
+            return noMatch;
+        }
+
+        public bool AddPersonPersonCheck(Person parent, Person child, PersonPerson ppIn, string desc)
+        {
+            bool noMatch = !FindMatch(ppIn, desc);
+            if (noMatch)
+            {
+                ppIn!.RelationshipDescription = desc;
+                AddPersonPerson(parent, child, ppIn);
+            }
+            return noMatch;
+        }
+
+
+        public bool AddPersonPersonCheck(PersonPerson ppIn, string desc)
+        {
+            PersonPerson ppInNew = new PersonPerson(ppIn, desc);
+
+            bool noMatch1 = !FindMatch(ppInNew);
+            bool noMatch2 = !FindMatch(ppIn.PersonParent, ppIn.PersonChild, desc);
+            if (noMatch2) // && noMatch1)
+            {
+                AddPersonPerson(ppIn.PersonParent, ppIn.PersonChild, ppInNew);
+                return true;
+            }
+            else return false;
+        }
+
+
+        public bool FindMatch(PersonPerson ppIn)
+        {
+            string desc = string.Empty;
+            if (ppIn.RelationshipDescription != null && ppIn.RelationshipDescription != string.Empty)
+            {
+                desc = ppIn.RelationshipDescription;
+            }
+            bool outTf = FindMatch(ppIn, desc);
+            return outTf;
+
+        }
+        public bool FindMatch(PersonPerson ppIn, string desc)
+        {
+            Person p1 = ppIn.PersonParent;
+            Person p2 = ppIn.PersonChild;
+
+            bool outTf = FindMatch(p1, p2, desc);
+            return outTf;
+
+        }
+        public bool FindMatch(Person p1, Person p2)
+        {
+            string desc = string.Empty;
+            bool outTf = FindMatch(p1, p2, desc);
+            return outTf;
+
+        }
+        public bool FindMatch(Person p1, Person p2, string desc)
+        {
+            bool outTf = _db.PersonPerson
+                            .Any(pp => pp.PersonParent == p1
+                                    && pp.PersonChild == p2
+                                    && pp.RelationshipDescription == desc);
+            return outTf;
+        }
+
+
 
 
         public async Task SaveChangesAsync()

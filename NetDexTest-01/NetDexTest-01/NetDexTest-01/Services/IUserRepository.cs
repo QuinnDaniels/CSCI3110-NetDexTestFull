@@ -60,7 +60,17 @@ namespace NetDexTest_01.Services
 
 
 
+        /// <summary>
+        /// get user. > eager load DexHolder > eager load People
+        /// </summary>
+        /// <returns></returns>
+        Task<ICollection<ApplicationUser>> ReadAllUserDexPeopleAsync();
 
+        /// <summary>
+        /// get dexholder > eager load people
+        /// </summary>
+        /// <returns></returns>
+        Task<ICollection<DexHolder>> ReadAllDexHoldersAsync();
 
 
 

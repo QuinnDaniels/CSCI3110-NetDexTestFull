@@ -27,6 +27,12 @@ namespace NetDexTest_01.Services
         /// <returns>DexHolder</returns>
         /// <inheritdoc cref="ReadDexAsync(PropertyField, string)"/>
         Task<DexHolder?> ReadDexByIdAsync(string id);
+        /// <remarks> Search only using user Id </remarks>
+        /// <param name="applicationUserId">dbo.User.Id</param>
+        /// <returns>DexHolder</returns>
+        /// <inheritdoc cref="ReadDexAsync(PropertyField, string)"/>
+        Task<DexHolder?> ReadDexByIdAsync(int dexHolderId);
+
         /// <remarks> Search only using username </remarks>
         /// <param name="username"></param>
         /// <returns>DexHolder</returns>

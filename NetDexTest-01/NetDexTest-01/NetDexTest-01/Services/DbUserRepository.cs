@@ -134,6 +134,23 @@ namespace NetDexTest_01.Services
         }
 
 
+        public async Task<ICollection<ApplicationUser>> ReadAllUserDexPeopleAsync()
+        {
+            return await _db.Users
+                .Include(u => u.DexHolder)
+                    .ThenInclude(dh => dh.People)
+                .ToListAsync();
+        }
+        public async Task<ICollection<DexHolder>> ReadAllDexHoldersAsync()
+        {
+            return await _db.DexHolder
+                .Include(dh => dh.People)
+                .ToListAsync();
+        }
+
+
+
+
         public async Task<ICollection<ApplicationUser>> ReadAllApplicationUsers()
         {
             return await _db.Users.ToListAsync();
@@ -238,6 +255,12 @@ namespace NetDexTest_01.Services
             //return await _db.People.FindAsync(id);
             return await _db.DexHolder.FirstOrDefaultAsync(p => p.ApplicationUserId == applicationUserId); //Takes a lamda expression as its parameter. Slightly slower than first return option but slightly more flexible
         }
+        public async Task<DexHolder?> ReadDexByIdAsync(int dexHolderId)
+        {
+            //return await _db.People.FindAsync(id);
+            return await _db.DexHolder.FirstOrDefaultAsync(dh => dh.Id == dexHolderId); //Takes a lamda expression as its parameter. Slightly slower than first return option but slightly more flexible
+        }
+
         public async Task<DexHolder?> ReadDexByUsernameAsync(string username)
         {
             //return await _db.People.FindAsync(id);

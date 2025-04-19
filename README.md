@@ -16,12 +16,20 @@ TODO:
 
 add Services to Program.cs
 
+- ~~IPersonRepository~~
 
+
+- one to many???
+
+---------------
 
 Repository
+
 ----------
 Person
-- Read All (by user)
+- ~~Create~~
+- ~~Read One~~
+- ~~Read All (by user)~~
 - Update
 - Delete
 
@@ -37,4 +45,32 @@ SocialMedia, Entry
 
 ------------------
 
+------------
+
 ToJson? for quick results? or should I just scaffold Lists
+
+--------
+-------
+
+IDataStorageService (Frontend)
+-
+- Use to get & set data to be used, such as:
+  - UserId,
+  - UserName,
+  - password, 
+  - JWToken information
+
+
+-----
+-----
+
+Notes from lecture 4-15-25
+-----
+
+- views
+- eager loading ( .Include() )
+  - ReadAllAsync - for lists?
+- explicit loading
+  (after/when using .Find() )
+    - ReadAsync - for single person
+- CreateRecommendVM

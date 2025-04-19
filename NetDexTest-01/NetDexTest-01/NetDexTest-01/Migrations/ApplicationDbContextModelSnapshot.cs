@@ -421,6 +421,32 @@ namespace NetDexTest_01.Migrations
                     b.ToTable("Person");
                 });
 
+            modelBuilder.Entity("NetDexTest_01.Models.Entities.PersonPerson", b =>
+                {
+                    b.Property<int?>("PersonChildId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("PersonParentId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("RelationshipDescription")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("Id")
+                        .HasColumnType("int");
+
+                    b.HasKey("PersonChildId", "PersonParentId", "RelationshipDescription");
+
+                    b.HasIndex("PersonParentId");
+
+                    b.HasIndex("PersonChildId", "PersonParentId");
+
+                    b.HasIndex("PersonChildId", "PersonParentId", "RelationshipDescription")
+                        .IsUnique();
+
+                    b.ToTable("PersonPerson");
+                });
+
             modelBuilder.Entity("NetDexTest_01.Models.Entities.RecordCollector", b =>
                 {
                     b.Property<long>("Id")
@@ -575,6 +601,25 @@ namespace NetDexTest_01.Migrations
                     b.Navigation("DexHolder");
                 });
 
+            modelBuilder.Entity("NetDexTest_01.Models.Entities.PersonPerson", b =>
+                {
+                    b.HasOne("NetDexTest_01.Models.Entities.Person", "PersonChild")
+                        .WithMany("PersonParents")
+                        .HasForeignKey("PersonChildId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("NetDexTest_01.Models.Entities.Person", "PersonParent")
+                        .WithMany("PersonChildren")
+                        .HasForeignKey("PersonParentId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("PersonChild");
+
+                    b.Navigation("PersonParent");
+                });
+
             modelBuilder.Entity("NetDexTest_01.Models.Entities.RecordCollector", b =>
                 {
                     b.HasOne("NetDexTest_01.Models.Entities.Person", "Person")
@@ -619,6 +664,10 @@ namespace NetDexTest_01.Migrations
 
                     b.Navigation("FullName")
                         .IsRequired();
+
+                    b.Navigation("PersonChildren");
+
+                    b.Navigation("PersonParents");
 
                     b.Navigation("RecordCollector")
                         .IsRequired();

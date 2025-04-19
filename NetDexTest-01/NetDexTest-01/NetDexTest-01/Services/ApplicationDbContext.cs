@@ -78,6 +78,40 @@ namespace NetDexTest_01.Services
 
 
 
+            // ------------------ [ [ M-N ] Person -> Person ] ----------------
+
+            modelBuilder.Entity<PersonPerson>()
+            .HasKey(pp => new
+            {
+                pp.PersonChildId,
+                pp.PersonParentId,
+                pp.RelationshipDescription
+            }
+            //.HasAlternateKey(pp => new {
+            //    pp.PersonChildId, pp.PersonParentId, pp.RelationshipDescription
+            //}
+            );
+
+
+
+            modelBuilder.Entity<Person>()
+                .HasMany(p => p.PersonChildren)
+                .WithOne(pp => pp.PersonParent)
+                .HasForeignKey(pp => pp.PersonParentId)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            modelBuilder.Entity<Person>()
+                .HasMany(p => p.PersonParents)
+                .WithOne(pp => pp.PersonChild)
+                .HasForeignKey(pp => pp.PersonChildId)
+                .OnDelete(DeleteBehavior.NoAction);
+            ;
+
+
+            // -- END ----------- [ [ M-N ] Person -> Person ] ----------------
+
+
+
             // CHATGPT
             // Ensure DexHolder has a required one-to-one relationship with ApplicationUser
             modelBuilder.Entity<DexHolder>()
@@ -111,6 +145,8 @@ namespace NetDexTest_01.Services
         public DbSet<DexHolder> DexHolder => Set<DexHolder>();
 
         public DbSet<Person> Person => Set<Person>();
+        public DbSet<PersonPerson> PersonPerson => Set<PersonPerson>();
+
 
         public DbSet<FullName> FullName => Set<FullName>();
         public DbSet<RecordCollector> RecordCollector => Set<RecordCollector>();
