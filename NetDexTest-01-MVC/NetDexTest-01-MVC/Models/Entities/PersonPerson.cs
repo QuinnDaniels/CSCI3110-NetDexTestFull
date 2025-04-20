@@ -1,10 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore;
-using NetDexTest_01.Models.Entities;
+﻿using NetDexTest_01_MVC.Models.Entities;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Reflection.Emit;
 
-namespace NetDexTest_01.Models.Entities
+namespace NetDexTest_01_MVC.Models.Entities
 {
     // TODO https://stackoverflow.com/a/65807395
     public partial class Person
@@ -13,10 +12,6 @@ namespace NetDexTest_01.Models.Entities
         public List<PersonPerson> PersonParents { get; set; } = new List<PersonPerson>();
     }
 
-
-    [Index(nameof(PersonChildId), nameof(PersonParentId), nameof(RelationshipDescription), IsUnique = true)]
-
-    [Index(nameof(PersonChildId), nameof(PersonParentId), IsUnique = false)]
     public partial class PersonPerson
     {
         [Key]

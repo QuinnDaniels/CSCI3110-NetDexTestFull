@@ -123,7 +123,8 @@ namespace NetDexTest_01.Services
                     dex = await _userRepo.ReadDexByUsernameAsync(inputProperty);
                     break;
                 case PropertyField.email:
-                    throw new ArgumentException();
+                    dex = await _userRepo.GetDexHolderByEmailAsync(inputProperty);
+                    break;
                 default:
                     throw new ArgumentException();
             }

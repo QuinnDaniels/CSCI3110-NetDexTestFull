@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using NetDexTest_01_MVC.Models;
+using NetDexTest_01_MVC.Models.Authentication;
 using NuGet.Protocol.Plugins;
 
 
@@ -21,5 +22,9 @@ namespace NetDexTest_01_MVC.Services
         Task LogoutAsync();
         Task<LoginResponse> RefreshTokenAsync(Claims claims = null);
         Task TakeActionIfTokenExpired(CookieValidatePrincipalContext context);
+        
+        // FIXME
+        //object GetSavedClaims();
+        Claims GetSavedClaims();
     }
 }

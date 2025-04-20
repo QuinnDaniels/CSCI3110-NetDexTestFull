@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Identity.Data;
 using Microsoft.AspNetCore.Mvc;
 using NetDexTest_01_MVC.Models;
+using NetDexTest_01_MVC.Models.Authentication;
 using NetDexTest_01_MVC.Services;
 using System.Diagnostics;
 using System.Net;

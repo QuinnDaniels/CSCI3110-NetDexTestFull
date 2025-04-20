@@ -1,27 +1,19 @@
-﻿using Microsoft.EntityFrameworkCore;
-using NetDexTest_01.Services;
+﻿using NetDexTest_01_MVC.Services;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 
-namespace NetDexTest_01.Models.Entities
+namespace NetDexTest_01_MVC.Models.Entities
 {
 
     /// <summary>
     /// Collector table for various forms of "RecordItems" entites
     /// </summary>
-    [Table("RecordCollector")]
     public class RecordCollector 
     {
 
         public RecordCollector() { }
 
-        private RecordCollector(ApplicationDbContext context)
-        {
-            Context = context;
-        }
-
-        private ApplicationDbContext Context { get; set; }
 
         // ------------
 
@@ -56,10 +48,10 @@ namespace NetDexTest_01.Models.Entities
         /// Count of the number of SocialMedia records that are associated with the ContactInfo
         /// </summary>
         /// <inheritdoc cref="NetDexTest_01.Models.Entities.DexHolder.PeopleCount"/>
-        public int EntryItemsCount
-        => EntryItems?.Count
-            ?? Context?.Set<EntryItem>().Count(p => Id == EF.Property<Int64?>(p, "RecordCollectorId"))
-            ?? 0;
+        public int EntryItemsCount { get; set; }
+        //=> EntryItems?.Count
+        //    ?? Context?.Set<EntryItem>().Count(p => Id == EF.Property<Int64?>(p, "RecordCollectorId"))
+        //    ?? 0;
 
 
 

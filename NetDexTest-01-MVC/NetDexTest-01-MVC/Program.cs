@@ -26,6 +26,9 @@ namespace NetDexTest_01_MVC
             builder.Services.AddControllersWithViews();
             builder.Services.AddScoped<IAuthService, AuthService>();
             builder.Services.AddScoped<IApiCallerService, ApiCallerService>();
+            builder.Services.AddScoped<IPersonService, PersonService>();
+            
+            
             builder.Services.AddSingleton<HttpClient>();
             //add DI for IHttpContextAccessor to access HttpContext object
             builder.Services.AddHttpContextAccessor();

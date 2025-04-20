@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity.Data;
 using NetDexTest_01_MVC.Models;
+using NetDexTest_01_MVC.Models.Authentication;
 
 
 namespace NetDexTest_01_MVC.Services
@@ -20,6 +21,12 @@ namespace NetDexTest_01_MVC.Services
         private IApiCallerService _apiService;
         private IHttpContextAccessor _contextAccessor;
         private IConfiguration _config;
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AuthService"/> class.
+        /// </summary>
+        /// <param name="config">The config.</param>
+        /// <param name="apiService">The api service.</param>
+        /// <param name="contextAccessor">The context accessor.</param>
         public AuthService(IConfiguration config, IApiCallerService apiService, IHttpContextAccessor contextAccessor)
         {
             _config = config;
@@ -156,7 +163,7 @@ namespace NetDexTest_01_MVC.Services
             LoginResponse response = null;
             if (!(string.IsNullOrEmpty(currentClaims.AuthToken) || string.IsNullOrEmpty(currentClaims.RefreshToken)))
             {
-                var refreshRequest = new RefreshRequest
+                var refreshRequest = new RefreshRequestModel
                 {
                     AccessToken = currentClaims.AuthToken,
                     RefreshToken = currentClaims.RefreshToken

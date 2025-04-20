@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace NetDexTest_01.Models.Entities
+namespace NetDexTest_01_MVC.Models.Entities
 {
     /// <summary>
     /// The application user. Inherits and replaces IdentityUser

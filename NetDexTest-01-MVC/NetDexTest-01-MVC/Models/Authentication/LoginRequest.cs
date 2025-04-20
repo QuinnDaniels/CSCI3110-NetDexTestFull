@@ -7,10 +7,8 @@ using System.ComponentModel.DataAnnotations;
 
 namespace NetDexTest_01_MVC.Models.Authentication
 {
-    public class RevokeRequestModel
+    public class LoginRequest : LoginRequestModel
     {
-        [Required]
-        public string RefreshToken { get; set; }
 
     }
 }

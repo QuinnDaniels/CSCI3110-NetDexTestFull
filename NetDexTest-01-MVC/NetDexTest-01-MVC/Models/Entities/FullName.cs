@@ -2,13 +2,12 @@
 using System.ComponentModel.DataAnnotations.Schema;
 
 
-namespace NetDexTest_01.Models.Entities
+namespace NetDexTest_01_MVC.Models.Entities
 {
 
     /// <summary>
     /// A Dex User (or Holder, to differentiate from ASP.NET User).
     /// </summary>
-    [Table("FullName")]
     public class FullName 
     {
         [Key]

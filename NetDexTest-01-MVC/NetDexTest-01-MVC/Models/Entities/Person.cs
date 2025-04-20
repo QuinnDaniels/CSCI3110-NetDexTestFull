@@ -5,7 +5,7 @@ using System.Security.Cryptography.Pkcs;
 
 namespace NetDexTest_01_MVC.Models.Entities
 {
-    public class Person
+    public partial class Person
     {
         public Person() { }
         public Person(string nickName, DexHolder dexHolder)

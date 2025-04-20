@@ -1,10 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace NetDexTest_01.Models.Entities
+namespace NetDexTest_01_MVC.Models.Entities
 {
-    [Table("SocialMedia")]
     public class SocialMedia
     {
         [Key]

@@ -1,26 +1,17 @@
-﻿using Microsoft.EntityFrameworkCore;
-using NetDexTest_01.Services;
+﻿using NetDexTest_01_MVC.Services;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 
-namespace NetDexTest_01.Models.Entities
+namespace NetDexTest_01_MVC.Models.Entities
 {
 
     /// <summary>
     /// A Dex User (or Holder, to differentiate from ASP.NET User).
     /// </summary>
-    [Table("DexHolder")]
     public class DexHolder 
     {
         public DexHolder() { }
-
-        private DexHolder(ApplicationDbContext context)
-        {
-            Context = context;
-        }
-
-        private ApplicationDbContext Context { get; set; }
 
         // ------------
 
@@ -66,10 +57,10 @@ namespace NetDexTest_01.Models.Entities
         /// <remarks>
         /// <see href="https://learn.microsoft.com/en-us/ef/core/modeling/contructors">Source - "Injecting Services"</see>
         /// </remarks>
-        public int PeopleCount
-            => People?.Count
-                ?? Context?.Set<Person>().Count(p => Id == EF.Property<int?>(p, "DexHolderId"))
-                ?? 0;
+        public int PeopleCount { get; set; }
+        //=> People?.Count
+        //        ?? Context?.Set<Person>().Count(p => Id == EF.Property<int?>(p, "DexHolderId"))
+        //        ?? 0;
 
         [NotMapped]
         [DataType(DataType.Date)]

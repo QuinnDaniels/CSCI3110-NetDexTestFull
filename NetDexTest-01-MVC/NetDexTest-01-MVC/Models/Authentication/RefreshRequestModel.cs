@@ -8,12 +8,12 @@ using System.ComponentModel.DataAnnotations.Schema;
  * 
  * https://memorycrypt.hashnode.dev/create-a-web-api-with-jwt-authentication-and-aspnet-core-identity
  */
-namespace NetDexTest_01_MVC.Models
+namespace NetDexTest_01_MVC.Models.Authentication
 {
     public class RefreshRequestModel
     {
         [Required]
-        public string AccessToken { get; set; } 
+        public string AccessToken { get; set; }
         [Required]
         public string RefreshToken { get; set; }
     }
