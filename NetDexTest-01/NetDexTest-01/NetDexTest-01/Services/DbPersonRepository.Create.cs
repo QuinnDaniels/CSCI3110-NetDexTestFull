@@ -113,7 +113,7 @@ namespace NetDexTest_01.Services
 
         public async Task<Person?> CreatePersonAsync(PropertyField pType, string inputProperty, string personNickname)
         {
-            DexHolder? dex = new DexHolder();
+            DexHolder? dex = null;
             switch (pType)
             {
                 case PropertyField.id:

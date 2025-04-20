@@ -295,6 +295,9 @@ namespace NetDexTest_01.Services
                 case PropertyField.username:
                     return await ReadDexByUsernameAsync(input);
                     break;
+                case PropertyField.email:
+                    return await GetDexHolderByEmailAsync(input);
+                    break;
                 default:
                     throw new InvalidOperationException("PropertyField is invalid! Check the switch-case and try again");
             }

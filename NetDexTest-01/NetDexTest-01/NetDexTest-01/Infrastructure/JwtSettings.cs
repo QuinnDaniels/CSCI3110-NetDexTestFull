@@ -8,6 +8,9 @@ using System;
 
 namespace NetDexTest_01
 {
+    /// <summary>
+    /// Values are set in appsettings.json
+    /// </summary>
     public class JwtSettings
     {
 
@@ -15,7 +18,9 @@ namespace NetDexTest_01
         public string Issuer { get; set; }
         public string Audience { get; set; }
         public int MinutesToExpiration { get; set; }
-
+        /// <summary>
+        /// References MinutesToExpiration
+        /// </summary>
         public TimeSpan Expire => TimeSpan.FromMinutes(MinutesToExpiration);
     }
 }

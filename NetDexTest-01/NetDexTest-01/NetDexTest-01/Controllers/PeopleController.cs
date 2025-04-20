@@ -14,7 +14,7 @@ namespace NetDexTest_01.Controllers
     [Authorize]
     [Route("api/[controller]")]
     [ApiController]
-    public class PeopleController : ControllerBase
+    public partial class PeopleController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
         private readonly ILogger<PeopleController> _logger;
@@ -26,15 +26,16 @@ namespace NetDexTest_01.Controllers
 
         // GET: api/People
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Person>>> GetPerson()
+        public async Task<ActionResult<IEnumerable<Person>>> GetPeople()
         {
-            return await _context.Person.ToListAsync();
+            return Ok(await _context.Person.ToListAsync());
         }
 
         // GET: api/People/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Person>> GetPerson(int id)
+        public async Task<ActionResult<Person>> GetPeople(int id)
         {
+            //var person = _context.Person.FirstOrDefault(a => a.Id.Equals(id));
             var person = await _context.Person.FindAsync(id);
 
             if (person == null)
@@ -42,17 +43,37 @@ namespace NetDexTest_01.Controllers
                 return NotFound();
             }
 
-            return person;
+            return Ok(person);
         }
+
+        // POST: api/People
+        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [HttpPost]
+        public async Task<ActionResult<Person>> InsertPerson(Person person)
+        {
+            //person.Id = Guid.NewGuid();
+            _context.Person.Add(person);
+            await _context.SaveChangesAsync();
+
+            return CreatedAtAction(nameof(GetPeople), new { id = person.Id }, person);
+        }
+
 
         // PUT: api/People/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutPerson(int id, Person person)
+        public async Task<IActionResult> UpdatePerson(int id, Person person) // TODO: add DexHolder id
         {
-            if (id != person.Id)
+            if (id != person.Id) //(id != person.Id.ToString())
             {
                 return BadRequest();
+            }
+
+            var personToUpdate = _context.Person.FirstOrDefault(a => a.Id.Equals(id));
+
+            if (personToUpdate == null) // added to conform to tutorial. is likely redundant, considering scaffold result
+            {
+                return NotFound();
             }
 
             _context.Entry(person).State = EntityState.Modified;
@@ -69,42 +90,54 @@ namespace NetDexTest_01.Controllers
                 }
                 else
                 {
-                    throw;
+                    //throw;
+                    personToUpdate.Nickname =  person.Nickname;
+                    personToUpdate.DexHolder = person.DexHolder ;
+                    personToUpdate.DateOfBirth = person.DateOfBirth;
+                    personToUpdate.Gender = person.Gender ;
+                    personToUpdate.Pronouns =   person.Pronouns ;
+                    personToUpdate.Rating =   person.Rating ;
+                    personToUpdate.Favorite =   person.Favorite ;
+
+                    _context.Person.Update(personToUpdate);
+                    _context.SaveChanges();
+
                 }
+
+
             }
 
             return NoContent();
         }
 
-        // POST: api/People
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost]
-        public async Task<ActionResult<Person>> PostPerson(Person person)
-        {
-            _context.Person.Add(person);
-            await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetPerson", new { id = person.Id }, person);
-        }
+
 
         // DELETE: api/People/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeletePerson(int id)
         {
-            var person = await _context.Person.FindAsync(id);
-            if (person == null)
+            //var person = await _context.Person.FindAsync(id);
+            var personToDelete = _context.Person.FirstOrDefault(a => a.Id.Equals(id));
+
+            if (personToDelete == null)
             {
                 return NotFound();
             }
 
-            _context.Person.Remove(person);
+            _context.Person.Remove(personToDelete);
             await _context.SaveChangesAsync();
 
             return NoContent();
         }
 
+
+
+
         private bool PersonExists(int id)
         {
+            var personToFind = _context.Person.FirstOrDefault(a => a.Id.Equals(id));
+            
             return _context.Person.Any(e => e.Id == id);
         }
     }

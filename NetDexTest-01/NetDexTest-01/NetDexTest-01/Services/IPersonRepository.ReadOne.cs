@@ -25,7 +25,6 @@ namespace NetDexTest_01.Services
         /// Uses an ApplicationUser object to access ApplicationUser.DexHolder directly to search for a person with the DexHolderId
         /// </remarks>
         /// <inheritdoc cref="GetPersonByNickName()" />
-
         Task<Person?> GetPersonByNickName(string nickName, ApplicationUser user);
         /// <remarks>
         /// Uses a DexHolder object to access DexHolderId directly to search for a person with the DexHolderId

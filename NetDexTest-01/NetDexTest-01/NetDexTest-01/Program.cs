@@ -147,8 +147,23 @@ namespace NetDexTest_01
 
 
             //User Manager Service
-            //services.AddIdentity<ApplicationUser, IdentityRole>().AddEntityFrameworkStores<ApplicationDbContext>();
+            //services.AddIdentity<ApplicationUser, IdentityRole>().AddEntityFrameworkStores<ApplicationDbContext>()
+            //      .AddDefaultTokenProviders();
             services.AddScoped<IUserService, UserService>();
+            // From https://memorycrypt.hashnode.dev/create-a-web-api-with-jwt-authentication-and-aspnet-core-identity#heading-3-add-db-context-for-articles-table
+            //services.Configure<IdentityOptions>(options =>
+            //{
+            //    // Password settings.
+            //    options.Password.RequireDigit = false;
+            //    options.Password.RequireLowercase = false;
+            //    options.Password.RequireNonAlphanumeric = false;
+            //    options.Password.RequireUppercase = false;
+            //    options.Password.RequiredLength = 6;
+            //    options.Password.RequiredUniqueChars = 1;
+            //});
+
+
+
 
 
             var connectionString = _configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
@@ -226,11 +241,11 @@ namespace NetDexTest_01
                 ;*/
 
 
-                i.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-                i.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                i.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
-                i.DefaultSignInScheme = JwtBearerDefaults.AuthenticationScheme;
-            })
+                    i.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                    i.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                    i.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+                    i.DefaultSignInScheme = JwtBearerDefaults.AuthenticationScheme;
+                })
                 .AddJwtBearer(options =>
                 {
                     options.TokenValidationParameters = new TokenValidationParameters

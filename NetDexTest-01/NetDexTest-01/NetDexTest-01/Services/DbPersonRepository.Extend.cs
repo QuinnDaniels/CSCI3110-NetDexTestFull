@@ -4,7 +4,7 @@
     /// <summary>
     /// interacts with Extensions of Person (Ci, Fn, Rc)
     /// </summary>
-    public partial interface IPersonExtRepository
+    public partial class DbPersonExtRepository
     {
         // create just a person
 
