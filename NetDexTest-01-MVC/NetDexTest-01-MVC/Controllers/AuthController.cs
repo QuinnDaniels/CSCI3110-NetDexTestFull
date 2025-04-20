@@ -119,7 +119,7 @@ namespace NetDexTest_01_MVC.Controllers
             var response = await _authService.RefreshTokenAsync();
             if (response.Status == HttpStatusCode.OK)
             {
-                await _authService.LoginWithCookieAsync(response.Email, response.AccessToken, response.RefreshToken);
+                await _authService.LoginWithCookieAsync(response.Email, response.AccessToken, response.RefreshToken); //the cookie is created only when the control is returned to the browser https://memorycrypt.hashnode.dev/net-mvc-app-calling-web-api-for-authentication
                 return RedirectTo(returnUrl);
             }
             else
@@ -138,7 +138,7 @@ namespace NetDexTest_01_MVC.Controllers
             else
             {
                 //default redirect
-                return RedirectToAction("Index", "Articles");
+                return RedirectToAction("Index", "Home");
             }
         }
 
