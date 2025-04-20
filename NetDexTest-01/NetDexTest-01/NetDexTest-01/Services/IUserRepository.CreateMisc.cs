@@ -26,7 +26,15 @@ namespace NetDexTest_01.Services
         /// <see cref="CreateUserDexHolderAsync(ApplicationUser, DexHolder, string)">
         /// current working overload
         /// </see>
-        /// on how to use with ApplicationUser and DexHolder objects.
+        /// on how to use with
+        /// <see cref="CreateUserDexHolderAsync(ApplicationUser, DexHolder, string)">
+        /// ApplicationUser and DexHolder
+        /// </see>
+        /// objects, as well as using
+        /// <see cref="CreateUserDexHolderAsync(RegisterModel)">
+        /// RegisterModel
+        /// </see>
+        /// view model objects.
         /// <br/><br/>
         /// Also allows for 
         /// <see cref="CreateUserDexHolderAsync(List{ApplicationUser}, List{DexHolder}, List{string})">

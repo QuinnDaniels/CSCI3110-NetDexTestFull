@@ -1,4 +1,6 @@
 ﻿using NetDexTest_01.Models.Entities;
+using NetDexTest_01.Models;
+using Microsoft.AspNetCore.Identity;
 
 namespace NetDexTest_01.Services
 {
@@ -31,6 +33,30 @@ namespace NetDexTest_01.Services
         /// <inheritdoc cref="CreateUserDexHolderAsync()"/>
         Task<ApplicationUser> CreateUserDexHolderAsync(
                 ApplicationUser user, DexHolder tempDexHolder, string password);
+
+        /// <remarks>
+        /// <para>
+        /// For use with Registration API Endpoints
+        /// </para>
+        /// <para>
+        /// To get an IdentityResult back, use <seealso cref="CreateUserDexHolderAsync(RegisterModel, Boolean)"/> and any value of Boolean will work
+        /// </para>
+        /// </remarks>
+        /// <returns>
+        /// </returns>
+        /// <inheritdoc cref="CreateUserDexHolderAsync()"/>
+        Task<ApplicationUser> CreateUserDexHolderAsync(
+                RegisterModel registerModel);
+        /// <remarks>
+        /// For use with Registration API Endpoints, and returns if the creation succeeded
+        /// </remarks>
+        /// <returns>
+        /// </returns>
+        /// <inheritdoc cref="CreateUserDexHolderAsync()"/>
+        Task<IdentityResult> CreateUserDexHolderAsync(
+                RegisterModel registerModel, Boolean inFlag);
+
+
         #region BatchCreateComment
         // -----------------
         // BATCH CREATE

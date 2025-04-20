@@ -68,9 +68,9 @@ namespace NetDexTest_01.Services
         /// fi
         /// return recommendation
         /// end create()
-
-
-
+        /// |
+        /// |
+        /// |
         /// in controller...
         /// -------------
         /// 
@@ -244,30 +244,6 @@ namespace NetDexTest_01.Services
             else return false;
         }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
         /*------------------------------------------------------------*/
 
 
@@ -360,6 +336,7 @@ namespace NetDexTest_01.Services
                                     && pp.RelationshipDescription == desc);
             return outTf;
         }
+
 
 
 

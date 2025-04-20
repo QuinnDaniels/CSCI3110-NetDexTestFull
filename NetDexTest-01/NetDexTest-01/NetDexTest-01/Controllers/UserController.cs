@@ -12,6 +12,7 @@ using NetDexTest_01.Models.Entities;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 
+// https://memorycrypt.hashnode.dev/create-a-web-api-with-jwt-authentication-and-aspnet-core-identity
 
 namespace NetDexTest_01.Controllers
 {
@@ -45,7 +46,6 @@ namespace NetDexTest_01.Controllers
         [HttpPost("register")]
         public async Task<ActionResult> RegisterAsync(RegisterModel model)
         {
-
             var result = await _userService.RegisterAsync(model);
             return Ok(result);
         }

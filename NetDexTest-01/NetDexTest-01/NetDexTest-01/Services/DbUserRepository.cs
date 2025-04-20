@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.EntityFrameworkCore;
 using NetDexTest_01.Models.Entities;
+using NetDexTest_01.Models;
 using System.Security.Policy;
 using System.Text.Encodings.Web;
 using System.Text;
@@ -165,12 +166,36 @@ namespace NetDexTest_01.Services
             return await _db.DexHolder.ToListAsync(); // I/O Bound Operation
         }
 
-
-
+        public async Task<ApplicationUser?> GetByEmailAsync(string email, string password)
+        {
+            var conversion = await _db.Users.FirstOrDefaultAsync(u => u.Email == email);
+            var t = await _userManager.CheckPasswordAsync((ApplicationUser?)conversion, password);
+            if (t == true) return (ApplicationUser?)conversion;
+            else return null;
+        }
+        public async Task<ApplicationUser?> GetByEmailAsync(string email)
+        {
+            var conversion = await _db.Users.FirstOrDefaultAsync(u => u.Email == email);
+            return (ApplicationUser?)conversion;
+        }
+        public async Task<ApplicationUser?> GetByUsernameAsync(string username, string password)
+        {
+            var conversion = await _db.Users.FirstOrDefaultAsync(u => u.UserName == username);
+            var t = await _userManager.CheckPasswordAsync((ApplicationUser?)conversion, password);
+            if (t == true) return (ApplicationUser?)conversion;
+            else return null;
+        }
         public async Task<ApplicationUser?> GetByUsernameAsync(string username)
         {
             var conversion = await _db.Users.FirstOrDefaultAsync(u => u.UserName == username);
             return (ApplicationUser?)conversion;
+        }
+        public async Task<ApplicationUser?> GetByIdAsync(string id, string password)
+        {
+            var conversion = await _db.Users.FirstOrDefaultAsync(u => u.Id == id);
+            var t = await _userManager.CheckPasswordAsync((ApplicationUser?)conversion, password);
+            if (t == true) return (ApplicationUser?)conversion;
+            else return null;
         }
         public async Task<ApplicationUser?> GetByIdAsync(string id)
         {
@@ -189,11 +214,37 @@ namespace NetDexTest_01.Services
                 case PropertyField.username:
                     user = await GetByUsernameAsync(input);
                     break;
+                case PropertyField.email:
+                    user = await GetByEmailAsync(input);
+                    break;
                 default:
                     throw new InvalidOperationException("PropertyField is invalid! Check the switch-case and try again");
             }
             return user;
         }
+
+
+        public async Task<ApplicationUser?> GetUserAsync(PropertyField pType, string input, string password)
+        {
+            ApplicationUser? user = null;
+            switch (pType)
+            {
+                case PropertyField.id:
+                    user = await GetByIdAsync(input, password);
+                    break;
+                case PropertyField.username:
+                    user = await GetByUsernameAsync(input, password);
+                    break;
+                case PropertyField.email:
+                    user = await GetByEmailAsync(input, password);
+                    break;
+                default:
+                    throw new InvalidOperationException("PropertyField is invalid! Check the switch-case and try again");
+            }
+            return user;
+        }
+
+
 
 
 
@@ -491,6 +542,89 @@ namespace NetDexTest_01.Services
             //}
             return user;
         }
+
+
+
+        public async Task<ApplicationUser> CreateUserDexHolderAsync(
+    RegisterModel registerModel)
+        {
+            var user = new ApplicationUser { UserName = registerModel.Username, Email = registerModel.Email };
+
+
+            await _userManager.CreateAsync(user, registerModel.Password);
+            _logger.LogInformation("\n\nUser created a new account with password.\n\n");
+
+            // CHATGPT - Create corresponding DexHolder record
+            var userId = await _userManager.GetUserIdAsync(user);
+            var userName = await _userManager.GetUserNameAsync(user);
+
+            //if (userId != null && userName != null)
+            //{
+                var dexHolder = new DexHolder
+                {
+                    ApplicationUserId = userId,
+                    ApplicationUserName = userName,
+                    FirstName = registerModel.FirstName,
+                    MiddleName = registerModel.MiddleName ,
+                    LastName = registerModel.LastName ,
+                    Gender = registerModel.Gender ,
+                    Pronouns = registerModel.Pronouns
+                };
+                await AddDexHolderAsync(dexHolder);
+                await SaveChangesAsync();
+                var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
+
+                return user;
+            //}
+            //else
+            //{
+            //    throw new Exc
+            //}
+        }
+
+        public async Task<IdentityResult> CreateUserDexHolderAsync(RegisterModel registerModel, Boolean inFlag)
+        {
+            var user = new ApplicationUser { UserName = registerModel.Username, Email = registerModel.Email };
+            await Console.Out.WriteLineAsync($"\n\n\n CreateUserDexHolderAsync\n"
+                                            +$"-------------------------------------\n"
+                                            +$"\t\tBoolean \"inFlag\" detected!\tValue: {inFlag}\n"
+                                            +$"\t\tMethod will return Task<IdentityResult> instead of Task<ApplicationUser>\n"
+                                            +$"--------------------------------------\n\n\n");
+            var result = await _userManager.CreateAsync(user, registerModel.Password);
+            _logger.LogInformation("\n\nUser created a new account with password.\n\n");
+
+            // CHATGPT - Create corresponding DexHolder record
+            var userId = await _userManager.GetUserIdAsync(user);
+            var userName = await _userManager.GetUserNameAsync(user);
+
+            if (userId != null && userName != null)
+            {
+                var dexHolder = new DexHolder
+                {
+                    ApplicationUserId = userId,
+                    ApplicationUserName = userName,
+                    FirstName = registerModel.FirstName,
+                    MiddleName = registerModel.MiddleName,
+                    LastName = registerModel.LastName,
+                    Gender = registerModel.Gender,
+                    Pronouns = registerModel.Pronouns
+                };
+                await AddDexHolderAsync(dexHolder);
+                await SaveChangesAsync();
+                var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
+
+            }
+            return result;
+            //else
+            //{
+            //    throw new Exc
+            //}
+        }
+
+
+
 
         #endregion CreateBoth
 

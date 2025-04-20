@@ -21,6 +21,7 @@ namespace NetDexTest_01.Models.Entities
             return Roles.Any(r => r == roleName);
         }
 
+        // NOTE is Internal set better than set?
         public string RefreshToken { get; internal set; } = string.Empty;
 
         // Navigation property for DexHolder

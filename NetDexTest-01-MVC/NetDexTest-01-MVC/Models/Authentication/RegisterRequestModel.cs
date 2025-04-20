@@ -1,18 +1,20 @@
-﻿using System.ComponentModel.DataAnnotations;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Threading.Tasks;
 
-namespace NetDexTest_01.Models
+namespace NetDexTest_01_MVC.Models
 {
-    public class RegisterModel
+    /// <summary>
+    /// RegisterRequest
+    /// </summary>
+    public class RegisterRequestModel
     {
-        /// <summary>
-        ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-        ///     directly from your code. This API may change or be removed in future releases.
-        /// </summary>
         [Required]
         [EmailAddress]
         [Display(Name = "Email")]
         public string Email { get; set; }
-
 
         /// <summary>
         ///     TODO adding for extra field in ViewModel
@@ -22,26 +24,23 @@ namespace NetDexTest_01.Models
         [StringLength(50, MinimumLength = 1)]
         public string Username { get; set; }
 
-        /// <summary>
-        ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-        ///     directly from your code. This API may change or be removed in future releases.
-        /// </summary>
         [Required]
         [StringLength(50, MinimumLength = 6, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.")]
-        [DataType(DataType.Password)]
         [Display(Name = "Password")]
         public string Password { get; set; }
 
-        /// <summary>
-        ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-        ///     directly from your code. This API may change or be removed in future releases.
-        /// </summary>
+        [Required]
         [DataType(DataType.Password)]
-        [Display(Name = "Confirm password")]
         [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
+        [Display(Name = "Confirm Password")]
         public string? ConfirmPassword { get; set; }
 
+        // [Required]
+        // [StringLength(50, MinimumLength = 3)]
+        // [Display(Name = "Display Name")]
+        // public string DisplayName { get; set; }
 
+        /*---------------------------------*/
 
         //[Required]
         [Display(Name = "FirstName")]
@@ -63,9 +62,5 @@ namespace NetDexTest_01.Models
 
 
 
-
-        }
-
-
+    }
 }
-
