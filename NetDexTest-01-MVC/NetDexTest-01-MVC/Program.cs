@@ -37,10 +37,10 @@ namespace NetDexTest_01_MVC
                     options.Cookie.SecurePolicy = CookieSecurePolicy.Always;        // ensures that the cookie transfer (as well as authentication) happens over HTTPS and not HTTP
                     options.Cookie.SameSite = SameSiteMode.Strict;      // ensures that the browser does not send this cookie as part of a request unless that request is directed to our server/domain
 
-                    options.Events.OnValidatePrincipal = async context =>   //
+                    options.Events.OnValidatePrincipal = async context =>   // whenever the OnValidatePrincipal event is triggered
                     {
                         var authService = context.HttpContext.RequestServices.GetRequiredService<IAuthService>();
-                        await authService.TakeActionIfTokenExpired(context);
+                        await authService.TakeActionIfTokenExpired(context);    //we also want to execute the authService.TakeActionIfTokenExpired() method
                     };
 
                 });

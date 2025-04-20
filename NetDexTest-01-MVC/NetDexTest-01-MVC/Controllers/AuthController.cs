@@ -7,6 +7,9 @@ using System.Net;
 
 namespace NetDexTest_01_MVC.Controllers
 {
+    /// <summary>
+    /// <seealso href="https://memorycrypt.hashnode.dev/net-mvc-app-calling-web-api-for-authentication#heading-2-add-web-api-urls-in-appsettingsjson">
+    /// </summary>
     public class AuthController : Controller
     {
         private readonly ILogger<AuthController> _logger;

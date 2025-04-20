@@ -12,6 +12,9 @@ using NetDexTest_01_MVC.Models;
 
 namespace NetDexTest_01_MVC.Services
 {
+    /// <summary>
+    /// <seealso href="https://memorycrypt.hashnode.dev/net-mvc-app-calling-web-api-for-authentication#heading-2-add-web-api-urls-in-appsettingsjson">
+    /// </summary>
     public class AuthService : IAuthService
     {
         private IApiCallerService _apiService;
@@ -185,6 +188,70 @@ namespace NetDexTest_01_MVC.Services
             return response;
         }
 
+        /*-------------------------------*/
+
+
+        public async Task TakeActionIfTokenExpired(CookieValidatePrincipalContext context)
+        {
+            //get current claims from CookieValidatePrincipalContext
+            var currentClaims = GenerateClaimsObject(context.Principal.Claims); //can't fetch from user claims yet as they are not saved
+            var shouldRedirectToLogin = false;
+
+            if (string.IsNullOrEmpty(currentClaims.AuthToken))
+            {
+                shouldRedirectToLogin = true;
+            }
+            else
+            {
+                //check if auth token is still valid
+                var isTokenValid = await ValidateToken(currentClaims.AuthToken);
+                if (!isTokenValid)
+                {
+                    //refresh auth token 
+                    var refreshResponse = await RefreshTokenAsync(currentClaims);
+                    if (refreshResponse.Status != HttpStatusCode.OK)
+                    {
+                        shouldRedirectToLogin = true;
+                    }
+                    else
+                    {
+                        //update the principal (claims) in context object
+                        var newPrincipal = GeneratePrincipal(refreshResponse.Email, refreshResponse.AccessToken, refreshResponse.RefreshToken);
+                        context.ReplacePrincipal(newPrincipal);
+                        context.ShouldRenew = true;
+                    }
+                } // if token is valid, exit the function
+            }
+
+            if (shouldRedirectToLogin)
+            {
+                //if for any reason tokens could not be refreshed
+                //reject the principal and remove the current cookie  
+                context.RejectPrincipal();
+                await context.HttpContext.SignOutAsync();
+            }
+        }
+
+        private async Task<bool> ValidateToken(string authToken)
+        {
+            var url = _config["apiService:tokenValidateUrl"];
+
+            if (!(string.IsNullOrEmpty(authToken)))
+            {
+                var httpResponse = await _apiService.MakeHttpCallAsync(
+                        httpMethod: HttpMethod.Post,
+                        url: url,
+                        authScheme: "bearer",
+                        authToken: authToken);
+
+                if (httpResponse.StatusCode == HttpStatusCode.OK)
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
 
 
 
