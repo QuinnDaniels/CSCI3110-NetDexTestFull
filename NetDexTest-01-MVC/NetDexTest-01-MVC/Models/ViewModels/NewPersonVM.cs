@@ -1,9 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Security.Cryptography.Pkcs;
+using NetDexTest_01_MVC.Models.Entities;
 
-
-namespace NetDexTest_01_MVC.Models.Entities
+namespace NetDexTest_01_MVC.Models.ViewModels
 {
     public class NewPersonVM
     {
