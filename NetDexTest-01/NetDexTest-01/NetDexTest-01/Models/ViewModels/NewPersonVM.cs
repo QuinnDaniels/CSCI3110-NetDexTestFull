@@ -30,7 +30,10 @@ namespace NetDexTest_01.Models.Entities
                 Favorite = this.Favorite
             };
         }
-
+        public string GetAttachedEmail()
+        {
+            return email;
+        }
 
 
         [StringLength(256)]
@@ -51,7 +54,8 @@ namespace NetDexTest_01.Models.Entities
         
         public bool Favorite { get; set; } = false;
 
-        
+        public string? email { get; set; } = String.Empty;
+
 
 
 
