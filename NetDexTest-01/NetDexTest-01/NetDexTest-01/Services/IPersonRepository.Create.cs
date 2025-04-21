@@ -4,26 +4,11 @@
     /// <summary>
     /// interacts with Extensions of Person (Ci, Fn, Rc)
     /// </summary>
-    public partial interface IPersonExtRepository
+    public partial interface IPersonRepository
     {
-        // create just a person
-
-        // create a person with ContactInfo, FullName, RecordCollector
-
-            // create a P & Ci,Fn,Rc using Authorixation
-
-        // read just a person
-
-        // read all persons
-
-        // read all persons by username
-
-        // read all persons by userid
-
-        
-        // update/edit
-
-
-        // delete a person
+        void CreatePersonAsync();
+        Task<Person?> CreatePersonAsync(ApplicationUser user, string personNickname);
+        Task<Person?> CreatePersonAsync(DexHolder dex, string personNickname);
+        Task<Person?> CreatePersonAsync(PropertyField pType, string inputProperty, string personNickname);
     }
 }
