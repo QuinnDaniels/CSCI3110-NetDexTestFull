@@ -1,4 +1,13 @@
-﻿namespace NetDexTest_01.Services
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
+using Microsoft.EntityFrameworkCore;
+using NetDexTest_01.Models.Entities;
+using NetDexTest_01.Models.ViewModels;
+
+using System.Diagnostics;
+using System.Linq.Expressions;
+
+namespace NetDexTest_01.Services
 {
     // TODO: do this!
     /// <summary>

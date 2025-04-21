@@ -1,4 +1,5 @@
 ﻿using NetDexTest_01.Models.Entities;
+using NetDexTest_01.Models.ViewModels;
 
 namespace NetDexTest_01.Services
 {
@@ -188,6 +189,7 @@ namespace NetDexTest_01.Services
 
         }
 
+
         public async Task<Person?> CreatePersonAsync(PropertyField pType, string inputProperty, Person person)
         {
             DexHolder? dex = null;
@@ -240,7 +242,79 @@ namespace NetDexTest_01.Services
 
                 try
                 {
-                    return await GetPersonByNickName(personNickname, dex);
+                    return await GetPersonByNickName(person.Nickname, dex);
+
+                }
+                catch (Exception ex)
+                {
+                    string title = "CreatePersonAsync";
+                    QuinnException qEx = new QuinnException(title, ex);
+                    var logger = _logger;
+                    logger.LogError(
+                         $"\n\n---------------- GetPersonWithNickName --- log ---------\n\n"
+                        + $"An error occurred while adding lists to the database. {ex.Message}"
+                        //        +$"\n\n---------------- SEED DATA ASYNC --- log ---------\n\n");
+                        //    Console.WriteLine(
+                        + $"\n\n----- 1 -------- GetPersonWithNickName --- console ----\n\n"
+                        //        + $"An error occurred while adding lists to the database. {ex.Message}"
+                        //        + $"\n\n----- 2 -------- SEED DATA ASYNC --- console ----\n\n"
+                        + $"{ex}"
+                        + $"\n\n---- end ------- GetPersonWithNickName --- console ----\n\n");
+                    return null;
+                }
+            }
+            else
+            {
+                throw new NullReferenceException();
+            }
+
+
+        }
+
+
+
+
+        public async Task<Person?> CreatePersonAsync(NewPersonVM person)
+        {
+            DexHolder? dex = null;
+
+            dex = await _userRepo.GetDexHolderByEmailAsync(person.email);
+
+            if (dex != null)
+            {
+                var dexId = dex.Id;
+                var newPerson = new Person
+                {
+                    Nickname = person.Nickname,
+                    DateOfBirth = person.DateOfBirth,
+                    Gender = person.Gender,
+                    Pronouns = person.Pronouns,
+                    Rating = person.Rating,
+                    DexHolder = dex,
+                    FullName = new FullName(),
+                    RecordCollector = new RecordCollector()
+                    {
+                        EntryItems = new List<EntryItem>
+                        {
+                            new EntryItem { ShortTitle = "Example", FlavorText = $"This is an example entry! It was automatically created on [ ${DateTime.Now} ]!" }
+                        }
+                    },
+                    ContactInfo = new ContactInfo()
+                    {
+                        SocialMedias = new List<SocialMedia>
+                        {
+                            new SocialMedia {  CategoryField = "example category", SocialHandle = "@NetDexTest-01_Example_SocialHandle" }
+                        }
+                    }
+                };
+
+                await _db.Person.AddAsync(newPerson);
+                await SaveChangesAsync();
+
+
+                try
+                {
+                    return await GetPersonByNickName(person.Nickname, dex);
 
                 }
                 catch (Exception ex)

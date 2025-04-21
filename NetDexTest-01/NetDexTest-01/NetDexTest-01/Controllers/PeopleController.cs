@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using NetDexTest_01.Models.Entities;
+using NetDexTest_01.Models.ViewModels;
 using NetDexTest_01.Services;
 using Microsoft.AspNetCore.Authorization;
 
@@ -17,6 +18,7 @@ namespace NetDexTest_01.Controllers
     public partial class PeopleController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
+        private readonly IPersonRepository _personRepo;
         private readonly ILogger<PeopleController> _logger;
         public PeopleController(ILogger<PeopleController> logger, ApplicationDbContext context)
         {
@@ -56,6 +58,29 @@ namespace NetDexTest_01.Controllers
             await _context.SaveChangesAsync();
 
             return CreatedAtAction(nameof(GetPeople), new { id = person.Id }, person);
+        }
+
+        // POST: api/People
+        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [HttpPost]
+        public async Task<ActionResult<Person>> InsertPerson(NewPersonVM person)
+        {
+            //person.Id = Guid.NewGuid();
+
+
+            Person inPerson = await _personRepo.CreatePersonAsync(person);
+
+            //_context.Person.Add(inPerson);
+            //await _context.SaveChangesAsync();
+
+            if (inPerson != null) 
+            {
+            return CreatedAtAction(nameof(GetPeople), new { id = inPerson.Id }, inPerson);
+            }
+            else
+            {
+                return BadRequest();
+            }
         }
 
 

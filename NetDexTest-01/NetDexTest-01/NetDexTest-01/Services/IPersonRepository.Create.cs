@@ -1,4 +1,7 @@
-﻿namespace NetDexTest_01.Services
+﻿using NetDexTest_01.Models.Entities;
+using NetDexTest_01.Models.ViewModels;
+
+namespace NetDexTest_01.Services
 {
     // TODO: do this!
     /// <summary>
@@ -11,5 +14,6 @@
         Task<Person?> CreatePersonAsync(DexHolder dex, string personNickname);
         Task<Person?> CreatePersonAsync(PropertyField pType, string inputProperty, string personNickname);
         Task<Person?> CreatePersonAsync(PropertyField pType, string inputProperty, Person person);
+        Task<Person?> CreatePersonAsync(NewPersonVM person);
     }
 }

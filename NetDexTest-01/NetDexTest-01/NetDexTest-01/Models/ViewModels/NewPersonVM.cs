@@ -1,9 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using NetDexTest_01.Services;
+using NetDexTest_01.Models.Entities;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace NetDexTest_01.Models.Entities
+namespace NetDexTest_01.Models.ViewModels
 {
     public class NewPersonVM
     {
