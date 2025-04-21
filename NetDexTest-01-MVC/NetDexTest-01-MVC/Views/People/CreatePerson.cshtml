@@ -1,7 +1,8 @@
-﻿@model NetDexTest_01_MVC.Models.Entities.Person
+﻿@using System.Security.Claims
+@model NetDexTest_01_MVC.Models.ViewModels.NewPersonVM
 
 @{
-    ViewData["Title"] = "CreatePerson";
+    ViewData["Title"] = "Create Person";
 }
 
 <h1>CreatePerson</h1>
@@ -13,9 +14,8 @@
         <form asp-action="CreatePerson">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="Id" class="control-label"></label>
-                <input asp-for="Id" class="form-control" />
-                <span asp-validation-for="Id" class="text-danger"></span>
+                <label asp-for="email" class="control-label">User email</label>
+                <input asp-for="email" readonly value="@(User.Claims.FirstOrDefault(c=>c.Type == ClaimTypes.Email).Value)" class="form-control" />
             </div>
             <div class="form-group">
                 <label asp-for="Nickname" class="control-label"></label>
@@ -46,11 +46,6 @@
                 <label class="form-check-label">
                     <input class="form-check-input" asp-for="Favorite" /> @Html.DisplayNameFor(model => model.Favorite)
                 </label>
-            </div>
-            <div class="form-group">
-                <label asp-for="DexHolderId" class="control-label"></label>
-                <input asp-for="DexHolderId" class="form-control" />
-                <span asp-validation-for="DexHolderId" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />

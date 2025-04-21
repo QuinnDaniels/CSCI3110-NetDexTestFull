@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Net;
 using NetDexTest_01_MVC.Models;
+using NetDexTest_01_MVC.Models.ViewModels;
 using NetDexTest_01_MVC.Models.Entities;
 using NetDexTest_01_MVC.Models.Authentication;
+using NetDexTest_01_MVC.Services;
 
 namespace NetDexTest_01_MVC.Controllers
 {
@@ -12,6 +14,12 @@ namespace NetDexTest_01_MVC.Controllers
         //{
         //    return View();
         //}
+        private readonly IPersonService _personService;
+        public PeopleController(IPersonService personService)
+        {
+            _personService = personService;
+        }
+
 
 
         [HttpGet]
@@ -21,15 +29,15 @@ namespace NetDexTest_01_MVC.Controllers
         }
 
         [HttpPost, ValidateAntiForgeryToken]
-        public async Task<IActionResult> CreatePerson(Person person)
+        public async Task<IActionResult> CreatePerson(NewPersonVM personVM)
         {
             if (!ModelState.IsValid)
             {
                 //return error messages
-                return View(person);
+                return View(personVM);
             }
 
-            var response = await _personService.CreatePersonAsync(person);
+            var response = await _personService.CreatePersonAsync(personVM);
             if (response.Status == HttpStatusCode.Unauthorized)
             {
                 //if response is 401, it means access token has expired

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using NetDexTest_01_MVC.Models;
+using NetDexTest_01_MVC.Models.ViewModels;
 using NetDexTest_01_MVC.Models.Entities;
 using NetDexTest_01_MVC.Models.Authentication;
 
@@ -50,7 +51,33 @@ namespace NetDexTest_01_MVC.Services
             }
             return response;
         }
+        public async Task<PeopleResponse> CreatePersonAsync(NewPersonVM person)
+        {
+            var token = _authService.GetSavedClaims().AuthToken;
+
+            var httpResponse = await _apiService.MakeHttpCallAsync(
+                httpMethod: HttpMethod.Post,
+                url: _url,
+                bodyContent: person,
+                authScheme: "bearer",
+                authToken: token
+            );
+            PeopleResponse response = new PeopleResponse();
+            if (httpResponse.StatusCode == HttpStatusCode.OK)
+            {
+                var createdPerson = await httpResponse.Content.ReadFromJsonAsync<Person>();
+                response.Status = httpResponse.StatusCode;
+                response.People = new List<Person> { createdPerson };
+            }
+            else
+            {
+                response.Status = httpResponse.StatusCode;
+                response.Message = await httpResponse.Content.ReadAsStringAsync();
+            }
+            return response;
+        }
+
     }
 
-    
+
 }

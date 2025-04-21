@@ -52,7 +52,7 @@ namespace NetDexTest_01_MVC.Models.ViewModels
         public bool Favorite { get; set; } = false;
 
 
-
+        public string? email { get; set; } = String.Empty;
 
 
     }
