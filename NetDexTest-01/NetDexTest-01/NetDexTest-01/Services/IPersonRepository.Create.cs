@@ -10,5 +10,6 @@
         Task<Person?> CreatePersonAsync(ApplicationUser user, string personNickname);
         Task<Person?> CreatePersonAsync(DexHolder dex, string personNickname);
         Task<Person?> CreatePersonAsync(PropertyField pType, string inputProperty, string personNickname);
+        Task<Person?> CreatePersonAsync(PropertyField pType, string inputProperty, Person person);
     }
 }
