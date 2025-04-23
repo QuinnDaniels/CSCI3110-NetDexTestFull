@@ -24,7 +24,9 @@ namespace NetDexTest_01_MVC
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
-            builder.Services.AddScoped<IAuthService, AuthService>();
+// see: yt video - 5 ways to use httpclient
+// add endpoint explorer
+// add swaggergen            builder.Services.AddScoped<IAuthService, AuthService>();
             builder.Services.AddScoped<IApiCallerService, ApiCallerService>();
             builder.Services.AddScoped<IPersonService, PersonService>();
             
