@@ -1,4 +1,9 @@
 ﻿@using System.Security.Claims
+@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor HttpContextAccessor
+@inject IUserSessionService _userSessionService
+
+
 @{
     ViewData["Title"] = "Home Page";
 }
@@ -7,9 +12,51 @@
 
 <h4>Please click on one of the options below</h4>
 
-@if (User.Identity.IsAuthenticated)
+@if (HttpContextAccessor.HttpContext.User.Identity.IsAuthenticated)
 {
-    <p>Hello @(User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email).Value)</p>
+    <h4>Logged In</h4>
+}
+else
+{
+    <p>Identity failed to load. Not logged in</p>
+}
+
+
+
+
+@if (User.Identity.IsAuthenticated || _userSessionService.IsLoggedIn())
+{
+    @*     <p>Hello @(User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email).Value)</p> *@
+    <p>Hello @(_userSessionService.GetEmail())</p>
+    
+    <p>StringRoles: @(await _userSessionService.GetStringRolesAsync())</p>
+    {
+        var listRoles = await _userSessionService.GetRolesAsync();
+@*         listRoles.Add("test");
+        listRoles.Add("test");
+        listRoles.Add("test");
+ *@     
+        string outputter = "";
+        string delimit = ", ";
+        if (listRoles.Count == 1) delimit = "";
+@*         foreach (string roleOut in listRoles)
+        {
+            outputter = $"{outputter}{roleOut}{delimit}";
+        }
+ *@
+        for ( int i = 0; i < listRoles.Count; i++)
+        {
+            outputter = $"{outputter}{listRoles[i]}";
+
+            if (listRoles.Count - 1 > (i))
+            {
+                outputter += delimit;
+            }
+        }
+        <p>Roles: @outputter</p>
+    }
+
+ 
 
     <!--TODO-->
     <a class="btn btn-primary" asp-controller="articles" asp-action="getArticles">View All Articles</a>
@@ -17,7 +64,7 @@
 
     <a class="btn btn-danger" asp-controller="auth" asp-action="logout">Logout</a>
 
-    @if (User.IsInRole("Administrator") || User.IsInRole("Moderator"))
+    @if (await _userSessionService.HasAnyRoleAsync("Admin", "Administrator", "Moderator"))  @* (User.IsInRole("Administrator") || User.IsInRole("Moderator")) *@
     {
         <a class="btn btn-primary" asp-controller="user" asp-action="ListUsers">View All Users</a>
 

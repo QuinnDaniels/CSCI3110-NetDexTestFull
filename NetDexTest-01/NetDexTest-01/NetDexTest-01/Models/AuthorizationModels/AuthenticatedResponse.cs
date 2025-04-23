@@ -13,6 +13,10 @@ namespace NetDexTest_01.Models
         /// AccessToken
         /// </summary>
         public string? Token { get; set; }
+        public string? UserOut { get; set; }
+
         public string RefreshToken { get; set; }
+
+        public List<string>? Roles { get; set;}
     }
 }

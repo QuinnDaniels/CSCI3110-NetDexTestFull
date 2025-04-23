@@ -1,0 +1,75 @@
+d:/proxUsers/c0d3z/Documents/GitHub/CSCI3110-NetDexTestFull/NetDexTest-01-MVC/NetDexTest-01-MVC/
+├── appsettings.Development.json
+├── appsettings.json
+├── bin/
+│   └── Debug/
+│       └── net8.0/
+├── Controllers/
+│   ├── AuthController.cs
+│   ├── HomeController.cs
+│   ├── LandingController.cs
+│   ├── PeopleController.cs
+│   └── UserController.cs
+├── Models/
+│   ├── Authentication/
+│   │   ├── LoginRequest.cs
+│   │   ├── LoginRequestModel.cs
+│   │   ├── RefreshModel.cs
+│   │   ├── RefreshRequestModel.cs
+│   │   └── RevokeRequestModel.cs
+│   ├── Entities/
+│   │   ├── ApplicationUser.cs
+│   │   ├── ContactInfo.cs
+│   │   ├── DexHolder.cs
+│   │   ├── EntryItem.cs
+│   │   ├── FullName.cs
+│   │   ├── Person.cs
+│   │   ├── PersonPerson.cs
+│   │   ├── RecordCollector.cs
+│   │   └── SocialMedia.cs
+│   ├── ErrorViewModel.cs
+│   ├── RegisterRequestModel.cs
+│   └── ViewModels/
+│       └── NewPersonVM.cs
+├── NetDexTest-01-MVC.csproj
+├── NetDexTest-01-MVC.csproj.user
+├── obj/
+│   ├── Debug/
+│   │   └── net8.0/
+├── Program.cs
+├── Properties/
+│   └── launchSettings.json
+├── Services/
+│   ├── ApiCallerService.cs
+│   ├── Authentication/
+│   ├── AuthService.cs
+│   ├── Claims.cs
+│   ├── IApiCallerService.cs
+│   ├── IAuthService.cs
+│   ├── IPersonService.cs
+│   ├── LoginResponse.cs
+│   ├── PeopleResponse.cs
+│   ├── PersonService.cs
+│   └── RegisterResponse.cs
+├── Views/
+│   ├── Auth/
+│   │   ├── Login.cshtml
+│   │   └── Register.cshtml
+│   ├── Home/
+│   │   ├── Index.cshtml
+│   │   └── Privacy.cshtml
+│   ├── People/
+│   │   └── CreatePerson.cshtml
+│   ├── Shared/
+│   │   ├── Error.cshtml
+│   │   ├── _Layout.cshtml
+│   │   ├── _Layout.cshtml.css
+│   │   └── _ValidationScriptsPartial.cshtml
+│   ├── _ViewImports.cshtml
+│   └── _ViewStart.cshtml
+└── wwwroot/
+    ├── css/
+    │   └── site.css
+    ├── favicon.ico
+    ├── js/
+    │   └── site.js

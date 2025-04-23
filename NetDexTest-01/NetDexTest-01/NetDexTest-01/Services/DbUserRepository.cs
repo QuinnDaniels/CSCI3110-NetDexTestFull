@@ -107,6 +107,8 @@ namespace NetDexTest_01.Services
         //private readonly IUserEmailStore<ApplicationUser> _emailStore;
         private readonly ILogger<ApplicationUser> _logger;
         private readonly IEmailSender _emailSender;
+        public IConfiguration _configuration;
+
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DbUserRepository"/> class.
@@ -118,7 +120,8 @@ namespace NetDexTest_01.Services
             SignInManager<ApplicationUser> signInManager,
             RoleManager<IdentityRole> roleManager,
             IEmailSender emailSender,
-            ILogger<ApplicationUser> logger
+            ILogger<ApplicationUser> logger,
+            IConfiguration configuration
             )
         {
             _db = db; //context
@@ -129,7 +132,7 @@ namespace NetDexTest_01.Services
             _emailSender = emailSender;
             _signInManager = signInManager;
             _logger = logger;
-
+            _configuration = configuration;
 
 
         }
@@ -196,6 +199,13 @@ namespace NetDexTest_01.Services
             };
             return dexHolder;
         }
+
+
+
+        //public async Task<string> DebugConsoleWriter(string level, string title, var input)
+        //{
+
+        //}
 
 
 

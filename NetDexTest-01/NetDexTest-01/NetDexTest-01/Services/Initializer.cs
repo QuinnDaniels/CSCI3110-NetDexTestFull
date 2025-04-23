@@ -361,19 +361,20 @@ namespace NetDexTest_01.Services
 
                     if (p1 == null) { await Console.Out.WriteLineAsync("ERROR: p1 IS NULL"); }
                         if (p2 == null) { await Console.Out.WriteLineAsync("ERROR: p2 IS NULL"); }
-                        if (p1 != null && p2 != null)
-                        {
+                    if (p1 != null && p2 != null)
+                    {
 
                         await Console.Out.WriteLineAsync("\n\n\n--------------------\n\n"
                             + "Entered conditional statement...."
                             + "\n\n"
                             + "\n\n\n-------------------\n\n\n\n");
 
-
-                        PersonPerson p3 = new PersonPerson(p1, p2);
-                        PersonPerson p4 = new PersonPerson(p2, p1);
-                        //p3!.RelationshipDescription = string.Empty;
-                        if (!_personRepository.FindMatch(p3))
+                        try
+                        {
+                            PersonPerson p3 = new PersonPerson(p1, p2);
+                            PersonPerson p4 = new PersonPerson(p2, p1);
+                            //p3!.RelationshipDescription = string.Empty;
+                            if (!_personRepository.FindMatch(p3))
                             {
                                 p2.PersonParents.Add(p3);
                                 p1.PersonChildren.Add(p3);
@@ -395,43 +396,51 @@ namespace NetDexTest_01.Services
 
 
                             string desc = string.Empty;
-                        string notice = "\n\n\n\nNOTICE: p1 & p2 added! Attempting to save changes\n";
+                            string notice = "\n\n\n\nNOTICE: p1 & p2 added! Attempting to save changes\n";
 
 
                             desc = "Mother of";         //  <----   /*p3!.RelationshipDescription = "Mother of";*/
-                        if (!_personRepository.FindMatch(p3, desc) && !_db.PersonPerson.Any(pp => pp.PersonParentId == p3.PersonParentId && pp.PersonChildId == p3.PersonChildId && pp.RelationshipDescription == desc))
-                        {
-                            var check = await _personRepository.AddPersonPersonCheckAsync(p3, desc); //p1, p2, p3);
-                            await Console.Out.WriteLineAsync($"\n\n----motherof-------\n\n\n{check}\n\n\n---------\n\n");
-                            await _db.SaveChangesAsync();
-                        }
+                            if (!_personRepository.FindMatch(p3, desc) && !_db.PersonPerson.Any(pp => pp.PersonParentId == p3.PersonParentId && pp.PersonChildId == p3.PersonChildId && pp.RelationshipDescription == desc))
+                            {
+                                var check = await _personRepository.AddPersonPersonCheckAsync(p3, desc); //p1, p2, p3);
+                                await Console.Out.WriteLineAsync($"\n\n----motherof-------\n\n\n{check}\n\n\n---------\n\n");
+                                await _db.SaveChangesAsync();
+                            }
                             desc = "Daughter of";         //  <----   /*p3!.RelationshipDescription = "Daughter of";*/
 
-                        if (!_personRepository.FindMatch(p4, desc) && !_db.PersonPerson.Any(pp => pp.PersonParentId == p4.PersonParentId && pp.PersonChildId == p4.PersonChildId && pp.RelationshipDescription == desc))
-                        {
-                            await _personRepository.AddPersonPersonCheckAsync(p4, desc) ; //p2, p1, p3);
-                            await Console.Out.WriteLineAsync(notice);
-                        }
+                            if (!_personRepository.FindMatch(p4, desc) && !_db.PersonPerson.Any(pp => pp.PersonParentId == p4.PersonParentId && pp.PersonChildId == p4.PersonChildId && pp.RelationshipDescription == desc))
+                            {
+                                await _personRepository.AddPersonPersonCheckAsync(p4, desc); //p2, p1, p3);
+                                await Console.Out.WriteLineAsync(notice);
+                            }
 
                             desc = "Teaches to";         //  <----   /*p3!.RelationshipDescription = "Teaches to";*/
-                        if (!_personRepository.FindMatch(p3, desc) && !_db.PersonPerson.Any(pp => pp.PersonParentId == p3.PersonParentId && pp.PersonChildId == p3.PersonChildId && pp.RelationshipDescription == desc))
-                        {
+                            if (!_personRepository.FindMatch(p3, desc) && !_db.PersonPerson.Any(pp => pp.PersonParentId == p3.PersonParentId && pp.PersonChildId == p3.PersonChildId && pp.RelationshipDescription == desc))
+                            {
 
-                            await _personRepository.AddPersonPersonCheckAsync(p3, desc) ; //p2, p1, p3);
-                            await Console.Out.WriteLineAsync(notice);
-                        }
+                                await _personRepository.AddPersonPersonCheckAsync(p3, desc); //p2, p1, p3);
+                                await Console.Out.WriteLineAsync(notice);
+                            }
 
                             desc = "Learns from";         //  <----   /*p3!.RelationshipDescription = "Learns from";*/
-                        if (!_personRepository.FindMatch(p4, desc) && !_db.PersonPerson.Any(pp => pp.PersonParentId == p4.PersonParentId && pp.PersonChildId == p4.PersonChildId && pp.RelationshipDescription == desc))
-                        {
-                            await _personRepository.AddPersonPersonCheckAsync(p4, desc) ; //p1, p2, p3);
-                            await Console.Out.WriteLineAsync(notice);
+                            if (!_personRepository.FindMatch(p4, desc) && !_db.PersonPerson.Any(pp => pp.PersonParentId == p4.PersonParentId && pp.PersonChildId == p4.PersonChildId && pp.RelationshipDescription == desc))
+                            {
+                                await _personRepository.AddPersonPersonCheckAsync(p4, desc); //p1, p2, p3);
+                                await Console.Out.WriteLineAsync(notice);
+                            }
                         }
+                        catch
+                        {
+                            await Console.Out.WriteLineAsync("\n\n\n--------------------\n\n"
+                                + "An error occurred while attempting to seed PersonPerson. Skipping block...."
+                                + "\n\n"
+                                + "\n\n\n-------------------\n\n");
 
-                        await Console.Out.WriteLineAsync("\n\n\n--------------------\n\n"
+                        }
+                        await Console.Out.WriteLineAsync("\n\n--------------------\n\n"
                             + "Exiting conditional statement...."
                             + "\n\n"
-                            + "\n\n\n-------------------\n\n\n\n");
+                            + "\n\n\n-------------------\n\n");
 
                     }
 

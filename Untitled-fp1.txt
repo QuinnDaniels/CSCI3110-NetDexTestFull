@@ -1,0 +1,146 @@
+d:/proxUsers/c0d3z/Documents/GitHub/CSCI3110-NetDexTestFull/NetDexTest-01/NetDexTest-01/NetDexTest-01/
+├── ApplicationDbContext.dgml
+├── appsettings.Development.json
+├── appsettings.json
+├── Areas/
+│   └── Identity/
+│       └── Pages/
+│           ├── Account/
+│           │   ├── Login.cshtml
+│           │   ├── Login.cshtml.cs
+│           │   ├── Manage/
+│           │   │   ├── Index.cshtml
+│           │   │   ├── Index.cshtml.cs
+│           │   │   ├── ManageNavPages.cs
+│           │   │   ├── PersonalData.cshtml
+│           │   │   ├── PersonalData.cshtml.cs
+│           │   │   ├── _Layout.cshtml
+│           │   │   ├── _ManageNav.cshtml
+│           │   │   └── _ViewImports.cshtml
+│           │   ├── Register.cshtml
+│           │   ├── Register.cshtml.cs
+│           │   └── _ViewImports.cshtml
+│           ├── _ValidationScriptsPartial.cshtml
+│           ├── _ViewImports.cshtml
+│           └── _ViewStart.cshtml
+├── bin/
+├── Constants/
+│   └── Authorization.cs
+├── Contexts/
+│   └── ApplicationDbContextSeed.cs
+├── Controllers/
+│   ├── AuthApiController.cs
+│   ├── AuthApiController.tools.cs
+│   ├── HomeController.cs
+│   ├── HomeControllerAuthenticationAuthorization.cs
+│   ├── HomeControllerUserManagement.cs
+│   ├── PeopleController.cs
+│   ├── PeopleController.scaffold.cs
+│   ├── SecuredController.cs
+│   ├── TestAPIController.cs
+│   └── UserController.cs
+├── Data/
+│   └── Migrations/
+├── Infrastructure/
+│   ├── JwtSettings.cs
+│   └── JwtTokenCreator.cs
+├── Migrations/
+│   ├── 20250417153001_mig04.cs
+│   ├── 20250417153001_mig04.Designer.cs
+│   └── ApplicationDbContextModelSnapshot.cs
+├── Models/
+│   ├── AddRoleModel.cs
+│   ├── AuthorizationModels/
+│   │   ├── AuthenticatedResponse.cs
+│   │   ├── AuthenticationModel.cs
+│   │   ├── AuthResponse.cs
+│   │   ├── RefreshModel.cs
+│   │   ├── RefreshRequest.cs
+│   │   ├── RegisterRequest.cs
+│   │   ├── RevokeModel.cs
+│   │   ├── RevokeRequest.cs
+│   │   └── TokenRequestModel.cs
+│   ├── Entities/
+│   │   ├── ApplicationUser.cs
+│   │   ├── ContactInfo.cs
+│   │   ├── DexHolder.cs
+│   │   ├── EntryItem.cs
+│   │   ├── FullName.cs
+│   │   ├── Person.cs
+│   │   ├── PersonPerson.cs
+│   │   ├── RecordCollector.cs
+│   │   └── SocialMedia.cs
+│   ├── ErrorViewModel.cs
+│   ├── LoginModel.cs
+│   ├── RegisterModel.cs
+│   └── ViewModels/
+│       └── NewPersonVM.cs
+├── NetDexTest-01.csproj
+├── NetDexTest-01.csproj.user
+├── obj/
+│   ├── Debug/
+│   │   └── net8.0/
+│   ├── NetDexTest-01.csproj.nuget.dgspec.json
+│   ├── NetDexTest-01.csproj.nuget.g.props
+│   ├── NetDexTest-01.csproj.nuget.g.targets
+│   ├── project.assets.json
+│   └── project.nuget.cache
+├── Program.cs
+├── Properties/
+│   ├── launchSettings.json
+├── ScaffoldingReadMe.txt
+├── Services/
+│   ├── ApplicationDbContext.cs
+│   ├── DbDebugRepository.cs
+│   ├── DbPersonRepository.ContactInfo.cs
+│   ├── DbPersonRepository.Create.cs
+│   ├── DbPersonRepository.cs
+│   ├── DbPersonRepository.Extend.cs
+│   ├── DbPersonRepository.FullName.cs
+│   ├── DbPersonRepository.PP.cs
+│   ├── DbPersonRepository.ReadOne.cs
+│   ├── DbPersonRepository.Records.cs
+│   ├── DbUserRepository.Create.cs
+│   ├── DbUserRepository.cs
+│   ├── DbUserRepository.Delete.cs
+│   ├── DbUserRepository.DHReadAll.cs
+│   ├── DbUserRepository.DHReadOne.cs
+│   ├── DbUserRepository.GPT.cs
+│   ├── DbUserRepository.ReadAll.cs
+│   ├── DbUserRepository.UAReadAll.cs
+│   ├── DbUserRepository.UAReadOne.cs
+│   ├── DbUserRepository.Update.cs
+│   ├── IDebugRepository.cs
+│   ├── Initializer.cs
+│   ├── IPersonRepository.ContactInfo.cs
+│   ├── IPersonRepository.Create.cs
+│   ├── IPersonRepository.cs
+│   ├── IPersonRepository.Extend.cs
+│   ├── IPersonRepository.FullName.cs
+│   ├── IPersonRepository.ReadOne.cs
+│   ├── IPersonRepository.Records.cs
+│   ├── ITokenService.cs
+│   ├── IUserRepository.Create.cs
+│   ├── IUserRepository.CreateMisc.cs
+│   ├── IUserRepository.cs
+│   ├── IUserRepository.DexReadOne.cs
+│   ├── IUserRepository.GPT.cs
+│   ├── IUserRepository.UserReadOne.cs
+│   ├── IUserService.cs
+│   ├── TokenService.cs
+│   └── UserService.cs
+├── Settings/
+│   └── JWT.cs
+├── Views/
+│   ├── Home/
+│   │   ├── Gptindex.cshtml
+│   │   ├── Index.cshtml
+│   │   └── Privacy.cshtml
+│   ├── Shared/
+│   │   ├── Error.cshtml
+│   │   ├── _Layout.cshtml
+│   │   ├── _Layout.cshtml.css
+│   │   ├── _LoginPartial.cshtml
+│   │   └── _ValidationScriptsPartial.cshtml
+│   ├── _ViewImports.cshtml
+│   └── _ViewStart.cshtml

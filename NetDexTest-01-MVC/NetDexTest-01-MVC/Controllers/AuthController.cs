@@ -1,10 +1,13 @@
-using Microsoft.AspNetCore.Identity.Data;
+//using Microsoft.AspNetCore.Identity.Data;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using NetDexTest_01_MVC.Controllers;
 using NetDexTest_01_MVC.Models;
 using NetDexTest_01_MVC.Models.Authentication;
 using NetDexTest_01_MVC.Services;
 using System.Diagnostics;
 using System.Net;
+
 
 namespace NetDexTest_01_MVC.Controllers
 {
@@ -15,13 +18,27 @@ namespace NetDexTest_01_MVC.Controllers
     {
         private readonly ILogger<AuthController> _logger;
         private IAuthService _authService;
+        private readonly IUserSessionService _userSessionService;
+
 
         public AuthController(ILogger<AuthController> logger,
-            IAuthService authService)
+            IAuthService authService,
+            IUserSessionService userSessionService)
         {
             _logger = logger;
             _authService = authService;
+            _userSessionService = userSessionService;
+
         }
+
+        public async Task<IActionResult> Index()
+        {
+            await Console.Out.WriteLineAsync($"\n\n--------GET /auth/index Reached!---------\n\n");
+
+            return View();
+        }
+
+
 
 
         [HttpGet]
@@ -53,7 +70,7 @@ namespace NetDexTest_01_MVC.Controllers
                 //return Ok("Registration Successful");
 
                 //silent login
-                var loginRequest = new LoginRequestModel { Email = registerRequest.Email, Password = registerRequest.Password };
+                var loginRequest = new LoginRequest { Email = registerRequest.Email, Password = registerRequest.Password };
                 return await Login(loginRequest);
             }
         }
@@ -62,11 +79,13 @@ namespace NetDexTest_01_MVC.Controllers
         [HttpGet]
         public async Task<IActionResult> Login()
         {
+            await Console.Out.WriteLineAsync($"\n\n--------GET /auth/login Reached!---------\n\n");
+
             return View();
         }
 
         [HttpPost]
-        public async Task<IActionResult> Login(LoginRequestModel loginRequest)
+        public async Task<IActionResult> Login([FromForm]LoginRequest loginRequest)
         {
             if (!ModelState.IsValid)
             {
@@ -76,18 +95,55 @@ namespace NetDexTest_01_MVC.Controllers
             else
             {
                 //log the user in
-                var response = await _authService.LoginAsync(loginRequest);
+                //HACK                          // HACK
+                var response = await _authService.LoginAsyncAlternative(loginRequest); //FIXME - auth token not populated???
+                //var response = await _authService.LoginAsyncAlternative(loginRequest); //FIXME - auth token not populated???
 
-                if (response.Status == HttpStatusCode.OK)
+                await Console.Out.WriteLineAsync($"\n\n--------POST /auth/login --> login > var response set!---------");
+                await Console.Out.WriteLineAsync($"\n\n\nresponse: {response.Status}\n");
+                await Console.Out.WriteLineAsync($"\nresponse: {response.Message} \n");
+                await Console.Out.WriteLineAsync($"\nresponse: {response.Email}\n");
+                await Console.Out.WriteLineAsync($"\nresponse: {response.AccessToken}\n");
+                await Console.Out.WriteLineAsync($"\nresponse: {response.RefreshToken}\n\n\n");
+                await Console.Out.WriteLineAsync($"\nresponse: {response.Roles}\n\n\n");
+                await Console.Out.WriteLineAsync($"\n------------------------------------\n\n\n");
+
+
+                if (response.AccessToken != null && response.RefreshToken != null)//response.Status == HttpStatusCode.OK)
                 {
                     //Instruct the browser to store the auth tokens in a cookie
                     //TODO
+                    try
+                    {
 
-                    //generate claims for email, access token, and refresh token
-                    await _authService.LoginWithCookieAsync(response.Email, response.AccessToken, response.RefreshToken);
+                        //generate claims for email, access token, and refresh token
+                        await _authService.LoginWithCookieAsync(response.Email, response.AccessToken, response.RefreshToken);
+
+                        //await _authService.LoginWithCookieAsync(response.Email, response.AccessToken, response.RefreshToken);
+                        //await _authService.LoginWithCookieAsync(response.Email, response.RefreshToken);
+
+                        // HACK
+                        // Save to custom session service
+                        //_userSessionService.SetUserSession(response.Email, response.AccessToken, response.RefreshToken);
+                        await Console.Out.WriteLineAsync("\n\n---login----- Setting UserSession ----------\n\n");
+                        await _userSessionService.SetUserSessionAsync(response.Email, response.AccessToken, response.RefreshToken, response.Roles);
+                        
+                        await Console.Out.WriteLineAsync("\n\n---  END ----- Setting UserSession ----------\n\n");
+                        await Console.Out.WriteLineAsync("---isLoggedIn -                           ---\n");
+                        await Console.Out.WriteLineAsync($"\t\t{_userSessionService.IsLoggedIn}\n");
+                        await Console.Out.WriteLineAsync("\n\n---  END ----- Setting UserSession ----------\n\n");
+                        
+
+                    }
+                    catch (Exception ex)
+                    {
+                        await Console.Out.WriteLineAsync($"\n\n\n{ex}\n\n\n");
+                        throw;
+                    }
                 }
                 else
                 {
+
                     ModelState.AddModelError(string.Empty, response.Message);
                     return View(loginRequest);
                 }
@@ -95,6 +151,7 @@ namespace NetDexTest_01_MVC.Controllers
                 //return Ok("Login successful");
 
                 //once login is done
+                //return RedirectToAction("Index", "Auth");
                 return RedirectToAction("Index", "Home");
             }
         }
@@ -107,6 +164,8 @@ namespace NetDexTest_01_MVC.Controllers
 
             //log the user out by removing cookie from mvc app
             await _authService.LogoutAsync();
+
+            await _userSessionService.CloseUserSessionData();
 
             //redirect to home page once logged out
             return RedirectToAction("Index", "Home");

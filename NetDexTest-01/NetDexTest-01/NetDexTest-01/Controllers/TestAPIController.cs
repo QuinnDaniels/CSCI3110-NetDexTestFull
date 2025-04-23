@@ -13,7 +13,7 @@ namespace NetDexTest_01.Controllers
 
 
 
-    [Route("api/testapi")]
+    [Route("testapi")]
     [ApiController]
     public class TestAPIController : ControllerBase
     {
@@ -57,36 +57,36 @@ namespace NetDexTest_01.Controllers
 
 
         // GET: api/<TestAPIController>
-        [HttpGet]
-        public IEnumerable<string> Get()
-        {
-            return new string[] { "value1", "value2" };
-        }
+        //[HttpGet]
+        //public IEnumerable<string> Get()
+        //{
+        //    return new string[] { "value1", "value2" };
+        //}
 
         // GET api/<TestAPIController>/5
-        [HttpGet("{id}")]
-        public string Get(int id)
-        {
-            return "value";
-        }
+        //[HttpGet("{id}")]
+        //public string Get(int id)
+        //{
+        //    return "value";
+        //}
 
         // POST api/<TestAPIController>
-        [HttpPost]
-        public void Post([FromBody] string value)
-        {
-        }
+        //[HttpPost]
+        //public void Post([FromBody] string value)
+        //{
+        //}
 
         // PUT api/<TestAPIController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
-        {
-        }
+        //[HttpPut("{id}")]
+        //public void Put(int id, [FromBody] string value)
+        //{
+        //}
 
         // DELETE api/<TestAPIController>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
-        }
+        //[HttpDelete("{id}")]
+        //public void Delete(int id)
+        //{
+        //}
 
 
 

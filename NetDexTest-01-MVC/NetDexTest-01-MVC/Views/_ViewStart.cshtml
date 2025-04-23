@@ -1,3 +1,22 @@
-﻿@{
+﻿@inject IUserSessionService _userSessionService
+
+@{
     Layout = "_Layout";
+
+    var cookieHeader = Context.Request.Headers["Cookie"];
+    //var cookieHeader = Context.Request.BodyReader
+    bool isAdmin = false;
+
+    isAdmin = await _userSessionService.HasRoleAsync("Admin");
+
+}
+
+
+@if (isAdmin)
+{
+    <p>Cookies Sent: @cookieHeader</p>
+}
+else
+{
+    <p>to view cookies, login as Admin role</p>
 }

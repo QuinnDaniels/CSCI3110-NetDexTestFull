@@ -6,9 +6,10 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Identity.Data;
+//using Microsoft.AspNetCore.Identity.Data;
 using NetDexTest_01_MVC.Models;
 using NetDexTest_01_MVC.Models.Authentication;
+using System.Net.Http;
 
 
 namespace NetDexTest_01_MVC.Services
@@ -21,17 +22,23 @@ namespace NetDexTest_01_MVC.Services
         private IApiCallerService _apiService;
         private IHttpContextAccessor _contextAccessor;
         private IConfiguration _config;
+        private readonly IUserSessionService _userSessionService;
+        //private IHttpClientFactory _httpClientFactory;
         /// <summary>
         /// Initializes a new instance of the <see cref="AuthService"/> class.
         /// </summary>
         /// <param name="config">The config.</param>
         /// <param name="apiService">The api service.</param>
         /// <param name="contextAccessor">The context accessor.</param>
-        public AuthService(IConfiguration config, IApiCallerService apiService, IHttpContextAccessor contextAccessor)
+        public AuthService(//IHttpClientFactory  httpClientFactory,
+            IConfiguration config, IApiCallerService apiService, IHttpContextAccessor contextAccessor,
+            IUserSessionService userSessionService)
         {
             _config = config;
             _apiService = apiService;
             _contextAccessor = contextAccessor;
+            _userSessionService = userSessionService;
+            //  _httpClientFactory = httpClientFactory;
         }
 
         public async Task<RegisterResponse> RegisterAsync(RegisterRequestModel request)
@@ -57,21 +64,23 @@ namespace NetDexTest_01_MVC.Services
             return response;
         }
 
-        public async Task<LoginResponse> LoginAsync(LoginRequestModel request)
+        public async Task<LoginResponse> LoginAsyncOld(LoginRequest request)
         {
             var url = _config["apiService:userLoginUrl"];
             var httpResponse = await _apiService.MakeHttpCallAsync(
                 httpMethod: HttpMethod.Post,
                 url: url,
-                bodyContent: request);
+                bodyContent: request
+                );
             LoginResponse loginResponse = new LoginResponse();
 
             //if login was successful
             if (httpResponse.StatusCode == HttpStatusCode.OK)
             {
                 //map the login response
-                loginResponse = await httpResponse.Content.ReadFromJsonAsync<LoginResponse>();
+                loginResponse = await httpResponse.Content.ReadFromJsonAsync<LoginResponse>();  //FIXME - only populates RefreshToken
                 loginResponse.Status = httpResponse.StatusCode;
+                //loginResponse.Token = httpResponse.StatusCode;
                 loginResponse.Email = request.Email;
             }
             else
@@ -91,6 +100,20 @@ namespace NetDexTest_01_MVC.Services
             var principal = GeneratePrincipal(email, accessToken, refreshToken);
 
             //create a cookie with above claims
+            await _contextAccessor.HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme,
+                principal,
+                new AuthenticationProperties
+                {
+                    IsPersistent = true,
+                    ExpiresUtc = DateTimeOffset.UtcNow.AddHours(1)
+                });
+        }
+        public async Task LoginWithCookieAsync(string email, string refreshToken)
+        {
+            //generate claims for email, access token, and refresh token
+            var principal = GeneratePrincipal(email, refreshToken);
+
+            //create a cookie with above claims
             await _contextAccessor.HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
         }
 
@@ -104,6 +127,18 @@ namespace NetDexTest_01_MVC.Services
             var principal = new ClaimsPrincipal(identity);
             return principal;
         }
+
+        private ClaimsPrincipal GeneratePrincipal(string email, string refreshToken)
+        {
+            var identity = new ClaimsIdentity(CookieAuthenticationDefaults.AuthenticationScheme);
+            identity.AddClaim(new Claim(ClaimTypes.Email, email));
+            //identity.AddClaim(new Claim("token", accessToken));
+            identity.AddClaim(new Claim("refresh", refreshToken));
+
+            var principal = new ClaimsPrincipal(identity);
+            return principal;
+        }
+
 
         public async Task<bool> RevokeTokenAsync()
         {
@@ -151,6 +186,7 @@ namespace NetDexTest_01_MVC.Services
 
         public async Task LogoutAsync()
         {
+            await _userSessionService.CloseUserSessionData();
             await _contextAccessor.HttpContext.SignOutAsync();
         }
 
@@ -260,6 +296,88 @@ namespace NetDexTest_01_MVC.Services
             return false;
         }
 
+
+
+
+        
+        public async Task<LoginResponse> LoginAsync(LoginRequest request)
+        {
+            //var client = _httpClientFactory.CreateClient("API");
+            //var response = await client.PostAsJsonAsync("auth/login", request);
+
+            var url = _config["apiService:userLoginUrl"];
+            var httpResponse = await _apiService.MakeHttpCallAsync(
+                httpMethod: HttpMethod.Post,
+                url: url,
+                bodyContent: request
+                );
+            LoginResponse loginResponse = new LoginResponse();
+
+            await Console.Out.WriteLineAsync($"\n\n\n--------HTTP RESPONSE----is success?--\n\n{httpResponse.IsSuccessStatusCode}\n\n\n-----------------------");
+            if (httpResponse.IsSuccessStatusCode)
+            {
+                loginResponse = await httpResponse.Content.ReadFromJsonAsync<LoginResponse>();
+                await Console.Out.WriteLineAsync($"\n\n\n--------HTTP RESPONSE-----------------\n\n{loginResponse.ToString}\n\n\n-----------------------");
+                await Console.Out.WriteLineAsync($"\n\n\n--------HTTP RESPONSE-----------------\n\n{await httpResponse.Content.ReadAsStringAsync()}\n\n\n-----------------------");
+            }
+
+            else
+            {
+                await Console.Out.WriteLineAsync($"\n\n\n--------HTTP RESPONSE----is success?--\n\n{httpResponse.IsSuccessStatusCode}\n\n\n-----------------------");
+                //else if login failed, map the error message
+                var errMessage = await httpResponse.Content.ReadAsStringAsync();
+                loginResponse.Status = httpResponse.StatusCode;
+                loginResponse.Message = errMessage;
+            }
+            return loginResponse;
+        }
+
+        public async Task<LoginResponse> LoginAsyncAlternative(LoginRequest request)
+        {
+            //var client = _httpClientFactory.CreateClient("API");
+            //var response = await client.PostAsJsonAsync("auth/login", request);
+
+            var url = _config["apiService:userLogin2Url"];
+            //var url = _config["apiService:userLogin2Url"];
+            var httpResponse = await _apiService.MakeHttpCallAsync(
+                httpMethod: HttpMethod.Post,
+                url: url,
+                bodyContent: request
+                );
+            LoginResponse loginResponse = new LoginResponse();
+            
+            await Console.Out.WriteLineAsync($"\n\n\n--------LoginRequest------email-------\n\n{request.Email}\n\n\n-----------------------");
+            await Console.Out.WriteLineAsync($"\n\n\n--------LoginRequest------password----\n\n{request.Password}\n\n\n-----------------------");
+            await Console.Out.WriteLineAsync($"\n\n\n--------httpResponse------------------\n\n{httpResponse.Content.ReadAsStringAsync()}\n\n\n-----------------------");
+            //await Console.Out.WriteLineAsync($"\n\n\n--------httpResponse-----json---------\n\n{httpResponse.Content.ReadFromJsonAsync<LoginResponse>()}\n\n\n-----------------------");
+            
+            await Console.Out.WriteLineAsync($"\n\n\n--------HTTP RESPONSE----is success?--\n\n{httpResponse.IsSuccessStatusCode}\n\n\n-----------------------");
+            
+            await Console.Out.WriteLineAsync($"\n\n\n--------HTTP RESPONSE----code?--\n\n{httpResponse.StatusCode}\n\n\n-----------------------");
+            
+            await Console.Out.WriteLineAsync($"\n\n\n--------HTTP RESPONSE----message?--\n\n{httpResponse.RequestMessage}\n\n\n-----------------------");
+            await Console.Out.WriteLineAsync($"\n\n\n--------HTTP RESPONSE----reasonPhrase?--\n\n{httpResponse.ReasonPhrase}\n\n\n-----------------------");
+            await Console.Out.WriteLineAsync($"\n\n\n--------HTTP RESPONSE----headers?--\n\n{httpResponse.Headers}\n\n\n-----------------------");
+            
+
+
+            if (httpResponse.IsSuccessStatusCode)
+            {
+                loginResponse = await httpResponse.Content.ReadFromJsonAsync<LoginResponse>();
+                await Console.Out.WriteLineAsync($"\n\n\n--------HTTP RESPONSE-----------------\n\n{loginResponse.ToString}\n\n\n-----------------------");
+                //await Console.Out.WriteLineAsync($"\n\n\n--------HTTP RESPONSE-----------------\n\n{await httpResponse.Content.ReadAsStringAsync()}\n\n\n-----------------------");
+            }
+
+            else
+            {
+                await Console.Out.WriteLineAsync($"\n\n\n--------HTTP RESPONSE----is success?--\n\n{httpResponse.IsSuccessStatusCode}\n\n\n-----------------------");
+                //else if login failed, map the error message
+                var errMessage = await httpResponse.Content.ReadAsStringAsync();
+                loginResponse.Status = httpResponse.StatusCode;
+                loginResponse.Message = errMessage;
+            }
+            return loginResponse;
+        }
 
 
     }

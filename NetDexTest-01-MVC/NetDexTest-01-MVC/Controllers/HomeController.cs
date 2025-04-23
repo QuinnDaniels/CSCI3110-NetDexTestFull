@@ -13,8 +13,10 @@ namespace NetDexTest_01_MVC.Controllers
             _logger = logger;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
+            await Console.Out.WriteLineAsync($"\n\n--------GET /home/index Reached!---------\n\n");
+
             return View();
         }
 

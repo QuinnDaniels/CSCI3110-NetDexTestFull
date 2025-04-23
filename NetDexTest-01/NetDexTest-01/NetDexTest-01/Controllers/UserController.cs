@@ -131,13 +131,26 @@ namespace NetDexTest_01.Controllers
         [HttpPost("login")]
         public async Task<IActionResult> LoginApi([FromBody] LoginModel model)
         {
+            var test = await _userRepo.GetByUsernameAsync(model.Username);
+            if (model.Username == null || test == null)
+            {
+                var tempuser = await _userManager.FindByEmailAsync(model.Email); // changed from FindByEmailAsync
+                if (tempuser != null) model.Username = tempuser.UserName; 
+            }
+
+
             if (ModelState.IsValid)
             {
+                
                 var signIn = await _signInManager.PasswordSignInAsync(model.Username, model.Password, false, false);
-
                 if (signIn.Succeeded)
                 {
                     var user = await _userManager.FindByNameAsync(model.Username); // changed from FindByEmailAsync
+                    if (user == null)
+                    {
+                       user = await _userManager.FindByEmailAsync(model.Email); // changed from FindByEmailAsync
+                    }
+                    
                     var token = _jwtCreator.Generate(user.Email, user.Id);
 
                     user.RefreshToken = Guid.NewGuid().ToString();
@@ -146,6 +159,7 @@ namespace NetDexTest_01.Controllers
 
                     Response.Cookies.Append("X-Access-Token", token, new CookieOptions() { HttpOnly = true, SameSite = SameSiteMode.Strict });
                     Response.Cookies.Append("X-Username", user.UserName, new CookieOptions() { HttpOnly = true, SameSite = SameSiteMode.Strict });
+                    Response.Cookies.Append("X-Email", user.Email, new CookieOptions() { HttpOnly = true, SameSite = SameSiteMode.Strict });
                     Response.Cookies.Append("X-Refresh-Token", user.RefreshToken, new CookieOptions() { HttpOnly = true, SameSite = SameSiteMode.Strict });
 
                     return Ok(user);

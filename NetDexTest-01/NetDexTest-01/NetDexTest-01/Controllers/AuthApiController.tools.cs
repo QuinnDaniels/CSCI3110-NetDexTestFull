@@ -51,6 +51,7 @@ namespace NetDexTest_01.Controllers
 
         private async Task<AuthenticatedResponse> GetTokens(ApplicationUser user)
         {
+            await Console.Out.WriteAsync($"\n\n\n\n----------Get Tokens------------\n\n\n");
             //create claims details based on the user information
             var claims = new[] {
                         new Claim(JwtRegisteredClaimNames.Sub, _configuration["JwtSettings:Subject"]),
@@ -59,21 +60,33 @@ namespace NetDexTest_01.Controllers
                         new Claim("UserId", user.Id),
                         new Claim("UserName", user.UserName),
                         new Claim("Email", user.Email)
+                        //new Claim("DexHolderId", user.DexHolder.Id)
                     };
-
+            await Console.Out.WriteAsync($"\nclaims:\n\t\t{claims}\n\n");
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JwtSettings:Key"]));
+            await Console.Out.WriteAsync($"\nkey:\n\t\t{key}\n\n");
             var signIn = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+            await Console.Out.WriteAsync($"\nsignIn:\n\t\t{signIn}\n\n");
             var token = new JwtSecurityToken(
                 _configuration["JwtSettings:Issuer"],
                 _configuration["JwtSettings:Audience"],
                 claims,
                 expires: DateTime.UtcNow.AddMinutes(Convert.ToDouble(_configuration["JwtSettings:MinutesToExpiration"])),
                 signingCredentials: signIn);
+            
+            await Console.Out.WriteAsync($"\ntoken:\n\t\t{token}\n\n");
+            
             var tokenStr = new JwtSecurityTokenHandler().WriteToken(token);
+            await Console.Out.WriteAsync($"\ntokenStr:\n\t\t{tokenStr}\n\n");
 
             var refreshTokenStr = GetRefreshToken();
+            await Console.Out.WriteAsync($"\nrefreshTokenStr:\n\t\t{refreshTokenStr}\n\n");
             user.RefreshToken = refreshTokenStr;
             var authResponse = new AuthResponse { Token = tokenStr, RefreshToken = refreshTokenStr };
+            await Console.Out.WriteAsync($"\nauthResponse:\n\t\t{authResponse}\n\n");
+
+            await Console.Out.WriteAsync($"\n\n\n\n-----END--Get Tokens------------\n\n\n");
+
             return await Task.FromResult(authResponse);
         }
         /*------------------------*/

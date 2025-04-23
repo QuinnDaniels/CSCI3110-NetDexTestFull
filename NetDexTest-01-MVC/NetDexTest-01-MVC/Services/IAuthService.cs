@@ -16,8 +16,11 @@ namespace NetDexTest_01_MVC.Services
     public interface IAuthService
     {
         Task<RegisterResponse> RegisterAsync(RegisterRequestModel request);
-        Task<LoginResponse> LoginAsync(LoginRequestModel request);
+        Task<LoginResponse> LoginAsyncOld(LoginRequest request);
+        Task<LoginResponse> LoginAsync(LoginRequest request);
+        Task<LoginResponse> LoginAsyncAlternative(LoginRequest request);
         Task LoginWithCookieAsync(string email, string accessToken, string refreshToken);
+        Task LoginWithCookieAsync(string email, string refreshToken);
         Task<bool> RevokeTokenAsync();
         Task LogoutAsync();
         Task<LoginResponse> RefreshTokenAsync(Claims claims = null);

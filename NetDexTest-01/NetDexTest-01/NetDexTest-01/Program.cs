@@ -50,6 +50,19 @@ namespace NetDexTest_01
 
             using (var scope = host.Services.CreateScope())
             {
+
+                // https://stackoverflow.com/a/77230140
+                var handler = new HttpClientHandler();
+                handler.ClientCertificateOptions = ClientCertificateOption.Manual;
+                handler.ServerCertificateCustomValidationCallback =
+                    (httpRequestMessage, cert, cetChain, policyErrors) =>
+                    {
+                        return true;
+                    };
+
+                var client = new HttpClient(handler);
+
+
                 var services = scope.ServiceProvider;
                 var loggerFactory = services.GetRequiredService<ILoggerFactory>();
                 //////try
@@ -253,7 +266,7 @@ namespace NetDexTest_01
                         ValidateIssuer = true,
                         ValidateAudience = true,
                         ValidateLifetime = true,
-                        ValidateIssuerSigningKey = true,
+                        //ValidateIssuerSigningKey = true,
                         ValidIssuer = jwtSettings.Issuer,
                         ValidAudience = jwtSettings.Audience,
                         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings.Key)),
@@ -266,6 +279,18 @@ namespace NetDexTest_01
                         if (context.Request.Cookies.ContainsKey("X-Access-Token"))
                         {
                             context.Token = context.Request.Cookies["X-Access-Token"];
+                        }
+                        if (context.Request.Cookies.ContainsKey("Access-Token"))
+                        {
+                            context.Token = context.Request.Cookies["Access-Token"];
+                        }
+                        if (context.Request.Cookies.ContainsKey("Email"))
+                        {
+                            context.Token = context.Request.Cookies["Email"];
+                        }
+                        if (context.Request.Cookies.ContainsKey("RefreshToken"))
+                        {
+                            context.Token = context.Request.Cookies["RefreshToken"];
                         }
 
                         return Task.CompletedTask;
@@ -338,8 +363,8 @@ namespace NetDexTest_01
             {
                 app.UseMigrationsEndPoint();
                 app.UseDeveloperExceptionPage(); // from JWT Tutorial
-                // app.UseSwagger();
-                // app.UseSwaggerUI();
+                //app.UseSwagger();
+                //app.UseSwaggerUI();
 
             }
             else

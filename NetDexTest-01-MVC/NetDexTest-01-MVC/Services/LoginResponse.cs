@@ -17,11 +17,11 @@ namespace NetDexTest_01_MVC.Services
     public class LoginResponse
     {
         public HttpStatusCode Status { get; set; }
-        public string Message { get; set; }
-        public string Email { get; set; }
-        public string AccessToken { get; set; }
-        public string RefreshToken { get; set; }
-
+        public string? Message { get; set; } = "default message";
+        public string? Email { get; set; }
+        public string? AccessToken { get; set; }
+        public string? RefreshToken { get; set; }
+        public string? Roles { get; set; }
 
     }
 }

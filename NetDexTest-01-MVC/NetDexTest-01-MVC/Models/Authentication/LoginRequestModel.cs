@@ -16,6 +16,7 @@ namespace NetDexTest_01_MVC.Models.Authentication
         [Required]
         [DataType(DataType.Password)]
         public string Password { get; set; }
+        //public string? Token { get; set; }
 
     }
 }

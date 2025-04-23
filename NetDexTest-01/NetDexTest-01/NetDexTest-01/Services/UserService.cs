@@ -143,11 +143,22 @@ namespace NetDexTest_01.Services
             if (await _userManager.CheckPasswordAsync(user, model.Password))        // Checks if the password is valid, else return a message saying incorrect credentials
             {
                 authenticationModel.IsAuthenticated = true;
+                
+                
                 JwtSecurityToken jwtSecurityToken = await CreateJwtToken(user);     // Call CreateJWToken function
                 authenticationModel.Token = new JwtSecurityTokenHandler().WriteToken(jwtSecurityToken);
+                
+
+
+                await Console.Out.WriteAsync($"\ntokenStr:\n\t\t{authenticationModel.Token}\n\n");
+                var refreshTokenStr = _userRepo.GetRefreshToken();
+                await Console.Out.WriteAsync($"\nrefreshTokenStr:\n\t\t{refreshTokenStr}\n\n");
+                authenticationModel.RefreshToken = refreshTokenStr;
                 authenticationModel.Email = user.Email;
                 authenticationModel.UserName = user.UserName;
-                var rolesList = await _userManager.GetRolesAsync(user).ConfigureAwait(false);
+
+
+                var rolesList = await _userManager.GetRolesAsync(user);//.ConfigureAwait(false);
                 authenticationModel.Roles = rolesList.ToList();
                 return authenticationModel;                                         // returns the response object
             }

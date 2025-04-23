@@ -1,6 +1,7 @@
 ﻿using NetDexTest_01.Models.Entities;
 using NetDexTest_01.Models;
 using Microsoft.AspNetCore.Identity;
+using System.Security.Claims;
 
 namespace NetDexTest_01.Services
 {
@@ -101,6 +102,13 @@ namespace NetDexTest_01.Services
         #endregion BatchCreateComment
         Task<IEnumerable<ApplicationUser>> CreateUserDexHolderAsync(
                 List<ApplicationUser> users, List<DexHolder> tempDexHolders, List<String> passwords);
+
+
+
+        Task<AuthenticatedResponse> GetTokens(ApplicationUser user);
+        string GetRefreshToken();
+        Task<ApplicationUser> GetUserByRefreshToken(string refreshToken);
+        ClaimsPrincipal GetPrincipalFromExpiredToken(string token);
 
 
     }
