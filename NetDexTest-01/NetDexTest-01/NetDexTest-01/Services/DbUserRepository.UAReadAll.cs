@@ -9,7 +9,17 @@ namespace NetDexTest_01.Services
     {
         public async Task<ICollection<ApplicationUser>> ReadAllApplicationUsers()
         {
-            return await _db.Users.ToListAsync();
+            return await _db.Users
+                .Include(u => u.DexHolder)
+                .ToListAsync();
+        }
+
+        public async Task<ICollection<ApplicationUser>> ReadAllUserDexPeopleAsync()
+        {
+            return await _db.Users
+                .Include(u => u.DexHolder)
+                    .ThenInclude(dh => dh.People)
+                .ToListAsync();
         }
 
     }

@@ -10,6 +10,15 @@ namespace NetDexTest_01.Models.Entities
     public partial class Person
     {
         public Person() { }
+
+        private Person(ApplicationDbContext context)
+        {
+            Context = context;
+        }
+
+        private ApplicationDbContext Context { get; set; }
+
+
         public Person(string nickName, DexHolder dexHolder)
         {
             Nickname = nickName;

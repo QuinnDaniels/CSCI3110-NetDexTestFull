@@ -107,16 +107,43 @@ namespace NetDexTest_01.Services
 
         public async Task<ICollection<Person>> ReadAllPeopleAsync()
         {
-            return await _db.Person.ToListAsync(); // I/O Bound Operation
+            return await _db.Person
+                .Include(p => p.FullName)
+                .Include(p => p.ContactInfo)
+                    //.ThenInclude(ci => ci.SocialMedias) // then eager loading
+                .Include(p => p.RecordCollector)
+                    //.ThenInclude(rc => rc.EntryItems)
+                .Include(p => p.DexHolder)      // eager loading
+                .Include(p => p.PersonParents)
+                .Include(p => p.PersonChildren)
+                    //.ThenInclude(pp => pp)
+                .ToListAsync(); // I/O Bound Operation
         }
+
+
+
         public async Task<ICollection<Person>> ReadAllPeopleAsync(DexHolder dexHolder)
         {
-            return await _db.Person.Where(p => p.DexHolder == dexHolder).ToListAsync(); // I/O Bound Operation
+            return await _db.Person
+                .Where(p => p.DexHolder == dexHolder)
+                .Include(p => p.FullName)
+                .Include(p => p.ContactInfo)
+                //.ThenInclude(ci => ci.SocialMedias) // then eager loading
+                .Include(p => p.RecordCollector)
+                //.ThenInclude(rc => rc.EntryItems)
+                .Include(p => p.DexHolder)      // eager loading
+                .Include(p => p.PersonParents)
+                .Include(p => p.PersonChildren)
+                //.ThenInclude(pp => pp)
+
+                .ToListAsync(); // I/O Bound Operation
         }
         /// <inheritdoc cref="ReadAllPeopleAsync()"/>
         public async Task<ICollection<Person>> ReadAllPeopleAsync(ApplicationUser user)
         {
-            return await _db.Person.Where(p => p.DexHolder == user.DexHolder).ToListAsync(); // I/O Bound Operation
+            return await _db.Person
+                .Where(p => p.DexHolder == user.DexHolder)
+                .ToListAsync(); // I/O Bound Operation
         }
 
         /// <inheritdoc cref="ReadAllPeopleAsync()"/>
@@ -136,7 +163,9 @@ namespace NetDexTest_01.Services
 
             if (dex != null)
             {
-                return await _db.Person.Where(p => p.DexHolder == dex).ToListAsync(); // I/O Bound Operation
+                return await _db.Person
+                    .Where(p => p.DexHolder == dex)
+                    .ToListAsync(); // I/O Bound Operation
 
             }
             else
@@ -152,7 +181,9 @@ namespace NetDexTest_01.Services
 
             if (dex != null)
             {
-                return await _db.Person.Where(p => p.DexHolder == dex).ToListAsync(); // I/O Bound Operation
+                return await _db.Person
+                    .Where(p => p.DexHolder == dex)
+                    .ToListAsync(); // I/O Bound Operation
 
             }
             else

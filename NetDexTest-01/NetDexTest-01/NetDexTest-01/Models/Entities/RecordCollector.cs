@@ -58,7 +58,7 @@ namespace NetDexTest_01.Models.Entities
         /// <inheritdoc cref="NetDexTest_01.Models.Entities.DexHolder.PeopleCount"/>
         public int EntryItemsCount
         => EntryItems?.Count
-            ?? Context?.Set<EntryItem>().Count(p => Id == EF.Property<Int64?>(p, "RecordCollectorId"))
+            ?? Context?.Set<EntryItem>().Count(ei => Id == EF.Property<Int64?>(ei, "RecordCollectorId"))
             ?? 0;
 
 

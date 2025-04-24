@@ -15,7 +15,13 @@ namespace NetDexTest_01.Services
         {
             return await _db.DexHolder.ToListAsync(); // I/O Bound Operation
         }
+        public async Task<ICollection<DexHolder>> ReadAllDexHoldersAsync()
+        {
+            return await _db.DexHolder
+                .Include(dh => dh.People)
+                .ToListAsync();
+        }
 
-        
+
     }
 }

@@ -11,6 +11,24 @@ namespace NetDexTest_01.Models.Entities
     {
         public List<PersonPerson> PersonChildren { get; set; } = new List<PersonPerson>();
         public List<PersonPerson> PersonParents { get; set; } = new List<PersonPerson>();
+
+        /// <summary>
+        /// Count of the number of PersonPerson Parent entries that are associated with the Person
+        /// </summary>
+        /// <inheritdoc cref="NetDexTest_01.Models.Entities.DexHolder.PeopleCount"/>
+        public int PersonParentsCount
+        => PersonParents?.Count
+            ?? Context?.Set<PersonPerson>().Count(pp => Id == EF.Property<Int64?>(pp, "PersonParentId"))
+            ?? 0;
+        /// <summary>
+        /// Count of the number of PersonPerson Parent entries that are associated with the Person
+        /// </summary>
+        /// <inheritdoc cref="NetDexTest_01.Models.Entities.DexHolder.PeopleCount"/>
+        public int PersonChildrenCount
+        => PersonChildren?.Count
+            ?? Context?.Set<PersonPerson>().Count(pp => Id == EF.Property<Int64?>(pp, "PersonChildId"))
+            ?? 0;
+
     }
 
 
