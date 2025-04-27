@@ -224,6 +224,11 @@
         public bool IsLoggedIn() => !string.IsNullOrEmpty(GetAccessToken());
 
 
+
+       // public bool IsSameUser() 
+
+
+
         private string Writer(string input)
         {
             string output = "";
