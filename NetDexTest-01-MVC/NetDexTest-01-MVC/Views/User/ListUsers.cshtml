@@ -1,0 +1,17 @@
+﻿@* @model IEnumerable<NetDexTest_01_MVC.Models.ViewModels.AdminUserVM>
+ *@
+@{
+    ViewData["Title"] = "ListUsers";
+}
+
+<h1>ListUsers</h1>
+
+@section Scripts {
+    @{
+        // include the partial view
+        //
+        //  5
+        await Html.RenderPartialAsync("_userListTable");
+    }
+    <script src="~/js/userListAll.js" type="module"></script>
+}

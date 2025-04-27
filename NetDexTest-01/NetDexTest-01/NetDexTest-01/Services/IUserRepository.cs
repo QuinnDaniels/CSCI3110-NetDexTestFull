@@ -1,4 +1,5 @@
 ﻿using NetDexTest_01.Models.Entities;
+using NetDexTest_01.Models.ViewModels;
 
 namespace NetDexTest_01.Services
 {
@@ -54,7 +55,7 @@ namespace NetDexTest_01.Services
 
         // READ ALL
         // -------------------
-        Task<ICollection<ApplicationUser>> ReadAllApplicationUsers();
+        Task<ICollection<AdminUserVM>> ReadAllApplicationUsersVMAsync();
         Task<ICollection<DexHolder>> ReadAllDexHolders();
         Task<ICollection<DexHolder>> ReadAllDexAsync();
 

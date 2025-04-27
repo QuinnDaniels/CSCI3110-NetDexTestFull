@@ -25,6 +25,13 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
                         </li>
+                        <li class="nav-item" id="showcookienav">
+                            <a class="nav-link text-dark" id="showcookienavlink">CookieView</a>
+                        </li>
+                        <li class="nav-item d-none" id="hidecookienav">
+                            <a class="nav-link text-dark" id="hidecookienavlink">Hide CookieView</a>
+                        </li>
+
                     </ul>
                 </div>
             </div>
@@ -44,6 +51,38 @@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+    
+    <script type="text/javascript">
+        const cookielink1 = document.getElementById('showcookienavlink');
+        const cookielinkBox1 = document.getElementById('showcookienav');
+        const cookielink2 = document.getElementById('hidecookienavlink');
+        const cookielinkBox2 = document.getElementById('hidecookienav');
+        const cookiebox = document.getElementById('cookieview');
+
+        function showCookies(evt) {
+            evt.preventDefault();
+            cookielink1.classList.add('d-none');
+            cookielinkBox1.classList.add('d-none');
+            cookielink2.classList.remove('d-none');
+            cookielinkBox2.classList.remove('d-none');
+            cookiebox.classList.remove('d-none');
+        }
+        function hideCookies(evt) {
+            evt.preventDefault();
+            cookielink2.classList.add('d-none');
+            cookielinkBox2.classList.add('d-none');
+            cookielink1.classList.remove('d-none');
+            cookielinkBox1.classList.remove('d-none');
+            cookiebox.classList.add('d-none');
+        }
+        cookielink1.addEventListener("click", showCookies);
+        cookielink2.addEventListener("click", hideCookies);
+
+    
+    </script>
+    
+    
+    
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

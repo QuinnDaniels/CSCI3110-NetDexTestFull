@@ -19,6 +19,7 @@ namespace NetDexTest_01.Services
         private readonly IUserStore<ApplicationUser> _userStore;
         private readonly ILogger<ApplicationUser> _logger;
         private readonly IUserRepository _userRepo;
+        private readonly IToolService _tools;
 
 
         public DbPersonRepository(ApplicationDbContext db,
@@ -27,7 +28,8 @@ namespace NetDexTest_01.Services
             SignInManager<ApplicationUser> signInManager,
             RoleManager<IdentityRole> roleManager,
             ILogger<ApplicationUser> logger,
-            IUserRepository userRepo
+            IUserRepository userRepo,
+            IToolService tools
             )
             {
                 _db = db; //context
@@ -36,6 +38,7 @@ namespace NetDexTest_01.Services
                 _userStore = userStore;
                 _signInManager = signInManager;
                 _logger = logger;
+                _tools = tools;
                 _userRepo = userRepo;
             }
 

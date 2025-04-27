@@ -27,9 +27,11 @@ namespace NetDexTest_01_MVC
             builder.Services.AddControllersWithViews();
 // see: yt video - 5 ways to use httpclient
 // add endpoint explorer
-// add swaggergen            builder.Services.AddScoped<IAuthService, AuthService>();
+// add swaggergen
             builder.Services.AddScoped<IApiCallerService, ApiCallerService>();
+            builder.Services.AddScoped<IAuthService, AuthService>();
             builder.Services.AddScoped<IPersonService, PersonService>();
+            builder.Services.AddScoped<IUserService, UserService>();
 
             builder.Services.AddDistributedMemoryCache(); // Required
             builder.Services.AddSession(options =>

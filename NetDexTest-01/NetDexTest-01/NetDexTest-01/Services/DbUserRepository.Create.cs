@@ -202,7 +202,15 @@ namespace NetDexTest_01.Services
 
             await AddDexHolderAsync(tempDexHolder);
             await SaveChangesAsync();
-            await _userManager.AddToRoleAsync(user, "User");
+            var roleresult = await _userManager.AddToRoleAsync(user, "User");
+            if (roleresult == IdentityResult.Success)
+            {
+                _logger.LogInformation("\n\nUser given a role!.\n\n");
+            }
+            else
+            {
+                _logger.LogInformation("\n\nUser unable to be given a role!!!.\n\n");
+            }
 
             var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
             code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
@@ -239,7 +247,16 @@ namespace NetDexTest_01.Services
             };
             await AddDexHolderAsync(dexHolder);
             await SaveChangesAsync();
-            await _userManager.AddToRoleAsync(user, "User");
+            var roleresult = await _userManager.AddToRoleAsync(user, "User");
+            if (roleresult == IdentityResult.Success)
+            {
+                _logger.LogInformation("\n\nUser given a role!.\n\n");
+            }
+            else
+            {
+                _logger.LogInformation("\n\nUser unable to be given a role!!!.\n\n");
+            }
+
             var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
             code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
 
@@ -280,7 +297,16 @@ namespace NetDexTest_01.Services
                 };
                 await AddDexHolderAsync(dexHolder);
                 await SaveChangesAsync();
-                await _userManager.AddToRoleAsync(user, "User");
+                var roleresult = await _userManager.AddToRoleAsync(user, "User");
+                if(roleresult == IdentityResult.Success)
+                {
+                    _logger.LogInformation("\n\nUser given a role!.\n\n");
+                }
+                else
+                {
+                    _logger.LogInformation("\n\nUser unable to be given a role!!!.\n\n");
+                }
+
                 var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                 code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
 

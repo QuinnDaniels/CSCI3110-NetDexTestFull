@@ -38,7 +38,7 @@ namespace NetDexTest_01_MVC.Services
             _apiService = apiService;
             _contextAccessor = contextAccessor;
             _userSessionService = userSessionService;
-            //  _httpClientFactory = httpClientFactory;
+          //    _httpClientFactory = httpClientFactory;
         }
 
         public async Task<RegisterResponse> RegisterAsync(RegisterRequestModel request)
@@ -300,7 +300,7 @@ namespace NetDexTest_01_MVC.Services
 
 
         
-        public async Task<LoginResponse> LoginAsync(LoginRequest request)
+        public async Task<LoginResponse?> LoginAsync(LoginRequest request)
         {
             //var client = _httpClientFactory.CreateClient("API");
             //var response = await client.PostAsJsonAsync("auth/login", request);
@@ -311,14 +311,21 @@ namespace NetDexTest_01_MVC.Services
                 url: url,
                 bodyContent: request
                 );
-            LoginResponse loginResponse = new LoginResponse();
+            LoginResponse? loginResponse = new LoginResponse();
 
             await Console.Out.WriteLineAsync($"\n\n\n--------HTTP RESPONSE----is success?--\n\n{httpResponse.IsSuccessStatusCode}\n\n\n-----------------------");
             if (httpResponse.IsSuccessStatusCode)
             {
                 loginResponse = await httpResponse.Content.ReadFromJsonAsync<LoginResponse>();
-                await Console.Out.WriteLineAsync($"\n\n\n--------HTTP RESPONSE-----------------\n\n{loginResponse.ToString}\n\n\n-----------------------");
-                await Console.Out.WriteLineAsync($"\n\n\n--------HTTP RESPONSE-----------------\n\n{await httpResponse.Content.ReadAsStringAsync()}\n\n\n-----------------------");
+                if (loginResponse==null)
+                {
+                    await Console.Out.WriteLineAsync($"\n\n\n--------HTTP RESPONSE-----------------\n\nNULL!!\n\n\n-----------------------");
+                }
+                else
+                { 
+                    await Console.Out.WriteLineAsync($"\n\n\n--------HTTP RESPONSE-----------------\n\n{loginResponse.ToString}\n\n\n-----------------------");
+                    await Console.Out.WriteLineAsync($"\n\n\n--------HTTP RESPONSE-----------------\n\n{await httpResponse.Content.ReadAsStringAsync()}\n\n\n-----------------------");
+                }
             }
 
             else

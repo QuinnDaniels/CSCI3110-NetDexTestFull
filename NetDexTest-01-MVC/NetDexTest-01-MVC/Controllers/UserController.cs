@@ -1,12 +1,34 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using NetDexTest_01_MVC.Models.ViewModels;
+using NetDexTest_01_MVC.Services;
 
 namespace NetDexTest_01_MVC.Controllers
 {
     [Route("[controller]")]
     public class UserController : Controller
     {
+
+        private readonly ILogger<AuthController> _logger;
+        private IAuthService _authService;
+        private readonly IUserSessionService _userSessionService;
+        private readonly IUserService _userService;
+
+
+        public UserController(ILogger<AuthController> logger,
+            IAuthService authService,
+            IUserService userService,
+            IUserSessionService userSessionService)
+        {
+            _logger = logger;
+            _authService = authService;
+            _userSessionService = userSessionService;
+            _userService = userService;
+
+        }
+
+
         // GET: UserController
         public ActionResult Index()
         {
@@ -21,11 +43,23 @@ namespace NetDexTest_01_MVC.Controllers
         }
 
         [HttpGet("admin/all")]
-        [Authorize(Roles = "Administrator")]
+        //[Authorize(Roles = "Administrator")]
         //[Route("")]
-        public IActionResult ListUsers()
+        public async Task<IActionResult> ListUsers()
         {
-            return View();
+            if (await _userSessionService.HasAnyRoleAsync("Admin", "Administrator", "Moderator"))
+            {
+                //ICollection<AdminUserVM> userList = await _userService.GetAllUsersAdminAsync();
+                //if(userList != null )
+                //{
+                return View();// userList);
+                //}
+                //return BadRequest();
+            }
+            return Unauthorized();
+
+
+
         }
 
 

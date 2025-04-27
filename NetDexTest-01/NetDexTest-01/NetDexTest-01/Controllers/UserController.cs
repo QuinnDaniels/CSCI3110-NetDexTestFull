@@ -11,6 +11,9 @@ using System.Text;
 using NetDexTest_01.Models.Entities;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
+using System.Text.Json.Serialization;
+using System.Text.Json;
+using NetDexTest_01.Models.ViewModels;
 
 // https://memorycrypt.hashnode.dev/create-a-web-api-with-jwt-authentication-and-aspnet-core-identity
 
@@ -93,6 +96,8 @@ namespace NetDexTest_01.Controllers
         public string Ping() => "pong";
 
 
+/*----------------------------*/
+
         // GET: api/user/one/{id}
         [HttpGet("one/{id}")]
         public async Task<IActionResult> GetOne(string id)
@@ -101,12 +106,83 @@ namespace NetDexTest_01.Controllers
 
             if (user == null)
             {
-                return NotFound();
+                user = await _userRepo.ReadByUsernameAsync(id);
+                if (user == null)
+                {
+                    user = await _userRepo.GetByEmailAsync(id);
+                }
             }
+            if (user == null) return NotFound();
 
             return Ok(user);
         }
 
+
+        [HttpGet("dex/{id}")]
+        public async Task<IActionResult> GetOneDex(string id)
+        {
+            var user = await _userRepo.GetDexHolderMiddleVMAsync(id);
+
+
+            if (user == null) return NotFound();
+
+            JsonSerializerOptions options = new()
+            {
+                ReferenceHandler = ReferenceHandler.IgnoreCycles, //IgnoreCycles, //Preserve
+                WriteIndented = true
+            };
+
+            string modelJson = JsonSerializer.Serialize(user, options);
+
+            //var model = all;
+
+            await Console.Out.WriteLineAsync($"\n\n\n\n serialized: {modelJson}\n \n\n\n\n");
+
+            var model = modelJson;
+            return Ok(model);
+        }
+
+
+
+        // GET: api/user/admin/all
+        [HttpGet("admin/all")]
+        public async Task<IActionResult> GetAll()
+        {
+            //var user = await _userRepo.ReadByIdAsync(id);
+
+            ICollection<AdminUserVM> users = await _userRepo.ReadAllApplicationUsersVMAsync();
+
+            //if (users == null)
+            //{
+            //    return NotFound();
+            //}
+
+            //List<AdminUserVMOut> usersOut = new();
+
+            //foreach (AdminUserVM user in users) {
+            //    usersOut.Add(new AdminUserVMOut(user));
+            //}
+
+            JsonSerializerOptions options = new()
+            {
+                ReferenceHandler = ReferenceHandler.IgnoreCycles, //IgnoreCycles, //Preserve
+                WriteIndented = true
+            };
+
+            string modelJson = JsonSerializer.Serialize(users, options);
+
+            //var model = all;
+
+            await Console.Out.WriteLineAsync($"\n\n\n\n serialized: {modelJson}\n \n\n\n\n");
+
+            var model = modelJson;
+            return Ok(model);
+
+            //return Ok(users);
+        }
+
+
+        /*----------------------------*/
 
         [HttpPost("registerform")]
         public async Task<ActionResult> RegisterFormAsync([FromForm] RegisterModel user)
@@ -200,6 +276,17 @@ namespace NetDexTest_01.Controllers
 
 
 
+
+
+
+
+
+
+
     }
+
+
+
+
 }
 

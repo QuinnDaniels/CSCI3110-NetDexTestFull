@@ -59,7 +59,6 @@
 
 
 
-
 /*------------ drafted statement for roles -+++++-*/
 var result = from usr in db.users 
              join usrSub in (

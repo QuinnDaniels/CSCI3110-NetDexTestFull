@@ -52,6 +52,18 @@ namespace NetDexTest_01.Services
             //{
             return await _db.DexHolder
                 .Include(dh => dh.ApplicationUser)
+                .Include(dh => dh.People)
+                .ThenInclude(p => p.FullName)
+                .Include(dh => dh.People)
+                .ThenInclude(p => p.ContactInfo)
+                .ThenInclude(ci => ci.SocialMedias)
+                .Include(dh => dh.People)
+                .ThenInclude(p => p.RecordCollector)
+                .ThenInclude(rc => rc.EntryItems)
+                .Include(dh => dh.People)
+                .ThenInclude(p => p.PersonChildren)
+                .Include(dh => dh.People)
+                .ThenInclude(p => p.PersonParents)
                 .FirstOrDefaultAsync(dh => dh.ApplicationUserId == userId);
             //}
             //catch (Exception ex) {
@@ -60,11 +72,51 @@ namespace NetDexTest_01.Services
             //}
         }
 
+
+        public async Task<DexHolder?> GetDexHolderByIntIdAsync(int id)
+        {
+            //try
+            //{
+            return await _db.DexHolder
+                .Include(dh => dh.ApplicationUser)
+                .Include(dh => dh.People)
+                    .ThenInclude(p => p.FullName)
+                .Include(dh => dh.People)
+                    .ThenInclude(p => p.ContactInfo)
+                        .ThenInclude(ci => ci.SocialMedias)
+                .Include(dh => dh.People)
+                    .ThenInclude(p => p.RecordCollector)
+                        .ThenInclude(rc => rc.EntryItems)
+                .Include(dh => dh.People)
+                    .ThenInclude(p => p.PersonChildren)
+                .Include(dh => dh.People)
+                    .ThenInclude(p => p.PersonParents)
+                .FirstOrDefaultAsync(dh => dh.Id == id);
+            //}
+            //catch (Exception ex) {
+            //    Console.WriteLine($"---------------------\nERROR: {ex}\n---------------------");
+            //    return null;
+            //}
+        }
+
+
         //moved from .GPT
         public async Task<DexHolder?> GetDexHolderByUserNameAsync(string userName)
         {
             return await _db.DexHolder
                 .Include(dh => dh.ApplicationUser)
+                .Include(dh => dh.People)
+                .ThenInclude(p => p.FullName)
+                .Include(dh => dh.People)
+                .ThenInclude(p => p.ContactInfo)
+                .ThenInclude(ci => ci.SocialMedias)
+                .Include(dh => dh.People)
+                .ThenInclude(p => p.RecordCollector)
+                .ThenInclude(rc => rc.EntryItems)
+                .Include(dh => dh.People)
+                .ThenInclude(p => p.PersonChildren)
+                .Include(dh => dh.People)
+                .ThenInclude(p => p.PersonParents)
                 .FirstOrDefaultAsync(dh => dh.ApplicationUserName == userName);
         }
 
@@ -78,6 +130,18 @@ namespace NetDexTest_01.Services
             {
                 return await _db.DexHolder
                     .Include(dh => dh.ApplicationUser)
+                    .Include(dh => dh.People)
+                    .ThenInclude(p => p.FullName)
+                    .Include(dh => dh.People)
+                    .ThenInclude(p => p.ContactInfo)
+                    .ThenInclude(ci => ci.SocialMedias)
+                    .Include(dh => dh.People)
+                    .ThenInclude(p => p.RecordCollector)
+                    .ThenInclude(rc => rc.EntryItems)
+                    .Include(dh => dh.People)
+                    .ThenInclude(p => p.PersonChildren)
+                    .Include(dh => dh.People)
+                    .ThenInclude(p => p.PersonParents)
                     .FirstOrDefaultAsync(dh => dh.ApplicationUserName == ufind.UserName);
             }
             else { return null; }
