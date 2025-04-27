@@ -104,10 +104,12 @@ namespace NetDexTest_01.Services
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly IUserStore<ApplicationUser> _userStore;
+        private readonly IRoleStore<IdentityRole> _roleStore;
         //private readonly IUserEmailStore<ApplicationUser> _emailStore;
         private readonly ILogger<ApplicationUser> _logger;
         private readonly IEmailSender _emailSender;
         public IConfiguration _configuration;
+        private readonly IToolService _tools;
 
 
         /// <summary>
@@ -117,23 +119,26 @@ namespace NetDexTest_01.Services
         public DbUserRepository(ApplicationDbContext db,
             UserManager<ApplicationUser> userManager,
             IUserStore<ApplicationUser> userStore,
+            IRoleStore<IdentityRole> roleStore,
             SignInManager<ApplicationUser> signInManager,
             RoleManager<IdentityRole> roleManager,
             IEmailSender emailSender,
             ILogger<ApplicationUser> logger,
-            IConfiguration configuration
+            IConfiguration configuration,
+            IToolService tools
             )
         {
             _db = db; //context
             _userManager = userManager;
             _roleManager = roleManager;
             _userStore = userStore;
+            _roleStore = roleStore;
             //_emailStore = GetEmailStore();
             _emailSender = emailSender;
             _signInManager = signInManager;
             _logger = logger;
             _configuration = configuration;
-
+            _tools = tools;
 
         }
 

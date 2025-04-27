@@ -17,7 +17,7 @@ namespace NetDexTest_01_MVC.Services
     {
         Task<RegisterResponse> RegisterAsync(RegisterRequestModel request);
         Task<LoginResponse> LoginAsyncOld(LoginRequest request);
-        Task<LoginResponse> LoginAsync(LoginRequest request);
+        Task<LoginResponse?> LoginAsync(LoginRequest request);
         Task<LoginResponse> LoginAsyncAlternative(LoginRequest request);
         Task LoginWithCookieAsync(string email, string accessToken, string refreshToken);
         Task LoginWithCookieAsync(string email, string refreshToken);

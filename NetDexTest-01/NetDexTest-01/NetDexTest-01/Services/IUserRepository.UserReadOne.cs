@@ -1,4 +1,5 @@
 ﻿using NetDexTest_01.Models.Entities;
+using NetDexTest_01.Models.ViewModels;
 
 namespace NetDexTest_01.Services
 {
@@ -32,6 +33,6 @@ namespace NetDexTest_01.Services
         Task<ApplicationUser?> ReadByUsernameAsync(string username);
         Task<ApplicationUser?> ReadByIdAsync(string id);
 
-
+        Task<DexHolderMiddleVM?> GetDexHolderMiddleVMAsync(string input);
     }
 }

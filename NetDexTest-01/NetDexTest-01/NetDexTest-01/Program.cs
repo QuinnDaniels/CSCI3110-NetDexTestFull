@@ -163,6 +163,7 @@ namespace NetDexTest_01
             //services.AddIdentity<ApplicationUser, IdentityRole>().AddEntityFrameworkStores<ApplicationDbContext>()
             //      .AddDefaultTokenProviders();
             services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IToolService, ToolService>();  // could prob be transient??
             // From https://memorycrypt.hashnode.dev/create-a-web-api-with-jwt-authentication-and-aspnet-core-identity#heading-3-add-db-context-for-articles-table
             //services.Configure<IdentityOptions>(options =>
             //{

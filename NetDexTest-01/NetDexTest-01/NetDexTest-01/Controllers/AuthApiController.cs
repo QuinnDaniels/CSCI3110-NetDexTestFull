@@ -144,6 +144,7 @@ namespace NetDexTest_01.Controllers
             //    DisplayName = registerRequest.DisplayName,
             //};
 
+            // TODO add role??
             var result = await AddUser(registerRequest, false);
             if (result.Succeeded)
             {

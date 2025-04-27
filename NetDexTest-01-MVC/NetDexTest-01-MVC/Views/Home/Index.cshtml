@@ -1,5 +1,6 @@
 ﻿@using System.Security.Claims
 @using Microsoft.AspNetCore.Http
+@using System.Text
 @inject IHttpContextAccessor HttpContextAccessor
 @inject IUserSessionService _userSessionService
 
@@ -32,28 +33,40 @@ else
     <p>StringRoles: @(await _userSessionService.GetStringRolesAsync())</p>
     {
         var listRoles = await _userSessionService.GetRolesAsync();
-@*         listRoles.Add("test");
+@*       
+        listRoles.Add("test");
         listRoles.Add("test");
         listRoles.Add("test");
  *@     
+        var data = new StringBuilder();
+
         string outputter = "";
         string delimit = ", ";
         if (listRoles.Count == 1) delimit = "";
-@*         foreach (string roleOut in listRoles)
-        {
-            outputter = $"{outputter}{roleOut}{delimit}";
-        }
+@* //        foreach (string roleOut in listRoles)
+    //    {
+    //        data.Append(outputter);
+    //       data.Append(roleout);
+//
+     //       outputter = $"{outputter}{roleOut}{delimit}";
+     //   }
  *@
         for ( int i = 0; i < listRoles.Count; i++)
         {
-            outputter = $"{outputter}{listRoles[i]}";
+            //outputter = $"{outputter}{listRoles[i]}";
+            data.Append(outputter);
+            data.Append(listRoles[i]);
 
             if (listRoles.Count - 1 > (i))
             {
-                outputter += delimit;
+                //outputter += delimit;
+                data.Append(delimit);
+
             }
         }
-        <p>Roles: @outputter</p>
+
+        string dataout = data.ToString();
+        <p>Roles: @dataout</p>
     }
 
  
