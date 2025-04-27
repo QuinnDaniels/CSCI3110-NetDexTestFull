@@ -1,0 +1,236 @@
+﻿@model NetDexTest_01_MVC.Models.ViewModels.DexHolderMiddleVM
+
+
+<div>
+    <h4>DexHolderMiddleVM</h4>
+    <hr />
+</div>
+
+<input  type="hidden"  id="email" value="@ViewData["LoggedInEmail"]" />
+
+<div id="dexHolderDetailsPane">
+    <table id="tableTopUserInfo">
+        <tr id="topTopRow">
+            <td id="userDetailLeftColumn">
+                <dl id="userLeftDL">
+                    <dt id="userNameTitle">
+                        @* @Html.DisplayNameFor(model => model.ApplicationUserName) *@
+                        Username:
+                    </dt>
+                    <dd id="userNameField">
+                        <h3 id="userNameHead">
+                        @Html.DisplayFor(model => model.ApplicationUserName)
+                            UserPlaceholder
+                        </h3>
+                    </dd>
+                    <dd id="userEmailField">
+                        <span id="userEmailSpan">
+                        @Html.DisplayFor(model => model.ApplicationEmail)
+                            placeholder@test.net
+                        </span>
+                    </dd>
+                </dl>
+            </td>
+            <td id="userDetailMiddleColumn">
+                <dl id="userMidDL">
+                    <dd id="userDexmiddleLine"><h3>__</h3></dd>
+                </dl>
+            </td>
+            <td id="userDetailRightColumn">
+                <dl id="userRightDL">
+                    <dt id="dexIdTitle">
+                        @Html.DisplayNameFor(model => model.DexId)
+                    </dt> @* Dex# *@
+                    <dd id="dexIdField">
+                        <h3 id="dexIdHead">
+                            -404
+                        </h3>
+                    </dd>
+                    <br />
+                </dl>
+            </td>
+
+            <td id="userRolesCell">
+                <h5>Role(s):</h5>
+                <ul id="rolesList">
+
+                    
+                </ul>
+            </td>
+
+        </tr>
+    </table>
+
+    <table id="tableMiddleDexHolder">
+        <tr id="nameRow">
+            <td id="nameCell">
+                <dt>
+                    Name
+                </dt>
+                <h3 id="nameHead">
+                    <span id="firstNameField">
+                        Mikhail
+                        @Html.DisplayFor(model => model.FirstName)
+                    </span><span> </span>
+                    
+                    <span id="middleNameField">
+                        Sergeyevich
+                        @Html.DisplayFor(model => model.MiddleName)
+                    </span><span> </span>
+                    
+                    <span id="lastNameField">
+                        Cossack
+                        @Html.DisplayFor(model => model.LastName)
+                    </span>
+                </h3>
+            </td>
+
+        </tr>
+        <tr id="lowerDetailsRow">
+            <table id="tableBottom">
+                <tr id="tableBottomRow">
+                    <td id="btmTrSpacer">
+                    </td>
+                    <td id="genderCell">
+                        <dl id="genderDL">
+                            <dt id="genderTitle">
+                                @Html.DisplayNameFor(model => model.Gender)
+                                @* Gender *@
+                            </dt>
+                            <dd id="genderField">
+                                @Html.DisplayFor(model => model.Gender)
+                                Attack Helicopter
+                            </dd>
+                        </dl>
+                    </td>
+                    <td id="pronounsCell">
+                        <dl id="pronounsDL">
+                            <dt id="pronounsTitle">
+                                @Html.DisplayNameFor(model => model.Pronouns)
+                                @* Pronouns *@
+                            </dt>
+                            <dd id="pronounsField">
+                                @Html.DisplayFor(model => model.Pronouns)
+                                wrrr/brbrbrbr
+                            </dd>
+                        </dl>
+                    </td>
+                    <td id="birthdayCell">
+                        <dl id="birthdayDL">
+                            <dt id="birthdayTitle">
+                                @* @Html.DisplayNameFor(model => model.DateOfBirth) *@
+                                Birthday
+                            </dt>
+                            <dd id="birthdayField">
+                                @Html.DisplayFor(model => model.DateOfBirth)
+                                03-25-2015
+                            </dd>
+                        </dl>
+                    </td>
+                    <td id="peopleCountCell">
+                        <dl id="peopleCountDL">
+                            <dt>People</dt>
+                            <dd id="peopleCountField">
+                                <h4 class="float-end" id="peopleCountHead">
+                                    @Html.DisplayFor(model => model.PeopleCount)
+                                    -404
+                                </h4>
+                            </dd>
+                        </dl>
+                    </td>
+
+                </tr>
+            </table>
+        </tr>
+    </table>
+
+
+    <hr />
+</div>
+
+
+
+
+@section Scripts{
+@*     <script src="~/js/dexIndexDetails.js" type="module"></script>
+ *@    
+}
+
+
+
+
+
+@* <div>
+    <dl class="row">
+        <dt class="col-sm-2">
+            
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.DexId)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.ApplicationUserId)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.ApplicationUserId)
+        </dd>
+        <dt class="col-sm-2">
+            
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.ApplicationUserName)
+        </dd>
+        <dt class="col-sm-2">
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.ApplicationEmail)
+        </dd>
+        <dt class="col-sm-2">
+            
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.FirstName)
+        </dd>
+        <dt class="col-sm-2">
+            
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.MiddleName)
+        </dd>
+        <dt class="col-sm-2">
+            
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.LastName)
+        </dd>
+        <dt class="col-sm-2">
+            
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Gender)
+        </dd>
+        <dt class="col-sm-2">
+            
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Pronouns)
+        </dd>
+        <dt class="col-sm-2">
+            
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.DateOfBirth)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.PeopleCount)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.PeopleCount)
+        </dd>
+    </dl>
+</div>
+<div>
+    @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
+    <a asp-action="Index">Back to List</a>
+</div>
+ *@

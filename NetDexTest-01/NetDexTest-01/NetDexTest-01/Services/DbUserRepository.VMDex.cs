@@ -2,6 +2,7 @@
 using NetDexTest_01.Models.Entities;
 using NetDexTest_01.Models.ViewModels;
 using NetDexTest_01.Services;
+using NuGet.Protocol;
 
 
 namespace NetDexTest_01.Services
@@ -161,6 +162,8 @@ namespace NetDexTest_01.Services
 
                 // add the list of RoleVMs back to the AdminUserVM object
                 dexViewModel.Roles = rolesForUser;
+                await Console.Out.WriteLineAsync($"\n\n\n{rolesForUser.ToJson().ToString()}\n\n\n");
+                await Console.Out.WriteLineAsync($"\n\n\n{dexViewModel.Roles.ToJson().ToString()}\n\n\n");
                 dexViewModel.People = peopleForDex;
                 /*-------------- end LINQ foreach-----------------*/
                 return dexViewModel;

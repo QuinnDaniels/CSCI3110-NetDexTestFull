@@ -1,10 +1,9 @@
-﻿"use strict";
-export class UserRepository { //create a class and export it (for use in UserIndex)
+"use strict";
+export class DexHolderRepository { //create a class and export it (for use in UserIndex)
     #baseAddress;
     constructor(baseAddress) {
         this.#baseAddress = baseAddress;    // constructor initializes private member, #baseAddress, to the incoming argument
     }
-
 
 
     /*--------how & where to set the address-----*/
@@ -21,7 +20,6 @@ export class UserRepository { //create a class and export it (for use in UserInd
 
 
 
-    //const userAddress = ``;
 
     /*---------------------------*/
     // ReadAll
@@ -43,17 +41,17 @@ export class UserRepository { //create a class and export it (for use in UserInd
     }
 
 
-    async readOneId(id) {
-        //this.id = id;
-        const address = `${this.#baseAddress}/one/${id}`;
-        const response = await fetch(address);
-        if (!response.ok) {
-            throw new Error("There was an HTTP error getting the boardgame data.");
-        }
-        return await response.json();
-    }
-
-    async readDex(input) {
+    /*---------------------------*/
+    //    Read
+    //    Given: object id
+    //    Returns: the object
+    //    1.	Send the GET request
+    //    2.	Await response
+    //    3.	Check for errors
+    //    4.	Return the object
+    /*---------------------------*/
+    /**/
+    async read(input) {
         const address = `${this.#baseAddress}/dex/${input}`;
         const response = await fetch(address);
         if (!response.ok) {
@@ -61,4 +59,6 @@ export class UserRepository { //create a class and export it (for use in UserInd
         }
         return await response.json();
     }
+
+
 }

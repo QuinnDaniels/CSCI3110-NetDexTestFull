@@ -2,11 +2,23 @@
 
 // use this class for DOM Manipulation functions
 export let DOM = {
+
+    // TODO Format DateTime as DD-MM-YYYY
+    // TODO Format DateTime as MM-DD-YYYY
+
+
     createTextTD: (text) => {
         const td = document.createElement("td");
         td.appendChild(document.createTextNode(text));
         return td;
     },
+
+
+    logElementToConsole: (value) => {
+        //alert(value);
+        console.log(value);
+    },
+
 
     createHiddenTextTD: (text) => {
         var td = document.createElement("td");
@@ -37,6 +49,36 @@ export let DOM = {
         return td;
     },
 
+
+    createULfromArrayProperty: (array, property) => {
+        //const td = document.createElement("td");
+        //const table = document.createElement('table');
+        const ul = document.createElement('ul');
+        let prop = `${property}`;
+
+        array.forEach(arrayItem => {
+            //const row = table.insertRow();
+            console.log(`${property}`, `${arrayItem[prop]}`);
+            const li = document.createElement('li');
+            li.appendChild(document.createTextNode(arrayItem[prop]));
+            ul.appendChild(li);
+        });
+
+        //td.appendChild(ul);
+        return ul;
+    },
+
+    setDirectElementText: (element, text) => {
+        //const element = document.querySelector(elementId);
+        element.appendChild(document.createTextNode(text));
+    },
+
+    setDirectElementTextWithPlaceholder: (element, text) => {
+        //const element = document.querySelector(elementId);
+        var tempText = text;
+        if (tempText == "") { tempText = "---" }
+        element.appendChild(document.createTextNode(tempText));
+    },
 
 
     setElementText: (elementId, text) => {

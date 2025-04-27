@@ -1,0 +1,21 @@
+﻿@model NetDexTest_01_MVC.Models.ViewModels.DexHolderMiddleVM
+@{
+    ViewData["Title"] = "ListDexIndex";
+    await Console.Out.WriteLineAsync("\n\n-----ListDexIndex Reached!----------\n\n");
+}
+
+<h1>ListDexIndex</h1>
+
+
+@section Scripts {
+    @{
+        // include the partial view
+        //
+        //  5
+        await Html.RenderPartialAsync("_dexIndexDetails");
+    }
+    <script src="~/js/_dexIndexDetails.js" type="module"></script>
+    <script type="text/javascript" >
+    </script>
+}
+

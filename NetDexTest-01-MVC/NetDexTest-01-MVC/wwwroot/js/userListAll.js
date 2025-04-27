@@ -138,7 +138,10 @@ async function populateUsers(userRepo) {
         catch (error) { console.log('Remove Children Error: ', error); }
 
         sortedusers.forEach((AdminUserVM) => {
-            console.log('CHECKPOINT 7: ', tbody.appendChild(addUserToTable(tbody, AdminUserVM)))
+            console.log('CHECKPOINT 7: ',
+                tbody.appendChild(
+                    addUserToTable(tbody, AdminUserVM)
+                ))
         });
     }
     catch (error) {

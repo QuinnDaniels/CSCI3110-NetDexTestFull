@@ -77,6 +77,45 @@ namespace NetDexTest_01_MVC.Services
             return response;
         }
 
+
+        public async Task<DexHolderMiddleVM?> GetDexHolderMiddleVMAsync(string input)
+        {
+            var url = _config["apiService:dexViewUrl"];
+            url = url + $"/{input}";
+            //var url = _config["apiService:userLogin2Url"];
+            var httpResponse = await _apiService.MakeHttpCallAsync(
+                httpMethod: HttpMethod.Get,
+                url: url
+                //, bodyContent: request
+                );
+            //LoginResponse loginResponse = new LoginResponse();
+            DexHolderMiddleVM? dexResponse = new ();
+
+            //if call was successful
+            if (httpResponse.StatusCode == HttpStatusCode.OK) //httpResponse.IsSuccessStatusCode
+            {
+                dexResponse = await httpResponse.Content.ReadFromJsonAsync<DexHolderMiddleVM>();
+                await Console.Out.WriteLineAsync($"\n\n\n--------HTTP RESPONSE-----------------\n\n{dexResponse.ToString}\n\n\n-----------------------");
+
+                return dexResponse;//.AdminUserVMs;
+                //userResponse.Status = httpResponse.StatusCode;
+
+            }
+            else
+            {
+                await Console.Out.WriteLineAsync($"\n\n\n--------HTTP RESPONSE----is success?--\n\n{httpResponse.IsSuccessStatusCode}\n\n\n-----------------------");
+                //else if login failed, map the error message
+                var errMessage = await httpResponse.Content.ReadAsStringAsync();
+                //userResponses.Status = httpResponse.StatusCode;
+                //userResponses.Message = errMessage;
+                return null;
+                //return userResponses;
+            }
+        }
+
+
+
+
     }
 
 

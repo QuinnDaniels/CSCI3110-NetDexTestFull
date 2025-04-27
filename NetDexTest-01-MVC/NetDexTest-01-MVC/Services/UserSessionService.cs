@@ -1,5 +1,15 @@
-﻿namespace NetDexTest_01_MVC.Services
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace NetDexTest_01_MVC.Services
 {
+
+    public class UserSessionRequestModel
+    {
+        [Required]
+        [EmailAddress]
+        public string Email { get; set; }
+    }
+
 
     /// <inheritdoc cref="IUserSessionService"/>
     public class UserSessionService : IUserSessionService
