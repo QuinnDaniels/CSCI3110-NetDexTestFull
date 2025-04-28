@@ -103,13 +103,16 @@ namespace NetDexTest_01.Services
 
                 
                 if (user == null) return null;
-                var taskPeople = Task.Run(() => user.People.ToList().ForEach(p =>
+                int counter = 1;
+
+                var taskPeople = Task.Run(() => user.People.OrderBy(p => p.Id).ToList().ForEach(p =>
                 {
                     if (p.DexHolderId == user.Id)
                     {
                         PersonDexListVM pdl = new()
                         {
                             Id =                    p.Id,
+                            LocalCounter=           counter++, //start with 1, then increment
                             DexId =                 p.DexHolderId,
                             Nickname =              p.Nickname,
                             NameFirst =             p?.FullName?.NameFirst ?? "---",

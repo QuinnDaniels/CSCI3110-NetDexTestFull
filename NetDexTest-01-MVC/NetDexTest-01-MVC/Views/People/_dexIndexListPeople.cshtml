@@ -1,0 +1,234 @@
+﻿@model IEnumerable<NetDexTest_01_MVC.Models.ViewModels.PersonDexListVM>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                _______________
+                <br />
+                <span>
+                    <sup>UId</sup> @*@Html.DisplayNameFor(model => model.Id)*@
+                </span>
+                <span>
+                    N<sub class="text-decoration-underline">o.</sub> @* @Html.DisplayNameFor(model => model.LocalCounter) *@
+                </span>
+                <br />
+                
+
+            </th>
+            <th hidden class="d-none">
+                @Html.DisplayNameFor(model => model.DexId)
+            </th>
+            <th class="favBoolalign-text-bottom">
+                Fav?
+            </th>
+            <th id="nickNameHeader">
+                @* <span>______________</span> *@
+                <span>
+                    @Html.DisplayNameFor(model => model.Nickname)
+                </span>
+            </th>
+            <th id="firstNameHeader">
+                @* @Html.DisplayNameFor(model => model.NameFirst) *@
+                <span class="opacity-0">______________</span>
+                <br />
+                <span>
+                    First Name
+                </span><br />
+                <span><sub>(Phoenetic)</sub></span>
+            </th>
+            <th id="middleNameHeader">
+                @* @Html.DisplayNameFor(model => model.NameMiddle) *@
+                <span class="opacity-0">__________________</span>
+                <br />
+                <span>
+                    Middle Name
+                </span><br/>
+                @* @Html.DisplayNameFor(model => model.PhNameMiddle) *@
+                <span><sub>(Phoenetic)</sub></span>
+
+            </th>
+            <th id="lastNameHeader">
+                @* @Html.DisplayNameFor(model => model.NameLast) *@
+                <span class="opacity-0">______________</span>
+                <br />
+                <span>
+                    Last Name
+                </span><br />
+                @* @Html.DisplayNameFor(model => model.PhNameLast) *@
+                <span><sub>(Phoenetic)</sub></span>
+
+            </th>
+
+            <th class="birthdayHead">
+                <span class="opacity-0">______________</span><br />
+                <span>
+                    Birthday
+                </span>
+                <br/>
+                <span>
+                    <sub>
+                        MM-DD-YYYY
+                    </sub>
+                </span>
+
+                @* @Html.DisplayNameFor(model => model.DateOfBirth) *@
+            </th>
+            <th>
+                <span class="opacity-0">__________</span><br />
+                <span>
+                    Gender
+                </span><br />
+                <span><sub>
+                    (Pronouns)
+                </sub>
+                </span>
+                @* @Html.DisplayNameFor(model => model.Gender) *@
+                @* @Html.DisplayNameFor(model => model.Pronouns) *@
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Rating)
+                &star;&star;&star;&star;&star;
+            </th>
+            <th>
+                # of Records
+                @* @Html.DisplayNameFor(model => model.RcEntryItemsCount) *@
+            </th>
+            <th>
+                # of Contacts
+                @* @Html.DisplayNameFor(model => model.RcEntryItemsCount) *@
+                @* @Html.DisplayNameFor(model => model.CiSocialMediasCount) *@
+            </th>
+
+            <th>
+                <p class="opacity-0">______________</p>
+
+                <span >&#9720;&nbsp;&nbsp;Principals</span><br />
+                @* &#10070; *@
+                <span style="text-decoration:overline">Dependants&nbsp;&#9727;</span>
+                @* @Html.DisplayNameFor(model => model.PersonParentsCount) *@
+                @* @Html.DisplayNameFor(model => model.PersonChildrenCount) *@
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@* @foreach (var item in Model) {
+ *@        <tr hidden id=" templateRow d-none">
+            <td class="regionalNumberCell">
+                @* @Html.DisplayNameFor(model => model.Id) *@
+                @* @Html.DisplayNameFor(model => model.LocalCounter) *@
+                <span>
+                    <span class="personIdField">
+                        @*@Html.DisplayNameFor(model => model.Id)*@
+                        <sup>10</sup>
+                    </span>
+                    <span>
+
+                        N<sub class="text-decoration-underline">o.</sub> 404@* <sup style="font-weight:bolder;"></sup> *@
+                    </span>
+                    
+                    @* @Html.DisplayNameFor(model => model.LocalCounter) *@
+                </span>
+            </td>
+            <td hidden class="d-none">
+                @Html.DisplayNameFor(model => model.DexId)
+            </td>
+            <td class="favCell" style="font-weight:bolder;">
+                @* @Html.DisplayNameFor(model => model.Favorite) *@
+                &radic;@*  &Oslash; *@
+            </td>
+
+
+            <td>
+                @Html.DisplayNameFor(model => model.Nickname)
+            </td>
+
+            <td class="firstNameCell">
+                <span>
+                    Kalinka
+                </span>
+                <p><sub>"Ka-Lean-Ka"</sub></p>
+
+                @* @Html.DisplayNameFor(model => model.NameFirst) *@
+                @* @Html.DisplayNameFor(model => model.PhNameFirst) *@
+            </td>
+            <td class="middleNameCell">
+                <span>
+                    Mega Man 4
+                </span>
+                <p><sub>"MM4"</sub></p>
+                @* @Html.DisplayNameFor(model => model.NameMiddle) *@
+                @* @Html.DisplayNameFor(model => model.PhNameMiddle) *@
+            </td>
+            <td class="lastNameCell">
+                <span>
+                    Cossack
+                </span>
+                <p><sub>"Koss-sack"</sub></p>
+                @* @Html.DisplayNameFor(model => model.NameLast) *@
+                @* @Html.DisplayNameFor(model => model.PhNameLast) *@
+            </td>
+            <td class="birthdayField">
+                @* @Html.DisplayNameFor(model => model.DateOfBirth) *@
+                06-12-1991
+            </td>
+            <td>
+                @*@Html.DisplayNameFor(model => model.Gender)*@
+                @*@Html.DisplayNameFor(model => model.Pronouns)*@
+                <span>
+                    Girl
+                </span>
+                <br />
+                <span>
+                    <sub>
+                        (She/Her)
+                    </sub>
+                </span>
+            </td>
+
+            <td class="ratingField">
+                @* @Html.DisplayNameFor(model => model.Rating) *@
+                5
+            </td>
+            <td class="recordCollectorCell">
+                <sub style="text-orientation:upright;"> Entries: </sub>
+                <p class="entriesCountField">4</p>
+
+                @* @Html.DisplayNameFor(model => model.RcEntryItemsCount) *@
+            </td>
+            <td class="contactInfoCell">
+                <sub style="text-orientation:upright;"> SocialMedias: </sub>
+                <partial class="socialMediasCount">8</p>
+
+                @* @Html.DisplayNameFor(model => model.CiSocialMediasCount) *@
+            </td>
+            <td class="personPersonCell">
+                @* @Html.DisplayNameFor(model => model.PersonParentsCount) *@
+                <span>
+                &#9720;
+                &nbsp;&nbsp;</span>
+                <span class="personParentField">
+                2
+                </span><br />
+                @* @Html.DisplayNameFor(model => model.PersonChildrenCount) *@
+                <span class="personChildrenField" style="text-decoration:overline">
+                16
+                </span>
+                <span style="text-decoration:overline">
+                &nbsp;&nbsp;
+                &#9727;
+                </span>
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+            </td>
+        </tr>
+@* }
+ *@    </tbody>
+</table>

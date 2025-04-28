@@ -44,6 +44,7 @@ namespace NetDexTest_01.Models.ViewModels
     public class PersonDexListVM
     {
         public int Id { get; set; }
+        public int? LocalCounter { get; set; }
         public int DexId { get; set; }
         public string Nickname { get; set; }
         public string? NameFirst { get; set; }
