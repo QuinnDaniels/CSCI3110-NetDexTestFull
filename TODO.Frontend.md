@@ -40,3 +40,36 @@ https://stackoverflow.com/a/46121119
 
 
 https://stackoverflow.com/a/59835938
+
+
+
+[URI Parameters binding](https://learn.microsoft.com/en-us/aspnet/web-api/overview/formats-and-model-binding/parameter-binding-in-aspnet-web-api)
+```
+public class GeoPoint
+{
+    public double Latitude { get; set; } 
+    public double Longitude { get; set; }
+}
+
+public ValuesController : ApiController
+{
+    public HttpResponseMessage Get([FromUri] GeoPoint location) { ... }
+}
+```
+
+^^ could be especially useful for PersonPerson
+
+
+- `/dex/{input?}`
+- `/dex/{input!}/Edit`
+- `/dex/{input!}/Details`
+
+- `/dex/{input!}/p/{nickname}` <- ~~eventually: {localCount} (?) I mean, we can use DexHolderListVM -> List<PersonListDexVM> on the backend and since we're already passing email, I mean it should work. but. later...~~ 
+
+- `/dex/{input!}/p/{nickname}/`
+
+
+- `GET /dex/{input!}/pplist`
+
+- `GET /dex/{input!}/pplist/?parent=<ppId>&child=<pcId>`
+
