@@ -60,16 +60,38 @@ public ValuesController : ApiController
 ^^ could be especially useful for PersonPerson
 
 
+
+
 - `/dex/{input?}`
 - `/dex/{input!}/Edit`
 - `/dex/{input!}/Details`
 
-- `/dex/{input!}/p/{nickname}` <- ~~eventually: {localCount} (?) I mean, we can use DexHolderListVM -> List<PersonListDexVM> on the backend and since we're already passing email, I mean it should work. but. later...~~ 
+ ~~eventually: {localCount} (?) I mean, we can use DexHolderListVM -> List<PersonListDexVM> on the backend and since we're already passing email, I mean it should work. but. later...~~ 
+|
+V
+- `/dex/{input!}/p/{nickname}` (detail)
 
-- `/dex/{input!}/p/{nickname}/`
+
+- `/dex/{input!}/p/{nickname}/Edit` 
+
+- `/dex/{input!}/p/{nickname}/rec` (list)
+- `/dex/{input!}/p/{nickname}/rec/{id}`
+    - TODO: viewmodel
+
+- `/dex/{input!}/p/{nickname}/cinfo` (list)
+- `/dex/{input!}/p/{nickname}/cinfo/{id}`
+     - TODO: viewmodel
 
 
 - `GET /dex/{input!}/pplist`
+     - list
+     - `[ppId][ppNickname][related to][pcNickname][pcId][email]`
 
 - `GET /dex/{input!}/pplist/?parent=<ppId>&child=<pcId>`
+
+- `POST /dex/{input!}/pplist (FromForm)`
+     - include drop down menus
+- `PUT /dex/{input!}/pplist (FromForm)`
+     - just include the string
+
 
