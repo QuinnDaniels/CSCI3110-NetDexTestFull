@@ -103,6 +103,7 @@ namespace NetDexTest_01_MVC.Controllers
                 await Console.Out.WriteLineAsync($"\n\n\nresponse: {response.Status}\n");
                 await Console.Out.WriteLineAsync($"\nresponse: {response.Message} \n");
                 await Console.Out.WriteLineAsync($"\nresponse: {response.Email}\n");
+                await Console.Out.WriteLineAsync($"\nresponse: {response.Username}\n");
                 await Console.Out.WriteLineAsync($"\nresponse: {response.AccessToken}\n");
                 await Console.Out.WriteLineAsync($"\nresponse: {response.RefreshToken}\n\n\n");
                 await Console.Out.WriteLineAsync($"\nresponse: {response.Roles}\n\n\n");

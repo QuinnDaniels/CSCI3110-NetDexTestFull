@@ -19,6 +19,7 @@ namespace NetDexTest_01_MVC.Services
         public HttpStatusCode Status { get; set; }
         public string? Message { get; set; } = "default message";
         public string? Email { get; set; }
+        public string? Username { get; set; }
         public string? AccessToken { get; set; }
         public string? RefreshToken { get; set; }
         public string? Roles { get; set; }

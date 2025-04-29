@@ -9,9 +9,14 @@ namespace NetDexTest_01_MVC.Models.Authentication
 {
     public class LoginRequestModel
     {
-        [Required]
+        //[Required]
+
+        public string? Input { get; set; }
+
+        public string? Username { get; set; }
+
         [EmailAddress]
-        public string Email { get; set; }
+        public string? Email { get; set; }
 
         [Required]
         [DataType(DataType.Password)]

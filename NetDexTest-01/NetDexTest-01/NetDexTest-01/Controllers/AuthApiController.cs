@@ -448,15 +448,15 @@ namespace NetDexTest_01.Controllers
                     });
             }
 
-
+            
             // Return tokens in body for MVC app to consume
             return Ok(new
             {
                 Email = user.Email, //tokenResponse.UserOut
                 Username = user.UserName,
                 Roles = rolesString, //tokenResponse.Roles,
-                AccessToken = tokenResponse.Token,
-                RefreshToken = tokenResponse.RefreshToken //refreshToken //tokenResponse.RefreshToken
+                //AccessToken = tokenResponse.Token,
+                //RefreshToken = tokenResponse.RefreshToken //refreshToken //tokenResponse.RefreshToken
             }); ;
         }
 

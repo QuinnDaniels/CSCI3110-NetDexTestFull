@@ -9,7 +9,9 @@
         void SetUserSession(string email, string accessToken, string refreshToken, List<string> roles);
         Task SetUserSessionAsync(string email, string accessToken, string refreshToken);
         Task SetUserSessionAsync(string email, string accessToken, string refreshToken, List<string> roles);
+        Task SetUserSessionAsync(string email, string accessToken, string refreshToken, List<string> roles, string username);
         Task SetUserSessionAsync(string email, string accessToken, string refreshToken, string rolesString);
+        Task SetUserSessionAsync(string email, string accessToken, string refreshToken, string rolesString, string username);
         Task CloseUserSessionData();
         bool HasRole(string searchrole);
         Task<bool> HasRoleAsync(string searchrole);
@@ -22,9 +24,14 @@
         Task<bool> HasAllRolesAsync(List<string> searchrole);
         Task<bool> HasAllRolesAsync(params string[] items);
 
+        Task SetTempCheckAsync(string email);
+        Task CloseTempSessionData();
 
-
+        Task StorePasswordSessionDataAsync(string pass);
+        string GetPass();
         string GetEmail();
+        string GetTempEmail();
+        string GetUsername();
         string GetAccessToken();
         string GetRefreshToken();
         bool IsLoggedIn();

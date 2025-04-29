@@ -121,6 +121,7 @@ namespace NetDexTest_01.Controllers
         [HttpGet("dex/{id}")]
         public async Task<IActionResult> GetOneDex(string id)
         {
+            // id should work as a username, userId, and an Email
             var user = await _userRepo.GetDexHolderMiddleVMAsync(id);
 
 

@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Authentication;
 using NetDexTest_01_MVC.Models;
 using NetDexTest_01_MVC.Models.Authentication;
 using System.Net.Http;
+using NetDexTest_01_MVC.Models.ViewModels;
 
 
 namespace NetDexTest_01_MVC.Services
@@ -354,6 +355,7 @@ namespace NetDexTest_01_MVC.Services
             LoginResponse loginResponse = new LoginResponse();
             
             await Console.Out.WriteLineAsync($"\n\n\n--------LoginRequest------email-------\n\n{request.Email}\n\n\n-----------------------");
+            await Console.Out.WriteLineAsync($"\n\n\n--------LoginRequest------email-------\n\n{request.Email}\n\n\n-----------------------");
             await Console.Out.WriteLineAsync($"\n\n\n--------LoginRequest------password----\n\n{request.Password}\n\n\n-----------------------");
             await Console.Out.WriteLineAsync($"\n\n\n--------httpResponse------------------\n\n{httpResponse.Content.ReadAsStringAsync()}\n\n\n-----------------------");
             //await Console.Out.WriteLineAsync($"\n\n\n--------httpResponse-----json---------\n\n{httpResponse.Content.ReadFromJsonAsync<LoginResponse>()}\n\n\n-----------------------");
@@ -373,6 +375,8 @@ namespace NetDexTest_01_MVC.Services
                 loginResponse = await httpResponse.Content.ReadFromJsonAsync<LoginResponse>();
                 await Console.Out.WriteLineAsync($"\n\n\n--------HTTP RESPONSE-----------------\n\n{loginResponse.ToString}\n\n\n-----------------------");
                 //await Console.Out.WriteLineAsync($"\n\n\n--------HTTP RESPONSE-----------------\n\n{await httpResponse.Content.ReadAsStringAsync()}\n\n\n-----------------------");
+                await _userSessionService.StorePasswordSessionDataAsync(request.Password);
+                
             }
 
             else
@@ -385,6 +389,109 @@ namespace NetDexTest_01_MVC.Services
             }
             return loginResponse;
         }
+
+
+        public async Task<bool> CheckInputAgainstSessionAsync(string id)
+        {
+            string currUsername = _userSessionService.GetUsername();
+            string currEmail = _userSessionService.GetEmail();
+            string currPass = _userSessionService.GetPass();
+            bool flagSetter = false;
+
+            LoginRequest verification = new LoginRequest()
+            {
+                Password = currPass
+            };
+
+            if(id == currUsername)
+            {
+                verification!.Email = currEmail;
+                verification!.Username = id;
+            }
+            else if(id == currEmail)
+            {
+                verification!.Email = id;
+                verification!.Username = currUsername;
+            }
+
+            var url = _config["apiService:userCheckUrl"];
+            var httpResponse = await _apiService.MakeHttpCallAsync(
+                httpMethod: HttpMethod.Post,
+                url: url,
+                bodyContent: verification
+                );
+            LoginResponse loginResponse = new LoginResponse();
+
+            if (httpResponse.IsSuccessStatusCode)
+            {
+                loginResponse = await httpResponse.Content.ReadFromJsonAsync<LoginResponse>();
+                
+                if(loginResponse!=null && loginResponse.Username == currUsername && loginResponse.Email == currEmail)
+                {
+                    flagSetter = true;
+                }
+            }
+
+            else
+            {
+                await Console.Out.WriteLineAsync($"\n\n\n--------HTTP RESPONSE----is success?--\n\n{httpResponse.IsSuccessStatusCode}\n\n\n-----------------------");
+                //else if login failed, map the error message
+                var errMessage = await httpResponse.Content.ReadAsStringAsync();
+                loginResponse.Status = httpResponse.StatusCode;
+                loginResponse.Message = errMessage;
+                await Console.Out.WriteLineAsync( $"{loginResponse.Status}");
+                await Console.Out.WriteLineAsync( $"{loginResponse.Message}" );
+            }
+
+            return flagSetter;
+
+        }
+
+
+        public async Task<bool> CheckIfUserExistsAsync(string id)
+        {
+            //var client = _httpClientFactory.CreateClient("API");
+            //var response = await client.PostAsJsonAsync("auth/login", request);
+
+            bool flagCheck = false;
+
+            var url = _config["apiService:dexViewUrl"];
+            url = url + $"/{id}";
+            
+            var httpResponse = await _apiService.MakeHttpCallAsync(
+                httpMethod: HttpMethod.Get,
+                url: url
+                //bodyContent: request
+                );
+            DexHolderMiddleVMResponse loginResponse = new();
+
+
+            if (httpResponse.IsSuccessStatusCode)
+            {
+                loginResponse = await httpResponse.Content.ReadFromJsonAsync<DexHolderMiddleVMResponse>();
+                await Console.Out.WriteLineAsync($"\n\n\n--------HTTP RESPONSE-----------------\n\n{httpResponse.ToString}\n\n\n-----------------------");
+                await Console.Out.WriteLineAsync($"\n\n\n--------HTTP RESPONSE-----------------\n\n{httpResponse.Status}\n\n\n-----------------------");
+                //await Console.Out.WriteLineAsync($"\n\n\n--------HTTP RESPONSE-----------------\n\n{await httpResponse.Content.ReadAsStringAsync()}\n\n\n-----------------------");
+                await _userSessionService.SetTempCheckAsync(loginResponse.ApplicationEmail);
+                flagCheck = true;
+                
+            }
+
+            else
+            {
+                await Console.Out.WriteLineAsync($"\n\n\n--------HTTP RESPONSE-----------------\n\n{loginResponse.Message}\n\n\n-----------------------");
+                await Console.Out.WriteLineAsync($"\n\n\n--------HTTP RESPONSE----is success?--\n\n{httpResponse.IsSuccessStatusCode}\n\n\n-----------------------");
+                //else if login failed, map the error message
+                var errMessage = await httpResponse.Content.ReadAsStringAsync();
+                loginResponse.Status = httpResponse.StatusCode;
+                loginResponse.Message = errMessage;
+                await Console.Out.WriteLineAsync($"\n\n\\n--------HTTP RESPONSE-----------------\n\n{loginResponse.Status}\n\n\n-----------------------");
+                await Console.Out.WriteLineAsync($"\n\n\n--------HTTP RESPONSE-----------------\n\n{loginResponse.Title}\n\n\n-----------------------");
+                await Console.Out.WriteLineAsync($"\n\n\n--------HTTP RESPONSE-----------------\n\n{loginResponse.Message}\n\n\n-----------------------");
+            }
+            return flagCheck;
+        }
+
 
 
     }
