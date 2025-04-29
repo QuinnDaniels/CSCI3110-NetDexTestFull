@@ -186,13 +186,13 @@ async function populateDetails(userRepo, DexHolderMiddleVM) {
         }
         const h5 = document.createElement('h5');
         h5.appendChild(document.createTextNode("Role(s):"));
-        console.log(h5);
+        //console.log(h5);
         tdRole.appendChild(h5);
-        console.log(tdRole);
+        //console.log(tdRole);
         const ulRole = DOM.createULfromArrayProperty(DexHolderMiddleVM.Roles, "RoleName")
-        console.log(ulRole);
+        //console.log(ulRole);
         tdRole.appendChild(ulRole);
-        console.log(tdRole);
+        //console.log(tdRole);
     } catch (e) {
         console.log("ERROR: something went wrong while making roles!!", e)
 

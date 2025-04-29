@@ -3,7 +3,7 @@
 <p>
     <a asp-action="Create">Create New</a>
 </p>
-<table class="table">
+<table class="table" style="overflow-x:scroll;">
     <thead>
         <tr>
             <th>
@@ -115,7 +115,7 @@
             <th></th>
         </tr>
     </thead>
-    <tbody>
+    <tbody id="peopleTableBody">
 @* @foreach (var item in Model) {
  *@        <tr hidden id=" templateRow d-none">
             <td class="regionalNumberCell">
@@ -144,7 +144,8 @@
 
 
             <td>
-                @Html.DisplayNameFor(model => model.Nickname)
+               @*  @Html.DisplayNameFor(model => model.Nickname) *@
+               Lovely Daughter
             </td>
 
             <td class="firstNameCell">

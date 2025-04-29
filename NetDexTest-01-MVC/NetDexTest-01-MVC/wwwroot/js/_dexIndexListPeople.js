@@ -16,25 +16,91 @@ const userRepo = new UserRepository("https://localhost:7134/api/user"); // insta
 const email = document.getElementById("email").value;
 DOM.logElementToConsole(email);
 const dexResponse = await userRepo.readDex(email);
-console.log(dexResponse);
-
+console.log("LIST dexResponse: ", dexResponse);
+console.log("LIST people: ", dexResponse.People);
+const PeopleArray = dexResponse.People;
 
 
 /*--------------------------------*/
 async function standardFetchTest() {
-    const response = await fetch(`https://localhost:7134/api/user/dex/${email}`);
+    //const response = await fetch(`https://localhost:7134/api/user/dex/${email}`);
+    const response = dexResponse.People;
     if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
     }
     else {
         console.log(response);
-        const data = await response.json();
-        console.log(data);
-        console.log(data.Roles);
+        //const data = await response.json();
+        //console.log(data);
+        //console.log(data.People);
     }
 }
 /*--------------------------------*/
 async function populatePeopleList(userRepo, PersonDexListVM) {
+
+    
+
+
+
+    //CiSocialMediasCount
+    //:
+    //1
+    //DateOfBirth
+    //:
+    //"2025-04-17T11:50:11.6023837"
+    //DexId
+    //:
+    //10
+    //Favorite
+    //:
+    //false
+    //Gender
+    //:
+    //""
+    //Id
+    //:
+    //2
+    //LocalCounter
+    //:
+    //2
+    //NameFirst
+    //:
+    //"---"
+    //NameLast
+    //:
+    //"---"
+    //NameMiddle
+    //:
+    //"---"
+    //Nickname
+    //:
+    //"skullybones"
+    //PersonChildrenCount
+    //:
+    //9
+    //PersonParentsCount
+    //:
+    //6
+    //PhNameFirst
+    //:
+    //"---"
+    //PhNameLast
+    //:
+    //"---"
+    //PhNameMiddle
+    //:
+    //"---"
+    //Pronouns
+    //:
+    //""
+    //Rating
+    //:
+    //0
+    //RcEntryItemsCount
+    //:
+    //1
+
+
 
     let h3DexId = document.getElementById("dexIdHead");              //h3 -> append(textNode) 
     let h3UserName = document.getElementById("userNameHead");        //h3 -> append(textNode)
@@ -144,3 +210,45 @@ async function populatePeopleList(userRepo, PersonDexListVM) {
 
 
 }
+
+
+
+function addPersonToTable(tbody, PersonDexListVM) {
+    //const tr = document.createElement("tr");
+    try {
+        console.log("LOG: addPersonToTable(PersonDexListVM): ", PersonDexListVM);
+        let tr = DOM.createPersonDexListRow(PersonDexListVM);
+        tbody.appendChild(tr);
+        console.log("LOG: addPersonToTable(tbody): ", tr);
+        return tr
+    } catch (e) {
+        console.error("ERROR: addPersonToTable(tbody): ", e);
+    }
+}
+
+async function populatePeople(peopleIn) {
+    let tbody = document.getElementById("peopleTableBody");
+    console.log("LOG: populatePeople() -> tbody: ", tbody);
+    try {
+        let people = peopleIn.toSorted(function (a, b) { return a.Id - b.Id });
+        console.log(people);
+
+        people.forEach((PersonDexListVM) => {
+            console.log('POPULATING LIST: ',
+                tbody.appendChild(
+                    addPersonToTable(tbody, PersonDexListVM)
+                ))
+        });
+
+        tbody.appendChild(addPersonToTable(tbody));
+
+    } catch (e) {
+        console.error("ERROR: List -> populatePeople: ", e);
+    }
+
+}
+
+await populatePeople(PeopleArray);
+/*----------------------------------*/
+
+
