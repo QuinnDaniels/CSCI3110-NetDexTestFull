@@ -114,7 +114,10 @@ namespace NetDexTest_01.Controllers
             }
             if (user == null) return NotFound();
 
-            return Ok(user);
+            return Ok(new//user
+            {
+                ApplicationEmail = user.Email
+            });
         }
 
 

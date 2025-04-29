@@ -7,6 +7,8 @@
 
 @{
     ViewData["Title"] = "Home Page";
+    await _userSessionService.CloseTempSessionData();
+
 }
 
 <h1>NetDexTest_MVC Homepage</h1>

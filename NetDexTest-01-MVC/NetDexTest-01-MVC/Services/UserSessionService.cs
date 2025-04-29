@@ -85,7 +85,7 @@ namespace NetDexTest_01_MVC.Services
             session.SetString("StringRoles", roleString);
             await Console.Out.WriteLineAsync($"\n\nRoles:\t{session.GetString("StringRoles")}");
             await Console.Out.WriteLineAsync($"\n\nEmail:\t{session.GetString("Email")}");
-            await Console.Out.WriteLineAsync($"\n\nEmail:\t{session.GetString("Username")}");
+            await Console.Out.WriteLineAsync($"\n\nUsername:\t{session.GetString("Username")}");
             await Console.Out.WriteLineAsync($"\n\nAccessToken:\t{session.GetString("AccessToken")}");
             await Console.Out.WriteLineAsync($"\n\nRefreshToken:\t{session.GetString("RefreshToken")}\n\n\n");
 
@@ -124,7 +124,7 @@ namespace NetDexTest_01_MVC.Services
 
             await Console.Out.WriteLineAsync($"\n\nRoles:\t{session.GetString("StringRoles")}");
             await Console.Out.WriteLineAsync($"\n\nEmail:\t{session.GetString("Email")}");
-            await Console.Out.WriteLineAsync($"\n\nEmail:\t{session.GetString("Username")}");
+            await Console.Out.WriteLineAsync($"\n\nUsername\t{session.GetString("Username")}");
             await Console.Out.WriteLineAsync($"\n\nAccessToken:\t{session.GetString("AccessToken")}");
             await Console.Out.WriteLineAsync($"\n\nRefreshToken:\t{session.GetString("RefreshToken")}\n\n\n");
 
@@ -159,6 +159,13 @@ namespace NetDexTest_01_MVC.Services
             await ConOut("\n\nStoring password...\n\n");
             var session = _httpContextAccessor.HttpContext.Session;
             session.SetString("Pass", pass);
+        }
+
+        public async Task StoreCurrentUserDataAsync(string uName)
+        {
+            await ConOut("\n\nStoring username...\n\n");
+            var session = _httpContextAccessor.HttpContext.Session;
+            session.SetString("Username", uName);
         }
 
         private async Task MakeRequest()

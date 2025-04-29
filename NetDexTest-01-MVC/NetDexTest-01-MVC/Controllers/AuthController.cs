@@ -87,6 +87,7 @@ namespace NetDexTest_01_MVC.Controllers
         [HttpPost]
         public async Task<IActionResult> Login([FromForm]LoginRequest loginRequest)
         {
+            await Console.Out.WriteLineAsync($"\n\n--------POST /auth/login Reached!---------\n\n");
             if (!ModelState.IsValid)
             {
                 //return error messages
@@ -127,7 +128,7 @@ namespace NetDexTest_01_MVC.Controllers
                         // Save to custom session service
                         //_userSessionService.SetUserSession(response.Email, response.AccessToken, response.RefreshToken);
                         await Console.Out.WriteLineAsync("\n\n---login----- Setting UserSession ----------\n\n");
-                        await _userSessionService.SetUserSessionAsync(response.Email, response.AccessToken, response.RefreshToken, response.Roles);
+                        await _userSessionService.SetUserSessionAsync(response.Email, response.AccessToken, response.RefreshToken, response.Roles, response.Username);
                         
                         await Console.Out.WriteLineAsync("\n\n---  END ----- Setting UserSession ----------\n\n");
                         await Console.Out.WriteLineAsync("---isLoggedIn -                           ---\n");

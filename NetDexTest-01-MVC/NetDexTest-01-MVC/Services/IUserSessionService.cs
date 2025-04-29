@@ -28,6 +28,7 @@
         Task CloseTempSessionData();
 
         Task StorePasswordSessionDataAsync(string pass);
+        Task StoreCurrentUserDataAsync(string uName);
         string GetPass();
         string GetEmail();
         string GetTempEmail();

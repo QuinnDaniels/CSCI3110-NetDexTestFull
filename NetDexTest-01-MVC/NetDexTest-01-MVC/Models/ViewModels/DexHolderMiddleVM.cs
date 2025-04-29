@@ -27,6 +27,49 @@ namespace NetDexTest_01_MVC.Models.ViewModels
     }
 
 
+    public class DexHolderMiddleVMResponse
+    {
+        public HttpStatusCode Status { get; set; }
+        public string? Title { get; set; } = "default title";
+        public string? Message { get; set; } = "default message";
+        public int DexId { get; set; } = -1;
+        public string ApplicationUserId { get; set; }
+        public string ApplicationUserName { get; set; }
+        public string ApplicationEmail { get; set; } // from appUser
+        public string? FirstName { get; set; }
+        public string? MiddleName { get; set; }
+        public string? LastName { get; set; }
+        public string? Gender { get; set; }
+        public string? Pronouns { get; set; }
+        public DateTime? DateOfBirth { get; set; }
+        public List<RoleVM> Roles { get; set; } = new List<RoleVM>();
+        public List<PersonDexListVM> People { get; set; } = new List<PersonDexListVM>();
+        //public ApplicationUser ApplicationUser { get; set; }
+        public int PeopleCount { get; set; } = -1;
+
+        public DexHolderMiddleVM getInstanceDexHolderMiddleVM()
+        {
+            DexHolderMiddleVM outDex = new()
+            {
+                DexId = this.DexId,
+                ApplicationUserId = this.ApplicationUserId,
+                ApplicationUserName = this.ApplicationUserName,
+                ApplicationEmail = this.ApplicationEmail,
+                FirstName = this.FirstName,
+                MiddleName = this.MiddleName,
+                LastName = this.LastName,
+                Gender = this.Gender,
+                Pronouns = this.Pronouns,
+                DateOfBirth = this.DateOfBirth,
+                Roles = this.Roles,
+                People = this.People
+            };
+            return outDex;
+        }
+    }
+
+
+
     public class PersonDexListVM
     {
         public int Id { get; set; }
