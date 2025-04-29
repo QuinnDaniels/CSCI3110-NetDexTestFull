@@ -15,6 +15,9 @@ namespace NetDexTest_01.Models
         [Display(Name = "Username")]
         public string? Username { get; set; }
 
+        [Display(Name = "Input")]
+        public string? Input { get; set; }
+
         [Required]
         [Display(Name = "Password")]
         public string? Password { get; set; }

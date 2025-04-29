@@ -257,8 +257,22 @@ namespace NetDexTest_01.Controllers
         [HttpPost("login2")]
         public async Task<IActionResult> Login2([FromBody] LoginModel model)
         {
-            var user = await _userManager.FindByEmailAsync(model.Email);
-            if (user == null || !await _userManager.CheckPasswordAsync(user, model.Password))
+            ApplicationUser? user = null;
+            if(model.Email != null)
+            {
+                user = await _userManager.FindByEmailAsync(model.Email);
+            }
+            if (model.Username != null && user == null)
+            {
+                user = await _userManager.FindByNameAsync(model.Username);
+            }
+            if (user == null && model.Input != null )
+            {
+                user = await _userManager.FindByNameAsync(model.Input);
+                if (user == null) { user = await _userManager.FindByEmailAsync(model.Input); }
+            }
+            
+            if (user == null || model.Password == null || !await _userManager.CheckPasswordAsync(user, model.Password))
             {
                 return Unauthorized("Invalid credentials.");
             }
@@ -328,11 +342,124 @@ namespace NetDexTest_01.Controllers
             return Ok(new
             {
                 Email = user.Email, //tokenResponse.UserOut
+                Username = user.UserName,
                 Roles = rolesString, //tokenResponse.Roles,
                 AccessToken = tokenResponse.Token,
                 RefreshToken = tokenResponse.RefreshToken //refreshToken //tokenResponse.RefreshToken
             });;
         }
+
+
+        [HttpPost("loginDouble")]
+        public async Task<IActionResult> LoginDouble([FromBody] LoginModel model)
+        {
+            ApplicationUser? user = null;
+            ApplicationUser? userCompare = null;
+            bool compareFlag = !true;
+            string badMessage = "";
+            if (model.Email != null && model.Username != null)
+            {
+                user = await _userManager.FindByEmailAsync(model.Email);
+                userCompare = await _userManager.FindByNameAsync(model.Username);
+
+                if(user!=null && userCompare != null)
+                {
+                    if (user.Email != userCompare.Email || user.UserName != userCompare.UserName)
+                    {
+                        badMessage = "\n\tEmail and Username do not match the same user! ";
+                        compareFlag = !false;
+                    }
+                }
+
+            }
+            if (model.Username == null) { badMessage = badMessage + "\n\tUsername cannot be null! "; }
+            if (model.Email == null) { badMessage = badMessage + "\n\tEmail cannot be null! "; }
+            if(user == null) { badMessage = badMessage + "\n\tEmail did not match a user! ";  }
+            if (userCompare == null) { badMessage = badMessage + "\n\tUsername did not match a user! ";  }
+
+            if (compareFlag == !false) { user = null; }
+            if (model.Input != null) { badMessage = badMessage + "\nInput was unnecessary, but it didn't cause an error... ";  }
+            
+
+            if(user == null) { return Unauthorized($"Invalid credentials.\n{badMessage}"); }
+
+            if (model.Password == null || !await _userManager.CheckPasswordAsync(user, model.Password))
+            {
+                return Unauthorized("Invalid credentials.");
+            }
+
+            // Generate access & refresh tokens
+            var tokenResponse = await _userRepo.GetTokens(user); //_tokenService.GenerateAccessToken(user);
+
+            var rolesList = await _userManager.GetRolesAsync(user);//.ConfigureAwait(false);
+            //tokenResponse.Roles = rolesList.ToList();
+            tokenResponse.Roles = rolesList.ToList();
+
+
+
+            string rolesString = rolesList.ToList().Aggregate("", (current, s) => current + (s + "+"));
+
+
+            //var refreshToken = _userRepo.GetRefreshToken(); // _tokenService.GenerateRefreshToken(user);
+
+            // Optional: set refresh token in cookie
+            Response.Cookies.Append("RefreshToken", tokenResponse.RefreshToken, //refreshToken,
+                new CookieOptions
+                {
+                    HttpOnly = true,
+                    //Secure = true,
+                    SameSite = SameSiteMode.Strict,
+                    Expires = DateTimeOffset.UtcNow.AddDays(7)
+                });
+            if (user != null)
+            {
+                Response.Cookies.Append("Username", user.UserName,
+                    new CookieOptions()
+                    {
+                        HttpOnly = true,
+                        SameSite = SameSiteMode.Strict
+                    });
+            }
+            if (tokenResponse.Token != null)
+            {
+                Response.Cookies.Append("Access-Token", tokenResponse.Token,
+                new CookieOptions()
+                {
+                    HttpOnly = true,
+                    SameSite = SameSiteMode.Strict
+                });
+            }
+            if (tokenResponse.UserOut != null)
+            {
+                Response.Cookies.Append("Email", tokenResponse.UserOut,
+                    new CookieOptions()
+                    {
+                        HttpOnly = true,
+                        SameSite = SameSiteMode.Strict
+                    });
+            }
+            if (tokenResponse.UserOut != null)
+            {
+                Response.Cookies.Append("Roles", rolesString, //tokenResponse.Roles,
+                    new CookieOptions()
+                    {
+                        HttpOnly = true,
+                        SameSite = SameSiteMode.Strict
+                    });
+            }
+
+
+            // Return tokens in body for MVC app to consume
+            return Ok(new
+            {
+                Email = user.Email, //tokenResponse.UserOut
+                Username = user.UserName,
+                Roles = rolesString, //tokenResponse.Roles,
+                AccessToken = tokenResponse.Token,
+                RefreshToken = tokenResponse.RefreshToken //refreshToken //tokenResponse.RefreshToken
+            }); ;
+        }
+
 
 
     }
