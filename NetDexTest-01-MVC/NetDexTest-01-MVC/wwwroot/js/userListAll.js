@@ -93,6 +93,24 @@ function addUserToTable(tbody, AdminUserVM) {
     tr.appendChild(DOM.createTextTD(AdminUserVM.FirstName));
     tr.appendChild(DOM.createTextTD(AdminUserVM.LastName));
     tr.appendChild(DOM.createTextTD(AdminUserVM.PeopleCount));
+
+    // CHATGPT
+    // Add View Link TD
+    const viewTd = document.createElement("td");
+    console.log("LOG: BTN: ", viewTd)
+    const link = document.createElement("a");
+    console.log("LOG: BTN: ", link )
+    link.setAttribute("href", `/dex/u/${AdminUserVM.Email}`);
+    console.log("LOG: BTN: ", link)
+    link.setAttribute("class", "btn btn-info btn-sm");
+    console.log("LOG: BTN: ", link)
+    link.textContent = "View Dex";
+    console.log("LOG: BTN: ", link)
+    viewTd.appendChild(link);
+    console.log("LOG: BTN: ", viewTd)
+    tr.appendChild(viewTd);
+
+
     tr.appendChild(DOM.createTextTD(AdminUserVM.AccessFailedCount));
 
     //const uRoles = AdminUserVM.Roles.filter(user)
