@@ -61,25 +61,25 @@ public ValuesController : ApiController
 
 
 
-
-- `/dex/{input?}`
-- `/dex/{input!}/Edit`
-- `/dex/{input!}/Details`
+- [x] `/dex/list`
+- [x] `/dex/u/{input?}`
+- [ ] `/dex/{input!}/Edit`
+- [ ] `/dex/{input!}/Details`
 
  ~~eventually: {localCount} (?) I mean, we can use DexHolderListVM -> List<PersonListDexVM> on the backend and since we're already passing email, I mean it should work. but. later...~~ 
 |
 V
-- `/dex/{input!}/p/{nickname}` (detail)
+- [ ] `/dex/{input!}/p/{nickname}` (detail)
 
 
-- `/dex/{input!}/p/{nickname}/Edit` 
+- [ ] `/dex/{input!}/p/{nickname}/Edit` 
 
-- `/dex/{input!}/p/{nickname}/rec` (list)
-- `/dex/{input!}/p/{nickname}/rec/{id}`
+- [ ] `/dex/{input!}/p/{nickname}/rec` (list)
+- [ ] `/dex/{input!}/p/{nickname}/rec/{id}`
     - TODO: viewmodel
 
-- `/dex/{input!}/p/{nickname}/cinfo` (list)
-- `/dex/{input!}/p/{nickname}/cinfo/{id}`
+- [ ]`/dex/{input!}/p/{nickname}/cinfo` (list)
+- [ ]`/dex/{input!}/p/{nickname}/cinfo/{id}`
      - TODO: viewmodel
 
 
