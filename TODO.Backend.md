@@ -9,12 +9,12 @@
 ### BACKEND **TO-DO** LIST
 
 
-- [ ] AuthApiController
+- [x] AuthApiController
 
 - [ ] AdminUserController
-  - [ ] Get Users
-  - [ ] Get Users(string id)
-  - [ ] ? Insert User (ApplicationUser user)
+  - [x] Get Users
+  - [x] Get Users(string id)
+  - [x] ? Insert User (ApplicationUser user)
   - [ ] Update User (string id, ApplicationUser user)
   - [ ] Delete User (string id)
 
@@ -25,14 +25,14 @@
   - [ ] Update DexHolder (string id, DexHolder dexHolder)
   - [ ] Delete DexHolder (string id)
 
-- [ ] AdminPeopleController
-  - [ ] GetAllPeople
-  - [ ] GetAllPeople ()
+- ~~[ ] AdminPeopleController~~
+  - ~~[ ] GetAllPeople~~
+  - ~~[ ] GetAllPeople ()~~
 
 - [ ] PeopleController
-  - [ ] Get People ()
-  - [ ] ~~Get People (int id)~~ <-- (wait until id is not just an int)
-  - [ ] Get People (string nickname)
+  - [x] Get People ()
+  - ~~[ ] Get People (int id)~~ <-- (wait until id is not just an int)
+  - [x] Get People (string nickname)
   - [ ] Insert Person (Person person)
   - [ ] Update Person
     - [ ] (string nickname, Person updatedPerson)
@@ -42,12 +42,12 @@
     - [ ] (string pId)
   
 - [ ] AdminRecordCollectorController
-    - [ ] Get All Entries
+    - [x] Get All Entries
 
 
-- [ ] EntryItemsController
-    - [ ] Get Entries
-    - [ ] Get Entries ()
+- ~~[ ] EntryItemsController~~
+    - [x] Get Entries
+    - [x] Get Entries ()
 
 
 ***Misc***
