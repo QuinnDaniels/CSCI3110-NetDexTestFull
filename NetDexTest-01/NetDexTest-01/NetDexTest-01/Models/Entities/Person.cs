@@ -41,6 +41,29 @@ namespace NetDexTest_01.Models.Entities
 
         }
 
+        public Person(string nickName, DexHolder dexHolder, int rating)
+        {
+            Nickname = nickName;
+            DexHolder = dexHolder;
+            FullName = new FullName();
+            Rating = rating;
+            RecordCollector = new RecordCollector()
+            {
+                EntryItems = new List<EntryItem>
+                {
+                    new EntryItem { ShortTitle = "Example", FlavorText = $"This is an example entry! It was automatically created on [ ${DateTime.Now} ]!" }
+                }
+            };
+            ContactInfo = new ContactInfo()
+            {
+                SocialMedias = new List<SocialMedia>
+                    {
+                        new SocialMedia {  CategoryField = "example category", SocialHandle = "@NetDexTest-01_Example_SocialHandle" }
+                    }
+            };
+
+        }
+
 
 
         [Key]

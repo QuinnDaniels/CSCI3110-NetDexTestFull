@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages.Manage;
 using NetDexTest_01.Models.Entities;
 
 namespace NetDexTest_01.Services
@@ -37,15 +38,7 @@ namespace NetDexTest_01.Services
         {
             return await GetPersonByNickNameWithDex(nickName, dex);
         }
-        /// <remarks>
-        /// Uses a
-        /// <see cref="PropertyField"/>
-        /// [ <see cref="PropertyField.id"/> | <see cref="PropertyField.username"/> ]
-        /// to search for a <see cref="DexHolder"/> with which it combines
-        /// with the nickName to find a <see cref="Person"/>
-        /// 
-        /// </remarks>
-        /// <inheritdoc cref="GetPersonByNickName()" />
+
         public async Task<Person?> GetPersonByNickName(PropertyField pType, string inputProperty, string nickName)
         {
             var person = new Person();
@@ -57,8 +50,9 @@ namespace NetDexTest_01.Services
                 case PropertyField.username:
                     person = await GetPersonByNickNameWithUserNameAsync(inputProperty, nickName);
                     break;
-                //case PropertyField.email:
-                //    break;
+                case PropertyField.email:
+                    person = await GetPersonByNickNameWithEmailAsync(inputProperty, nickName);
+                    break;
                 default:
                     throw new ArgumentException();
                     break;
@@ -66,9 +60,46 @@ namespace NetDexTest_01.Services
             return person;
         }
 
+        ///// <remarks> Used by: <code><seealso cref="GetPersonByNickName(string, ApplicationUser)"/></code> </remarks>
+        ///// <inheritdoc cref="GetPersonByNickNameTool()" />
+        //public async Task<Person?> GetPersonByNickNameWithEmail(string email, ApplicationUser user)
+        //{
+        //    var ufind = await _db.Users
+        //        .FirstOrDefaultAsync(u => u.Email == email);
 
-        /// <remarks> Used by: <code><seealso cref="GetPersonByNickName(string, ApplicationUser)"/></code> </remarks>
-        /// <inheritdoc cref="GetPersonByNickNameTool()" />
+        //    if (ufind != null)
+        //    {
+
+        //    var pp = await _db.Person
+        //        .Where(p => p.DexHolderId == user.DexHolder.Id)
+        //        .Where(p => p.Nickname == nickName).FirstOrDefaultAsync();
+        //    return pp;
+
+
+        //    }
+
+        //    return await _db.Person.Include(p => p.DexHolder)
+        //            .FirstOrDefaultAsync(dh => dh.ApplicationUserName == ufind.UserName);
+        //                    .ThenInclude(dh => )
+
+        //        return await _db.DexHolder
+        //            .Include(dh => dh.ApplicationUser)
+        //            .Include(dh => dh.People)
+        //            .ThenInclude(p => p.FullName)
+        //            .Include(dh => dh.People)
+        //            .ThenInclude(p => p.ContactInfo)
+        //            .ThenInclude(ci => ci.SocialMedias)
+        //            .Include(dh => dh.People)
+        //            .ThenInclude(p => p.RecordCollector)
+        //            .ThenInclude(rc => rc.EntryItems)
+        //            .Include(dh => dh.People)
+        //            .ThenInclude(p => p.PersonChildren)
+        //            .Include(dh => dh.People)
+        //            .ThenInclude(p => p.PersonParents)
+        //            .FirstOrDefaultAsync(dh => dh.ApplicationUserName == ufind.UserName);
+
+
+
         public async Task<Person?> GetPersonByNickNameWithUser(string nickName, ApplicationUser user)
         {
             var pp = await _db.Person
@@ -77,8 +108,6 @@ namespace NetDexTest_01.Services
             return pp;
         }
 
-        /// <remarks> Used by: <code><seealso cref="GetPersonByNickName(string, DexHolder)"/></code> </remarks>
-        /// <inheritdoc cref="GetPersonByNickNameTool()" />
         public async Task<Person?> GetPersonByNickNameWithDex(string nickName, DexHolder dexHolder)
         {
             var pp = await _db.Person
@@ -87,11 +116,6 @@ namespace NetDexTest_01.Services
             return pp;
         }
 
-        /// <remarks>
-        /// Used by: <code><seealso cref="GetPersonByNickName(PropertyField, string, string)"/></code>
-        /// with <see cref="PropertyField.username" />
-        /// </remarks>
-        /// <inheritdoc cref="GetPersonByNickNameTool()" />
         public async Task<Person?> GetPersonByNickNameWithUserNameAsync(string userName, string nickName)
         {
             var dex = await _userRepo.GetDexHolderByUserNameAsync(userName);
@@ -102,11 +126,16 @@ namespace NetDexTest_01.Services
             return pp;
         }
 
-        /// <remarks>
-        /// Used by: <code><seealso cref="GetPersonByNickName(PropertyField, string, string)"/></code>
-        /// with <see cref="PropertyField.id" />
-        /// </remarks>
-        /// <inheritdoc cref="GetPersonByNickNameTool()" />
+        public async Task<Person?> GetPersonByNickNameWithEmailAsync(string email, string nickName)
+        {
+            var dex = await _userRepo.GetDexHolderByEmailAsync(email);
+
+            var pp = await _db.Person
+                .Where(p => p.DexHolderId == dex.Id)
+                .Where(p => p.Nickname == nickName).FirstOrDefaultAsync();
+            return pp;
+        }
+
         public async Task<Person?> GetPersonByNickNameWithUserIdAsync(string userId, string nickName)
         {
             var dex = await _userRepo.GetDexHolderByUserIdAsync(userId);
@@ -117,12 +146,6 @@ namespace NetDexTest_01.Services
             return pp;
         }
 
-        /// <summary>
-        /// Uses the Index to find a Person. Looks for the record with a unique (NickName, DexId) combination
-        /// </summary>
-        /// <param name="dexHolderId"></param>
-        /// <param name="personNickname"></param>
-        /// <returns></returns>
         public async Task<Person?> ReadPersonByNickNameAsync(int dexHolderId, string personNickname)
         {
             var pp = await _db.Person
@@ -132,11 +155,6 @@ namespace NetDexTest_01.Services
 
         }
 
-        /// <summary>
-        /// Find a Person using the primary key of Persons
-        /// </summary>
-        /// <param name="personId"></param>
-        /// <returns></returns>
         public async Task<Person?> ReadPersonByIdAsync(int personId)
         {
             var person = await _db.Person.FirstOrDefaultAsync(p => p.Id == personId);

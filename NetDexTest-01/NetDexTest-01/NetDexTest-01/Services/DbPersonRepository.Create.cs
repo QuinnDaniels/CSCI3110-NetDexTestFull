@@ -278,7 +278,7 @@ namespace NetDexTest_01.Services
         {
             DexHolder? dex = null;
 
-            dex = await _userRepo.GetDexHolderByEmailAsync(person.email);
+            dex = await _userRepo.GetDexHolderByEmailAsync(person.Email);
 
             if (dex != null)
             {

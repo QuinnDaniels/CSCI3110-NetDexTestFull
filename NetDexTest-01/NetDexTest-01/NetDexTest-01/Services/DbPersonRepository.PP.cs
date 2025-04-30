@@ -15,6 +15,27 @@ namespace NetDexTest_01.Services
     /// </summary>
     public partial class DbPersonRepository
     {
+        public async Task AddPersonPersonAsync(PersonPerson ppIn)
+        {
+            await Console.Out.WriteLineAsync("\n\n\n--------- AddPersonAsync -----------\n\n");
+            await Console.Out.WriteLineAsync($"\n parent\t{ppIn.PersonParent.Nickname} \n");
+            await Console.Out.WriteLineAsync($"\n child\t{ppIn.PersonChild.Nickname} \n");
+            await Console.Out.WriteLineAsync($"\n PersonPerson:\t{ppIn.RelationshipDescription}");
+            await Console.Out.WriteLineAsync($"\n PersonPerson:\t{ppIn.PersonParent.Nickname} -> {ppIn.PersonChild.Nickname}");
+
+
+            //TODO double check this
+            ppIn.PersonParent.PersonParents.Add(ppIn);
+            ppIn.PersonChild.PersonChildren.Add(ppIn);
+            await Console.Out.WriteLineAsync("\n\n\n--------------------\n\n");
+            await SaveChangesAsync();
+            await Console.Out.WriteLineAsync("\n\n\n---attempted to add. check results-------\n\n");
+
+            await Console.Out.WriteLineAsync("\n\n\n--------------------\n\n");
+
+        }
+
+
         public async Task AddPersonPersonAsync(Person parent, Person child, PersonPerson ppIn)
         {
             await Console.Out.WriteLineAsync("\n\n\n--------- AddPersonAsync -----------\n\n");
@@ -121,6 +142,234 @@ namespace NetDexTest_01.Services
             }
             else return false;
         }
+
+
+
+
+
+
+
+        public async Task AddPersonPersonForViewModel(string input, string nickname1, string nickname2, string desc)
+        {
+            Person? p1 = null;
+            Person? p2 = null;
+
+            p1 = await GetPersonByNickName(PropertyField.username, input, nickname1);
+            if (p1 == null)
+            {
+                p1 = await GetPersonByNickName(PropertyField.email, input, nickname1);
+                if (p1 == null)
+                {
+                    p1 = await GetPersonByNickName(PropertyField.id, input, nickname1);
+           
+                }
+            }
+
+            p2 = await GetPersonByNickName(PropertyField.username, input, nickname2);
+            if (p2 == null)
+            {
+                p2 = await GetPersonByNickName(PropertyField.email, input, nickname2);
+                if (p2 == null)
+                {
+                    p2 = await GetPersonByNickName(PropertyField.id, input, nickname2);
+                }
+            }
+
+            if (p1 != null && p2 != null) 
+            {
+                    bool noMatch2 = !FindMatch(p1, p2, desc);
+                    if (noMatch2)
+                    {
+                        PersonPerson ppInNew = new PersonPerson(p1, p2, desc);
+                        await AddPersonPersonAsync(ppInNew);
+                        //return true;
+                    }
+                    //else return false;
+            }
+        }
+
+
+
+        public async Task<ICollection<RelationshipVM>> GetAllRelationshipsAsync()
+        {
+            var peoplepeople = await _db.PersonPerson
+                    .Include(pp => pp.PersonParent)
+                        .ThenInclude(pa => pa.FullName)
+                    .Include(pp => pp.PersonParent)
+                        .ThenInclude(pa => pa.DexHolder)
+                            .ThenInclude(dh => dh.ApplicationUser)
+                    .Include(pp => pp.PersonChild)
+                        .ThenInclude(pc => pc.FullName)
+                    .Include(pp => pp.PersonChild)
+                        .ThenInclude(pc => pc.DexHolder)
+                            .ThenInclude(dh => dh.ApplicationUser)
+                .ToListAsync();
+            
+            List<RelationshipVM> relationshipVMs = new List<RelationshipVM>();
+
+            peoplepeople.ForEach(async p =>
+            {
+                if(p.PersonParent.DexHolder.ApplicationUser.Email == p.PersonChild.DexHolder.ApplicationUser.Email)
+                {
+                    RelationshipVM rel = new RelationshipVM()
+                    {
+                        AppEmail = p.PersonParent.DexHolder.ApplicationUser.Email,
+                        Id = p.Id,
+                        AppUsername = p.PersonParent.DexHolder.ApplicationUserName,
+                        PersonParentId = p.PersonParentId,
+                        ParentNickname = p.PersonParent.Nickname,
+                        RelationshipDescription = p.RelationshipDescription,
+                        PersonChildId = p.PersonChildId,
+                        ChildNickname = p.PersonChild.Nickname,
+                        LastUpdated = p.LastUpdated
+                    };
+                    relationshipVMs.Add(rel);
+                    
+                }
+                else
+                {
+                    await Console.Out.WriteLineAsync("\n\n\n------EMAIL MISMATCH---------\n\n\n");
+                }
+
+            } );
+
+            return relationshipVMs;
+        }
+
+        public async Task<ICollection<RelationshipVM>?> GetAllRelationshipsByUserAsync(string input)
+        {
+            ApplicationUser? user = null;
+            user = await _userRepo.GetByEmailAsync(input);
+
+            if (user == null)
+            {
+                user = await _userRepo.GetByUsernameAsync(input);
+                if (user == null)
+                {
+                    user = await _userRepo.GetByIdAsync(input);
+                }
+            }
+
+            if (user != null)
+            { 
+                var peoplepeople = await _db.PersonPerson
+                        .Include(pp => pp.PersonParent)
+                            .ThenInclude(pa => pa.FullName)
+                        .Include(pp => pp.PersonParent)
+                            .ThenInclude(pa => pa.DexHolder)
+                                .ThenInclude(dh => dh.ApplicationUser)
+                        .Include(pp => pp.PersonChild)
+                            .ThenInclude(pc => pc.FullName)
+                        .Include(pp => pp.PersonChild)
+                            .ThenInclude(pc => pc.DexHolder)
+                                .ThenInclude(dh => dh.ApplicationUser)
+                        .Where(pp => (pp.PersonParent.DexHolder.ApplicationUser == user)
+                                    && (pp.PersonChild.DexHolder.ApplicationUser == user))
+                    .ToListAsync();
+
+                List<RelationshipVM> relationshipVMs = new List<RelationshipVM>();
+
+                peoplepeople.ForEach(async p =>
+                {
+                    if (p.PersonParent.DexHolder.ApplicationUser.Email == p.PersonChild.DexHolder.ApplicationUser.Email)
+                    {
+                        RelationshipVM rel = new RelationshipVM()
+                        {
+                            AppEmail = p.PersonParent.DexHolder.ApplicationUser.Email,
+                            Id = p.Id,
+                            AppUsername = p.PersonParent.DexHolder.ApplicationUserName,
+                            PersonParentId = p.PersonParentId,
+                            ParentNickname = p.PersonParent.Nickname,
+                            RelationshipDescription = p.RelationshipDescription,
+                            PersonChildId = p.PersonChildId,
+                            ChildNickname = p.PersonChild.Nickname,
+                            LastUpdated = p.LastUpdated
+                        };
+                        relationshipVMs.Add(rel);
+
+                    }
+                    else
+                    {
+                        await Console.Out.WriteLineAsync("\n\n\n------EMAIL MISMATCH---------\n\n\n");
+                    }
+                });
+                return relationshipVMs;
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+
+
+
+
+        public async Task<RelationshipVM?> GetOneRelationshipWithRequestAsync(RelationshipRequest relation)
+        {
+            var relationshipVMs = await GetAllRelationshipsByUserAsync(relation.input);
+
+            if (relationshipVMs != null)
+            {
+                RelationshipVM? relationshipOut = null;
+
+                relationshipOut = relationshipVMs.ToList()
+                    .FirstOrDefault(rvm => rvm.ParentNickname == relation.nicknameOne
+                            && rvm.ChildNickname == relation.nicknameTwo
+                            && rvm.RelationshipDescription == relation.description);
+                if(relationshipOut != null)
+                {
+                    return relationshipOut;
+                }
+                else
+                {
+                    await Console.Out.WriteLineAsync("\n\n\nERROR: relationship not found!!!\n\n");
+                    return null;
+                }
+            }
+            else
+            {
+                await Console.Out.WriteLineAsync($"\n\n\nERROR: relationships not found for the selected user input, [{relation.input}] \n\n");
+                return null;
+            }
+
+        }
+
+
+
+
+        public async Task<ICollection<RelationshipVM>?> GetAllRelationshipsWithPeopleRequestAsync(RelationshipRequest relation)
+        {
+            var relationshipVMs = await GetAllRelationshipsByUserAsync(relation.input);
+
+            if (relationshipVMs != null)
+            {
+                List<RelationshipVM>? relationshipsOut = null;
+
+                relationshipsOut = relationshipVMs
+                    .Where(rvm => rvm.ParentNickname == relation.nicknameOne
+                            //&& rvm.RelationshipDescription == relation.description
+                            && rvm.ChildNickname == relation.nicknameTwo).ToList();
+                if (relationshipsOut != null)
+                {
+                    return relationshipsOut;
+                }
+                else
+                {
+                    await Console.Out.WriteLineAsync("\n\n\nERROR: relationships not found!!!\n\n");
+                    return null;
+                }
+            }
+            else
+            {
+                await Console.Out.WriteLineAsync($"\n\n\nERROR: relationships not found for the selected user input, [{relation.input}] \n\n");
+                return null;
+            }
+
+        }
+
+
+
 
 
         public bool FindMatch(PersonPerson ppIn)

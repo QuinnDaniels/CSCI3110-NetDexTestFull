@@ -34,5 +34,7 @@ namespace NetDexTest_01.Services
         Task<ApplicationUser?> ReadByIdAsync(string id);
 
         Task<DexHolderMiddleVM?> GetDexHolderMiddleVMAsync(string input);
+        Task<DexHolderPlusVM?> GetDexHolderPlusVMAsync(string input);
+        Task<PersonPlusDexListVM?> GetPersonPlusDexListVMAsync(string input, string criteria);
     }
 }

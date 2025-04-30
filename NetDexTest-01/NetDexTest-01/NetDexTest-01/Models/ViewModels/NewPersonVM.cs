@@ -33,7 +33,7 @@ namespace NetDexTest_01.Models.ViewModels
         }
         public string GetAttachedEmail()
         {
-            return email;
+            return Email;
         }
 
 
@@ -55,10 +55,45 @@ namespace NetDexTest_01.Models.ViewModels
         
         public bool Favorite { get; set; } = false;
 
-        public string? email { get; set; } = String.Empty;
+        // TODO: Change this to a generic input?
+        public string? Email { get; set; } = String.Empty;
 
 
 
 
     }
+
+
+
+
+
+    public class RelationshipRequest
+    {
+        public string input { get; set; }
+        public string nicknameOne { get; set; }
+        public string nicknameTwo { get; set; }
+        public string? description { get; set; }
+    }
+
+
+    public class RelationshipVM
+    {
+        public RelationshipVM()
+        {
+                
+        }
+
+        public string? AppEmail { get; set; }
+        public int? Id { get; set; } = 0;
+        public string AppUsername { get; set; }
+        public int? PersonParentId { get; set; }
+        public string? ParentNickname { get; set; }
+        public string RelationshipDescription { get; set; } = string.Empty;
+        public int? PersonChildId { get; set; }
+        public string? ChildNickname { get; set; }
+        public DateTime? LastUpdated { get; set; }
+
+
+    }
+
 }

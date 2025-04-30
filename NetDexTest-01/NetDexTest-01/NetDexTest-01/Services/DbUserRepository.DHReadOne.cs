@@ -106,19 +106,38 @@ namespace NetDexTest_01.Services
             return await _db.DexHolder
                 .Include(dh => dh.ApplicationUser)
                 .Include(dh => dh.People)
-                .ThenInclude(p => p.FullName)
+                    .ThenInclude(p => p.FullName)
                 .Include(dh => dh.People)
-                .ThenInclude(p => p.ContactInfo)
-                .ThenInclude(ci => ci.SocialMedias)
+                    .ThenInclude(p => p.ContactInfo)
+                        .ThenInclude(ci => ci.SocialMedias)
                 .Include(dh => dh.People)
-                .ThenInclude(p => p.RecordCollector)
-                .ThenInclude(rc => rc.EntryItems)
+                    .ThenInclude(p => p.RecordCollector)
+                        .ThenInclude(rc => rc.EntryItems)
                 .Include(dh => dh.People)
-                .ThenInclude(p => p.PersonChildren)
+                    .ThenInclude(p => p.PersonChildren)
                 .Include(dh => dh.People)
-                .ThenInclude(p => p.PersonParents)
+                    .ThenInclude(p => p.PersonParents)
                 .FirstOrDefaultAsync(dh => dh.ApplicationUserName == userName);
         }
+
+        //public async Task<DexHolder?> GetDexHolderPlusByUserNameAsync(string userName)
+        //{
+        //    return await _db.DexHolder
+        //        .Include(dh => dh.ApplicationUser)
+        //        .Include(dh => dh.People)
+        //        .ThenInclude(p => p.FullName)
+        //        .Include(dh => dh.People)
+        //        .ThenInclude(p => p.ContactInfo)
+        //        .ThenInclude(ci => ci.SocialMedias)
+        //        .Include(dh => dh.People)
+        //        .ThenInclude(p => p.RecordCollector)
+        //        .ThenInclude(rc => rc.EntryItems)
+        //        .Include(dh => dh.People)
+        //        .ThenInclude(p => p.PersonChildren)
+        //        .Include(dh => dh.People)
+        //        .ThenInclude(p => p.PersonParents)
+        //        .FirstOrDefaultAsync(dh => dh.ApplicationUserName == userName);
+        //}
 
         //moved from .GPT
         public async Task<DexHolder?> GetDexHolderByEmailAsync(string email)

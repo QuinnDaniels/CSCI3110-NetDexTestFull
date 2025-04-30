@@ -1,4 +1,5 @@
 ﻿using NetDexTest_01.Models.Entities;
+using NetDexTest_01.Models.ViewModels;
 
 namespace NetDexTest_01.Services
 {
@@ -129,6 +130,8 @@ namespace NetDexTest_01.Services
         /*--------------------------------*/
         /// <inheritdoc cref="AddPersonPerson(Person, Person, PersonPerson)"></inheritdoc>
         Task AddPersonPersonAsync(Person parent, Person child, PersonPerson ppIn);
+        /// <inheritdoc cref="AddPersonPerson(Person, Person, PersonPerson)"></inheritdoc>
+        Task AddPersonPersonAsync(PersonPerson ppIn);
         /// <inheritdoc cref="AddPersonPersonCheck(Person, Person, PersonPerson)"></inheritdoc>
         Task<bool> AddPersonPersonCheckAsync(Person parent, Person child, PersonPerson ppIn);
         /// <inheritdoc cref="AddPersonPersonCheck(Person, Person, PersonPerson, string)"></inheritdoc>
@@ -136,7 +139,23 @@ namespace NetDexTest_01.Services
         /// <inheritdoc cref="AddPersonPersonCheck(PersonPerson, string)"></inheritdoc>
         Task<bool> AddPersonPersonCheckAsync(PersonPerson ppIn, string desc);
 
+
+        Task AddPersonPersonForViewModel(string input, string nickname1, string nickname2, string desc);
         /*--------------------------------*/
+
+
+
+        Task<ICollection<RelationshipVM>> GetAllRelationshipsAsync();
+        Task<ICollection<RelationshipVM>?> GetAllRelationshipsByUserAsync(string input);
+        Task<RelationshipVM?> GetOneRelationshipWithRequestAsync(RelationshipRequest relation);
+        Task<ICollection<RelationshipVM>?> GetAllRelationshipsWithPeopleRequestAsync(RelationshipRequest relation);
+
+
+
+
+
+
+
 
         // read just a person // --> ReadOne
 
