@@ -2,13 +2,12 @@
 
 console.log("\npersonCreate.js loaded!\n");
 
-import { PersonRepository } from "./DexHolderRepository.js";
+import { PersonRepository } from "./PersonRepository.js";
 
 const personRepo = new PersonRepository("https://localhost:7134/api/people");
 
 
 const email = document.getElementById("email").value;
-DOM.logElementToConsole(email);
 //const dexResponse = await userRepo.readDex(email);
 //console.log("LIST dexResponse: ", dexResponse);
 //console.log("LIST people: ", dexResponse.People);

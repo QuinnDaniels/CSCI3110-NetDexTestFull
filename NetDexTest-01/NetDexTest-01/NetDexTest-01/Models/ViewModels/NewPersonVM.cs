@@ -63,6 +63,12 @@ namespace NetDexTest_01.Models.ViewModels
 
     }
 
+    // HACK this should probably also be containing password but whatever...
+    public class PersonRequest
+    {
+        public string UserInput { get; set; } = string.Empty;
+        public string Criteria { get; set; } = string.Empty;
+    }
 
 
 
