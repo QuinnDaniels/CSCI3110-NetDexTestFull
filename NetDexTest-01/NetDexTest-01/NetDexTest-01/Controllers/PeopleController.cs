@@ -12,11 +12,14 @@ using Microsoft.AspNetCore.Authorization;
 using NuGet.Protocol;
 using System.Text.Json.Serialization;
 using System.Text.Json;
+using Microsoft.AspNetCore.Cors;
+
 using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages.Manage;
 
 namespace NetDexTest_01.Controllers
 {
 
+    [EnableCors]
     [Route("api/[controller]")]
     [ApiController]
     public partial class PeopleController : ControllerBase
@@ -279,12 +282,12 @@ namespace NetDexTest_01.Controllers
         // POST: api/People
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Person>> InsertPerson(NewPersonVM person)
+        public async Task<ActionResult<Person>> InsertPerson(NewPersonVM Person)
         {
             //person.Id = Guid.NewGuid();
+            
 
-
-            Person inPerson = await _personRepo.CreatePersonAsync(person);
+            Person inPerson = await _personRepo.CreatePersonAsync(Person);
 
             //_context.Person.Add(inPerson);
             //await _context.SaveChangesAsync();
@@ -305,10 +308,13 @@ namespace NetDexTest_01.Controllers
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [Route("Forms/Create")]
         [HttpPost]
-        public async Task<IActionResult> CreatePerson([FromBody]NewPersonVM person)
+        public async Task<ActionResult> CreatePerson([FromForm]NewPersonVM person)
         {
             //person.Id = Guid.NewGuid();
 
+            await Console.Out.WriteLineAsync("\n\n\n ----------------------- \n\n CreatePerson Endpoint Reached! \n\n -------------------\n\n ");
+
+            //NewPersonVM personVM = person.GetNewPersonVMInstance();
 
             Person inPerson = await _personRepo.CreatePersonAsync(person);
 
@@ -338,31 +344,67 @@ namespace NetDexTest_01.Controllers
 
 
 
+
         // PUT: api/People/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
-        public async Task<IActionResult> UpdatePerson(int id, Person person) // TODO: add DexHolder id
+        [HttpPut("forms/update/{id}")]
+        public async Task<ActionResult> UpdatePerson([FromForm]EditPersonVM person, int id) // TODO: add DexHolder id
         {
-            if (id != person.Id) //(id != person.Id.ToString())
-            {
-                return BadRequest();
-            }
+            await Console.Out.WriteLineAsync("\n\n\n ----------------------- \n\n CreatePerson Endpoint Reached! \n\n -------------------\n\n ");
 
-            var personToUpdate = _context.Person.FirstOrDefault(a => a.Id.Equals(id));
+            await Console.Out.WriteLineAsync($"\n\t {person?.Nickname ?? "Nickname is null!"}\n  ");
+            
+            await Console.Out.WriteLineAsync($"\n\t {person?.Gender ?? "Gender is null!"}\n");
+            await Console.Out.WriteLineAsync($"\n\t {person?.Pronouns ?? "Pronouns is null!"}\n  ");
+            await Console.Out.WriteLineAsync($"\n\t {person?.Rating ?? -404}\n  ");
+            
+
+
+
+            var personToUpdate = _context.Person.FirstOrDefault(a => a.Id.Equals(person.Id) || a.Id == id  || a.Id == person.Id);
 
             if (personToUpdate == null) // added to conform to tutorial. is likely redundant, considering scaffold result
             {
-                return NotFound();
+                return NotFound($"Could not find a person for id, {person.Id}\n{person.Nickname}\n{person.DateOfBirth}\n{person.Gender}\n{person.Pronouns}\n{person.Rating}\n{person.Favorite}\n\n");
             }
 
-            _context.Entry(person).State = EntityState.Modified;
+            //TODO replace this with an email check?
+            if (id != personToUpdate.Id) //(id != person.Id.ToString())
+            {
+                return BadRequest($"id, {id}, did not match personToUpdate id, {personToUpdate.Id}. Person.Id: {person.Id}");
+            }
+            //if (id != person.Id) //(id != person.Id.ToString())
+            //{
+            //    return BadRequest($"id, {id}, did not match person id, {person.Id}. PersonToUpdate id: {personToUpdate.Id}");
+            //}
+            await Console.Out.WriteLineAsync("\n\n\n ----------------------- \n\n Conditional Checks Passed! \n\n -------------------\n\n ");
+
+            _context.Entry(personToUpdate).State = EntityState.Modified;
 
             try
             {
+                await Console.Out.WriteLineAsync($"\n\t {personToUpdate.Nickname} -> {person?.Nickname ?? personToUpdate.Nickname}\n  ");
+                personToUpdate.Nickname = person?.Nickname ?? personToUpdate.Nickname;
+                //personToUpdate.DexHolder = person.DexHolder ;
+                await Console.Out.WriteLineAsync($"\n\t {personToUpdate.DateOfBirth} => {person?.DateOfBirth ?? personToUpdate.DateOfBirth}\n  ");
+                personToUpdate.DateOfBirth = person?.DateOfBirth ?? personToUpdate.DateOfBirth;
+                await Console.Out.WriteLineAsync($"\n\t {personToUpdate.Gender} => {person?.Gender ?? personToUpdate.Gender}\n  ");
+                personToUpdate.Gender = person?.Gender ?? personToUpdate.Gender;
+                await Console.Out.WriteLineAsync($"\n\t {personToUpdate.Pronouns} => {person?.Pronouns ?? personToUpdate.Pronouns}\n  ");
+                personToUpdate.Pronouns = person?.Pronouns ?? personToUpdate.Pronouns;
+                await Console.Out.WriteLineAsync($"\n\t {personToUpdate.Rating} => {person?.Rating ?? personToUpdate.Rating}\n  ");
+                personToUpdate.Rating = person?.Rating ?? personToUpdate.Rating;
+                await Console.Out.WriteLineAsync($"\n\t {personToUpdate.Favorite} => {person?.Favorite ?? personToUpdate.Favorite}\n  ");
+                personToUpdate.Favorite = person?.Favorite ?? personToUpdate.Favorite;
+
+                _context.Person.Update(personToUpdate);
+
                 await _context.SaveChangesAsync();
+                await Console.Out.WriteLineAsync("\n\n\n ----------------------- \n\n Changes saved to context! \n\n -------------------\n\n ");
             }
-            catch (DbUpdateConcurrencyException)
+            catch (DbUpdateConcurrencyException ex)
             {
+                await Console.Out.WriteLineAsync(ex.ToString());
                 if (!PersonExists(id))
                 {
                     return NotFound();
@@ -370,13 +412,19 @@ namespace NetDexTest_01.Controllers
                 else
                 {
                     //throw;
-                    personToUpdate.Nickname =  person.Nickname;
-                    personToUpdate.DexHolder = person.DexHolder ;
-                    personToUpdate.DateOfBirth = person.DateOfBirth;
-                    personToUpdate.Gender = person.Gender ;
-                    personToUpdate.Pronouns =   person.Pronouns ;
-                    personToUpdate.Rating =   person.Rating ;
-                    personToUpdate.Favorite =   person.Favorite ;
+                    await Console.Out.WriteLineAsync($"\n\n\t {personToUpdate.Nickname} -> {person?.Nickname ?? personToUpdate.Nickname}\n  ");
+                    personToUpdate.Nickname =  person?.Nickname ?? personToUpdate.Nickname;
+                    //personToUpdate.DexHolder = person.DexHolder ;
+                    await Console.Out.WriteLineAsync($"\n\n\t {personToUpdate.DateOfBirth} => {person?.DateOfBirth ?? personToUpdate.DateOfBirth}\n  ");
+                    personToUpdate.DateOfBirth = person?.DateOfBirth ?? personToUpdate.DateOfBirth;
+                    await Console.Out.WriteLineAsync($"\n\n\t {personToUpdate.Gender} => {person?.Gender ?? personToUpdate.Gender}\n  ");
+                    personToUpdate.Gender = person?.Gender  ?? personToUpdate.Gender;
+                    await Console.Out.WriteLineAsync($"\n\n\t {personToUpdate.Pronouns} => {person?.Pronouns ?? personToUpdate.Pronouns}\n  ");
+                    personToUpdate.Pronouns = person?.Pronouns  ?? personToUpdate.Pronouns;
+                    await Console.Out.WriteLineAsync($"\n\n\t {personToUpdate.Rating} => {person?.Rating  ?? personToUpdate.Rating}\n  ");
+                    personToUpdate.Rating = person?.Rating  ?? personToUpdate.Rating;
+                    await Console.Out.WriteLineAsync($"\n\n\t {personToUpdate.Favorite} => {person?.Favorite  ?? personToUpdate.Favorite}\n  ");
+                    personToUpdate.Favorite = person?.Favorite  ?? personToUpdate.Favorite;
 
                     _context.Person.Update(personToUpdate);
                     _context.SaveChanges();

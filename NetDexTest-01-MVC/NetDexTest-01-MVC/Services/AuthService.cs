@@ -547,6 +547,74 @@ namespace NetDexTest_01_MVC.Services
         }
 
 
+        public async Task<DexHolderMiddleVM?> CheckIfUserExistsReturnObjectAsync(string id)
+        {
+            //var client = _httpClientFactory.CreateClient("API");
+            //var response = await client.PostAsJsonAsync("auth/login", request);
+            await Console.Out.WriteLineAsync($"\n\n--------CheckIfUserExists-------START--------------\n\t");
+
+            bool flagCheck = false;
+            await Console.Out.WriteLineAsync($"\n\n--------CheckIfUserExists-------flagCheck?---init---\n\t{flagCheck}");
+
+            var url = _config["apiService:userUrl"];
+            url = url + $"/one/{id}";
+
+            await Console.Out.WriteLineAsync($"\n\n--------CheckIfUserExists-------url target---init---\n\t{url}");
+
+            //LoginRequest request = new()
+            //{
+            //    Password = _userSessionService.GetPass(),
+
+            //};
+
+
+            var httpResponse = await _apiService.MakeHttpCallAsync(
+                httpMethod: HttpMethod.Get,
+                url: url
+                //bodyContent: request
+                );
+            DexHolderMiddleVMResponse loginResponse = new();
+            DexHolderMiddleVM? outDex = null;
+            await Console.Out.WriteLineAsync($"\n\n\n--------HTTP RESPONSE-----------------\n\n{httpResponse.StatusCode}\n\n\n-----------------------");
+
+            if (httpResponse.StatusCode == HttpStatusCode.OK)
+            {
+                await Console.Out.WriteLineAsync("StatusCode is OK!\n");
+                loginResponse = await httpResponse.Content.ReadFromJsonAsync<DexHolderMiddleVMResponse>();
+                await Console.Out.WriteLineAsync($"\n\n\n--------HTTP RESPONSE-----------------\n\n{httpResponse.ToString}\n\n\n-----------------------");
+                //await Console.Out.WriteLineAsync($"\n\n\n--------HTTP RESPONSE-----------------\n\n{loginResponse.Status}\n\n\n-----------------------");
+                //await Console.Out.WriteLineAsync($"\n\n\n--------HTTP RESPONSE-----------------\n\n{await httpResponse.Content.ReadAsStringAsync()}\n\n\n-----------------------");
+                await Console.Out.WriteLineAsync($"\n\n--------CheckIfUserExists-------setting tempCheck---\n\t...");
+                await _userSessionService.SetTempCheckAsync(loginResponse.ApplicationEmail);
+                flagCheck = true;
+                outDex = loginResponse.getInstanceDexHolderMiddleVM();
+                await Console.Out.WriteLineAsync($"\n\n--------CheckIfUserExists-------flagCheck----set----\n\t{flagCheck}");
+
+            }
+
+            else
+            {
+                //await Console.Out.WriteLineAsync($"\n\n\n--------HTTP RESPONSE-----------------\n\n{loginResponse.Message}\n\n\n-----------------------");
+                await Console.Out.WriteLineAsync($"\n\n\n--------HTTP RESPONSE----is success?--\n\n{httpResponse.IsSuccessStatusCode}\n\n\n-----------------------");
+                //else if login failed, map the error message
+                //var errMessage = await httpResponse.Content.ReadAsStringAsync();
+                //loginResponse.Status = httpResponse.StatusCode;
+                //loginResponse.Message = errMessage;
+                //await Console.Out.WriteLineAsync($"\n\n\\n--------HTTP RESPONSE-----------------\n\n{loginResponse.Status}\n\n\n-----------------------");
+                //await Console.Out.WriteLineAsync($"\n\n\n--------HTTP RESPONSE-----------------\n\n{loginResponse.Title}\n\n\n-----------------------");
+                //await Console.Out.WriteLineAsync($"\n\n\n--------HTTP RESPONSE-----------------\n\n{loginResponse.Message}\n\n\n-----------------------");
+            }
+
+            await Console.Out.WriteLineAsync($"\n\n--------CheckIfUserExists-------flagCheck---RESULT--\n\t{flagCheck}");
+            await Console.Out.WriteLineAsync($"\n\n-------CheckIfUserExists----END--returning object---\n");
+            //return flagCheck;
+            return outDex;
+        }
+
+
+
+
+
 
     }
 

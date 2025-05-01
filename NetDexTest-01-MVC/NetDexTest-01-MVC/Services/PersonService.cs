@@ -58,9 +58,9 @@ namespace NetDexTest_01_MVC.Services
             var httpResponse = await _apiService.MakeHttpCallAsync(
                 httpMethod: HttpMethod.Post,
                 url: _url,
-                bodyContent: person,
-                authScheme: "bearer",
-                authToken: token
+                bodyContent: person
+            //authScheme: "bearer",
+            //authToken: token
             );
             PeopleResponse response = new PeopleResponse();
             if (httpResponse.StatusCode == HttpStatusCode.OK)

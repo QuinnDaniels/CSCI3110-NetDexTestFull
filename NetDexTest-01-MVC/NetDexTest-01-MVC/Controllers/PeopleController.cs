@@ -99,12 +99,15 @@ namespace NetDexTest_01_MVC.Controllers
             bool currentUserFlag = await _authService.CheckInputAgainstSessionAsync(id);
             await Console.Out.WriteLineAsync($"\n\n--GET---ListDexIndex(id)----currentUserFlag---\n\t{currentUserFlag}");
 
-            bool userExists = await _authService.CheckIfUserExistsAsync(id);
+            //bool userExists = await _authService.CheckIfUserExistsAsync(id);
+            //await Console.Out.WriteLineAsync($"\n\n--GET---ListDexIndex(id)------userExists?-----\n\t{userExists}");
+            DexHolderMiddleVM? userExists = await _authService.CheckIfUserExistsReturnObjectAsync(id);
             await Console.Out.WriteLineAsync($"\n\n--GET---ListDexIndex(id)------userExists?-----\n\t{userExists}");
 
             var url = Url.RouteUrl("DexListDestination");
             // if the target exists...
-            if (userExists)
+            //if (userExists)
+            if (userExists != null)
             {
                 if (userFlag && currentUserFlag)
                 {
@@ -117,9 +120,13 @@ namespace NetDexTest_01_MVC.Controllers
                 }
                 else if (roleFlag)
                 {
+
+                    await Console.Out.WriteLineAsync($"\n\n--GET---ListDexIndex(id)------Using temp email!-----\n\t{_userSessionService.GetTempEmail()}");
                     ViewData["LoggedInEmail"] = _userSessionService.GetTempEmail();
                     TempData["tEmail"] = _userSessionService.GetTempEmail();
-                    await _userSessionService.CloseTempSessionData();
+                    
+                    // HACK disbling for now for if an admin goes to another user to create a person
+                    //await _userSessionService.CloseTempSessionData();
                     //return ControllerContext.MyDisplayRouteInfo("", $" URL = {url}");
                     return RedirectToRoute("DexListDestination");
                     //return RedirectToAction("Index", "Home", new { id = 2 });
@@ -151,34 +158,63 @@ namespace NetDexTest_01_MVC.Controllers
         [HttpGet("create")]
         public async Task<IActionResult> CreatePerson()
         {
-            return View();
+            await Console.Out.WriteLineAsync($"\n\n\n\n\n\n\n--GET---CreatePerson()----ACCESSING------------\n");
+            await Console.Out.WriteLineAsync($"\n\n--GET---CreatePerson()----Checking tmpData---\n\n\t{TempData["tEmail"]}");
+            if (!_userSessionService.IsLoggedIn()) RedirectToAction("Login", "Auth");
+
+            await Console.Out.WriteLineAsync($"\n\n\n\n\n\n\n--GET---CreatePerson()--user is logged in...----\n");
+            if (await _userSessionService.HasAnyRoleAsync("Admin", "Administrator", "Moderator", "User"))
+            {
+                await Console.Out.WriteLineAsync($"\n\n--GET---CreatePerson()----Checking tmpData---\n\n\t{TempData["tEmail"]}");
+                await Console.Out.WriteLineAsync($"\n\n--GET---CreatePerson()----Checking userTmp---\n\n\t{_userSessionService.GetTempEmail()}");
+                if (TempData["tEmail"] != null || _userSessionService.GetTempEmail() != null)
+                {
+                    await Console.Out.WriteLineAsync($"\n\n--GET---CreatePerson()----Setting LoggedInEmail---"
+                                        + $"\n\t\tLoggedIn: {ViewData["LoggedInEmail"]}\n\t");
+                    if (TempData["tEmail"] != null) {
+                        await Console.Out.WriteAsync($"[IF1]:\t=> tEmail: {TempData["tEmail"]}\n\t");
+                        ViewData["LoggedInEmail"] = TempData["tEmail"];
+                        await Console.Out.WriteAsync($"\n\t\t=> LoggedIn: { ViewData["LoggedInEmail"]}\n\t");
+                    }
+                    if (_userSessionService.GetTempEmail() != null) {
+                        ViewData["LoggedInEmail"] = _userSessionService.GetTempEmail();
+                        await Console.Out.WriteAsync($"[IF2]:\t=> u.s.s.TempEmail: {_userSessionService.GetTempEmail()}\n\t");
+                        await Console.Out.WriteAsync($"\n\t\t=> LoggedIn: { ViewData["LoggedInEmail"]}\n\t");
+                    }
+                }
+                else
+                {
+                    ViewData["LoggedInEmail"] = _userSessionService.GetEmail();
+
+                }
+                return View();
+            }
+            return Unauthorized("You must be logged into an authorized account to view this page!");
+
         }
 
-        [HttpPost("create"), ValidateAntiForgeryToken]
-        public async Task<IActionResult> CreatePerson(NewPersonVM personVM)
-        {
-            if (!ModelState.IsValid)
-            {
-                //return error messages
-                return View(personVM);
-            }
+        //[HttpPost("create"), ValidateAntiForgeryToken]
+        //public async Task<IActionResult> CreatePerson(NewPersonVM personVM)
+        //{
+        //    if (!ModelState.IsValid)
+        //    {
+        //        //return error messages
+        //        return View(personVM);
+        //    }
 
 
-            var response = await _personService.CreatePersonAsync(personVM);
-            if (response.Status == HttpStatusCode.Unauthorized)
-            {
-                //if response is 401, it means access token has expired
-                return RedirectToAction("refresh", "auth", new { returnUrl = "/people/createPerson" });
-            }
-            if (response.Status != HttpStatusCode.OK)
-            {
-                ModelState.AddModelError(string.Empty, "An Error Occurred while processing this request. Please try again in some time.");
-            }
-            return Ok("Person Created");
-        }
-
-
-
+        //    var response = await _personService.CreatePersonAsync(personVM);
+        //    if (response.Status == HttpStatusCode.Unauthorized)
+        //    {
+        //        //if response is 401, it means access token has expired
+        //        return RedirectToAction("refresh", "auth", new { returnUrl = "/people/createPerson" });
+        //    }
+        //    if (response.Status != HttpStatusCode.OK)
+        //    {
+        //        ModelState.AddModelError(string.Empty, "An Error Occurred while processing this request. Please try again in some time.");
+        //    }
+        //    return Ok("Person Created");
+        //}
 
     }
 }

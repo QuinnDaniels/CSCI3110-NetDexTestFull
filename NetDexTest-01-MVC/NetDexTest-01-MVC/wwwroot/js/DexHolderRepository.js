@@ -128,5 +128,38 @@ export class PersonRepository { //create a class and export it (for use in UserI
     }
 
 
-}
+    async create(formData) {
+        const address = `${this.#baseAddress}/forms/create`;
+        for (const [key, value] of formData.entries()) {        // 3. Loop through and output the form data to the console
+            console.log(key, value);
+        }
+
+        const response = await fetch(address, {
+            method: "POST",
+            body: formData
+        });
+        console.log("response: ", response, response.body);
+        if (!response.ok) {
+            console.log(response.status);
+            console.log(response.statusText);
+            console.log(address);
+            throw new Error("There was an HTTP error creating the person data.");
+        }
+        const result = await response.json();
+        console.log("Success:", result);
+        return result;
+        } catch(error) {
+            console.error("Error:", error);
+        }
+    }
+
+
+
+
+
+
+
+
+
+
 
