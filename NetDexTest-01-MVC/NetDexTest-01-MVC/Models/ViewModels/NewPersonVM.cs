@@ -59,7 +59,7 @@ namespace NetDexTest_01_MVC.Models.ViewModels
     }
 
 
-
+/*-----------------------------------*/
 
 
     public class PersonDetailsVM
@@ -134,6 +134,52 @@ namespace NetDexTest_01_MVC.Models.ViewModels
         public string UserInput { get; set; } = string.Empty;
         public string Criteria { get; set; } = string.Empty;
     }
+
+
+
+
+    public class EditPersonVM
+    {
+        public int Id { get; set; }
+        [StringLength(256)]
+        public string? Nickname { get; set; }
+
+        [DataType(DataType.Date)]
+        public DateTime? DateOfBirth { get; set; }
+
+        [StringLength(120)]
+        public string? Gender { get; set; }
+        [StringLength(25)]
+        public string? Pronouns { get; set; }
+
+        [Range(0.0, 10.0, ErrorMessage = "Must be a value from 0 to 10")]
+        public int? Rating { get; set; } // Eventually convert into an enum
+
+        public bool? Favorite { get; set; }
+        // TODO: Change this to a generic input?
+        public string? Email { get; set; }
+
+    }
+
+    public class EditPersonFullVM : EditPersonVM
+    {
+        [StringLength(120)]
+        public string? NameFirst { get; set; }
+        [StringLength(120)]
+        public string? NameMiddle { get; set; }
+        [StringLength(120)]
+        public string? NameLast { get; set; }
+        [StringLength(120)]
+        public string? PhNameFirst { get; set; }
+        [StringLength(120)]
+        public string? PhNameMiddle { get; set; }
+        [StringLength(120)]
+        public string? PhNameLast { get; set; }
+
+    }
+
+
+
 
 
 

@@ -1,5 +1,6 @@
 ﻿using NetDexTest_01.Models.Entities;
 using NetDexTest_01.Services;
+using System.ComponentModel.DataAnnotations;
 
 namespace NetDexTest_01.Models.ViewModels
 {
@@ -60,6 +61,7 @@ namespace NetDexTest_01.Models.ViewModels
             this.Roles = rolesString;
         }
     }
+
 
 
 

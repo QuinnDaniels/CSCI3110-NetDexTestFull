@@ -196,7 +196,22 @@ namespace NetDexTest_01.Models.ViewModels
 
     }
 
+    public class EditPersonFullVM : EditPersonVM
+    {
+        [StringLength(120)]
+        public string? NameFirst { get; set; }
+        [StringLength(120)]
+        public string? NameMiddle { get; set; }
+        [StringLength(120)]
+        public string? NameLast { get; set; }
+        [StringLength(120)]
+        public string? PhNameFirst { get; set; }
+        [StringLength(120)]
+        public string? PhNameMiddle { get; set; }
+        [StringLength(120)]
+        public string? PhNameLast { get; set; }
 
+    }
 
 
 
