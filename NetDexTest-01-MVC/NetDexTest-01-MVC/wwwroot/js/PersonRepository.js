@@ -53,17 +53,24 @@ export class PersonRepository { //create a class and export it (for use in UserI
     //    4.	Return the object
     /*---------------------------*/
     /**/
-    async read(formData) {
-        const address = `${this.#baseAddress}/retrieveViewModel`;
+    async read(input, criteria) {
+        const address = `${this.#baseAddress}/retrieveRequestpath/${input}/${criteria}`;
         //return await response.json();
         
         const response = await fetch(address, {
             method: "GET",
-            body: formData
+            //body: formData
         });
-        for (const [key, value] of formData.entries()) {        // 3. Loop through and output the form data to the console
-            console.log(key, value);
-        }
+        //const data = { key1: 'value1', key2: 'value2' };
+        //const data = { 'Input': input, 'Criteria': criteria };
+
+
+        //const response = await makeHttpCallAsync('GET', address, data)
+        //    .then(result => console.log('Success:', result))
+        //    .catch(error => console.error('Failed:', error));
+
+
+
         console.log("response: ", response, response.body);
         if (!response.ok) {
             console.log(response.status);
@@ -79,6 +86,42 @@ export class PersonRepository { //create a class and export it (for use in UserI
             console.error("Error:", error);
         }
     
+
+
+
+    async makeHttpCallAsync(method, url, data) {
+        try {
+            const response = await fetch(url, {
+                method: method,
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+
+            const result = await response.json();
+            return result;
+        } catch (error) {
+            console.error('Error making HTTP call:', error);
+            throw error;
+        }
+    }
+
+// Example usage:
+//const url = 'https://api.example.com/data';
+//const data = { key1: 'value1', key2: 'value2' };
+
+//makeHttpCallAsync(url, data)
+//    .then(result => console.log('Success:', result))
+//    .catch(error => console.error('Failed:', error));
+
+
+
+
 
 
     async create(formData) {
@@ -103,7 +146,25 @@ export class PersonRepository { //create a class and export it (for use in UserI
         return result;
         } catch(error) {
             console.error("Error:", error);
+    }
+
+
+
+    async update(formData) {
+        const address = `${this.#baseAddress}/update`;
+        const response = await fetch(address, {
+            method: "put",
+            body: formData
+        });
+        if (!response.ok) {
+            throw new Error("There was an HTTP error updating the pet data.");
         }
+        return await response.text();
+    }
+
+
+
+
     }
 
 
