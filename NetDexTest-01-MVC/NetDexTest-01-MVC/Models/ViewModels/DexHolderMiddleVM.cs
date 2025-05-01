@@ -32,10 +32,10 @@ namespace NetDexTest_01_MVC.Models.ViewModels
         public HttpStatusCode Status { get; set; }
         public string? Title { get; set; } = "default title";
         public string? Message { get; set; } = "default message";
-        public int DexId { get; set; } = -1;
-        public string ApplicationUserId { get; set; }
-        public string ApplicationUserName { get; set; }
-        public string ApplicationEmail { get; set; } // from appUser
+        public int? DexId { get; set; } = -1;
+        public string? ApplicationUserId { get; set; }
+        public string? ApplicationUserName { get; set; }
+        public string? ApplicationEmail { get; set; } // from appUser
         public string? FirstName { get; set; }
         public string? MiddleName { get; set; }
         public string? LastName { get; set; }
@@ -45,13 +45,13 @@ namespace NetDexTest_01_MVC.Models.ViewModels
         public List<RoleVM> Roles { get; set; } = new List<RoleVM>();
         public List<PersonDexListVM> People { get; set; } = new List<PersonDexListVM>();
         //public ApplicationUser ApplicationUser { get; set; }
-        public int PeopleCount { get; set; } = -1;
+        public int? PeopleCount { get; set; } = -1;
 
         public DexHolderMiddleVM getInstanceDexHolderMiddleVM()
         {
             DexHolderMiddleVM outDex = new()
             {
-                DexId = this.DexId,
+                DexId = this?.DexId ?? 0,
                 ApplicationUserId = this.ApplicationUserId,
                 ApplicationUserName = this.ApplicationUserName,
                 ApplicationEmail = this.ApplicationEmail,
@@ -85,12 +85,12 @@ namespace NetDexTest_01_MVC.Models.ViewModels
         public DateTime? DateOfBirth { get; set; }
         public string? Gender { get; set; }
         public string? Pronouns { get; set; }
-        public int Rating { get; set; } = 0;
-        public bool Favorite { get; set; } = false;
-        public int RcEntryItemsCount { get; set; } = -1;
-        public int CiSocialMediasCount { get; set; } = -1;
-        public int PersonParentsCount { get; set; } = -1;
-        public int PersonChildrenCount { get; set; } = -1;
+        public int? Rating { get; set; } = 0;
+        public bool? Favorite { get; set; } = false;
+        public int? RcEntryItemsCount { get; set; } = -1;
+        public int? CiSocialMediasCount { get; set; } = -1;
+        public int? PersonParentsCount { get; set; } = -1;
+        public int? PersonChildrenCount { get; set; } = -1;
 
     }
 

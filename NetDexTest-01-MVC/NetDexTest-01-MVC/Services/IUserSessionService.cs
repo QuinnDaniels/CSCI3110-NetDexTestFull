@@ -24,7 +24,12 @@
         Task<bool> HasAllRolesAsync(List<string> searchrole);
         Task<bool> HasAllRolesAsync(params string[] items);
 
+        string GetTempPerson();
+        Task SetTempPersonAsync(string criteria);
+
+
         Task SetTempCheckAsync(string email);
+        Task SetTempCheckAsync(string email, string criteria);
         Task CloseTempSessionData();
 
         Task StorePasswordSessionDataAsync(string pass);

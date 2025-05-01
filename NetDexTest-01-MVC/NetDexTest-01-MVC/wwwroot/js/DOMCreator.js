@@ -548,7 +548,7 @@ export let DOM = {
     },
 
     // modified from CHATGPT
-    createPersonDexListRow: (PersonDexListVM) => {
+    createPersonDexListRow: (PersonDexListVM, input) => {
         const tr = document.createElement('tr');
         const pi = PersonDexListVM;
         tr.setAttribute('id', 'templateRow');
@@ -782,11 +782,12 @@ export let DOM = {
         tdPersonPerson.appendChild(spanEndSymbol);
 
         tr.appendChild(tdPersonPerson);
+        console.log("LOG input DOM: ", input);
 
         // Fourteenth td - edit links
         const tdLinks = document.createElement('td');
         tdLinks.innerHTML = `<a href="/People/Edit">Edit</a> | 
-                         <a href="/People/Details">Details</a> | 
+                         <a href="/dex/u/${input}/p/${pi.LocalCounter}">Details</a> | 
                          <a href="/People/Delete">Delete</a>`;
         tr.appendChild(tdLinks);
 

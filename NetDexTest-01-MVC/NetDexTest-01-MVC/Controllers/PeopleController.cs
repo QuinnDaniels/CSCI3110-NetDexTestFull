@@ -216,5 +216,98 @@ namespace NetDexTest_01_MVC.Controllers
         //    return Ok("Person Created");
         //}
 
+
+
+
+        [Route("u/{id}/p/{criteria}")]
+        [HttpGet(Name = "PersonDetails")]
+        public async Task<IActionResult> DetailsViewByRoute(string id, string criteria)
+        {
+            await Console.Out.WriteLineAsync($"\n\n--GET---DetailsViewByRoute(id)----ACCESSING---------\n");
+
+            if (!_userSessionService.IsLoggedIn()) RedirectToAction("Login", "Auth");
+
+            bool roleFlag = await _userSessionService.HasAnyRoleAsync("Admin", "Administrator", "Moderator");
+            await Console.Out.WriteLineAsync($"\n\n--GET---DetailsViewByRoute(id)-----------roleFlag---\n\t{roleFlag}");
+            bool userFlag = await _userSessionService.HasAnyRoleAsync("User");
+            await Console.Out.WriteLineAsync($"\n\n--GET---DetailsViewByRoute(id)-----------userFlag---\n\t{userFlag}");
+            bool currentUserFlag = await _authService.CheckInputAgainstSessionAsync(id);
+            await Console.Out.WriteLineAsync($"\n\n--GET---DetailsViewByRoute(id)----currentUserFlag---\n\t{currentUserFlag}");
+
+            //bool userExists = await _authService.CheckIfUserExistsAsync(id);
+            //await Console.Out.WriteLineAsync($"\n\n--GET---DetailsViewByRoute(id)------userExists?-----\n\t{userExists}");
+            bool userPersonExists = await _authService.CheckIfUserExistsAsync(id);//, criteria);
+            await Console.Out.WriteLineAsync($"\n\n--GET---DetailsViewByRoute(id)------userPersonExists?-----\n\t{userPersonExists}");
+
+            var url = Url.RouteUrl("DexListDestination");
+            // if the target exists...
+            //if (userExists)
+            if (userPersonExists)
+            {
+                if (userFlag && currentUserFlag)
+                {
+                    await _userSessionService.SetTempPersonAsync(criteria);
+
+                    TempData["LastPerson"] = _userSessionService.GetTempPerson();
+                    ViewData["LastPerson"] = _userSessionService.GetTempPerson();
+                    // we're working with the confirmed current user, so just get the email that's stored in user session service
+                    ViewData["LoggedInEmail"] = _userSessionService.GetEmail();
+                    TempData["tEmail"] = _userSessionService.GetEmail();
+                    //return RedirectToAction("DetailsViewByRoute", "People");
+                    return View();
+                    //return ControllerContext.MyDisplayRouteInfo("", $" URL = {url}");
+                }
+                else if (roleFlag)
+                {
+
+                    await _userSessionService.SetTempPersonAsync(criteria);
+                    await Console.Out.WriteLineAsync($"\n\n--GET---DetailsViewByRoute(id)------Using temp email!-----\n\t{_userSessionService.GetTempEmail()}");
+                    ViewData["LoggedInEmail"] = _userSessionService.GetTempEmail();
+                    TempData["tEmail"] = _userSessionService.GetTempEmail();
+                    TempData["LastPerson"] = _userSessionService.GetTempPerson();
+                    ViewData["LastPerson"] = _userSessionService.GetTempPerson();
+
+                    // HACK disbling for now for if an admin goes to another user to create a person
+                    //await _userSessionService.CloseTempSessionData();
+                    //return ControllerContext.MyDisplayRouteInfo("", $" URL = {url}");
+                    return View();
+                    //return RedirectToAction("Index", "Home", new { id = 2 });
+                    //return View();
+
+
+                    // TODO : check if the input matches the logged in user
+                }
+                return Unauthorized("You cannot access another User's page, unless you are using an Administrator or Moderator's account!!");
+            }
+            else
+            {
+                return BadRequest("That user does not exist!");
+            }
+
+
+            //return View();
+        }
+
+
+
+
+
+
+
+
+
+
+
+
     }
+
+
+
+
+
+
+
+
+
+
 }

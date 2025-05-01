@@ -25,15 +25,17 @@ namespace NetDexTest_01.Controllers
     {
         private readonly IUserService _userService;
         private readonly IUserRepository _userRepo;
+        private readonly IPersonRepository _personRepo;
         private readonly ILogger<UserController> _logger;
         private readonly JwtTokenCreator _jwtCreator;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
 
         public UserController(ILogger<UserController> logger, JwtTokenCreator jwtCreator, UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager,
-                                IUserRepository userRepo, IUserService userService)
+                                IUserRepository userRepo, IPersonRepository personRepo, IUserService userService)
         {
             _userRepo = userRepo;
+            _personRepo = personRepo;
             _userService = userService;
             _logger = logger;
             _jwtCreator = jwtCreator;
@@ -114,9 +116,37 @@ namespace NetDexTest_01.Controllers
             }
             if (user == null) return NotFound();
 
+
+            if (user == null) return NotFound();
+
+            //JsonSerializerOptions options = new()
+            //{
+            //    ReferenceHandler = ReferenceHandler.IgnoreCycles, //IgnoreCycles, //Preserve
+            //    WriteIndented = true
+            //};
+            //var peopleList = await _personRepo.ReadAllPeopleAsync(user);
+
+            //DexHolderMiddleVM outer = new()
+            //{
+            //    ApplicationEmail = user.Email,
+            //    ApplicationUserName = user.UserName,
+            //    People = peopleList
+                
+            //};
+            
+            //string modelJson = JsonSerializer.Serialize(outer, options);
+
+            //await Console.Out.WriteLineAsync($"\n\n\n\n serialized: {modelJson}\n \n\n\n\n");
+
+            //var model = modelJson;
+            //return Ok(model);
+
+
             return Ok(new//user
             {
-                ApplicationEmail = user.Email
+                ApplicationEmail = user.Email,
+                Username = user.UserName//,
+                //People = user.DexHolder.People
             });
         }
 

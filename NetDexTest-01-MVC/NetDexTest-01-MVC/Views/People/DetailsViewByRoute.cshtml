@@ -1,13 +1,13 @@
-﻿@model NetDexTest_01_MVC.Models.ViewModels.PersonDexListVM
+﻿@model NetDexTest_01_MVC.Models.ViewModels.PersonDetailsVM
 
 @{
-    ViewData["Title"] = "View";
+    ViewData["Title"] = "PersonDetailsViewByRoute";
 }
 
-<h1>View</h1>
+<h1>PersonDetailsViewByRoute</h1>
 
 <div>
-    <h4>PersonDexListVM</h4>
+    <h4>PersonDetailsVM</h4>
     <hr />
     <dl class="row">
         <dt class = "col-sm-2">
@@ -15,6 +15,18 @@
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.Id)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.AppUsername)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.AppUsername)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.AppEmail)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.AppEmail)
         </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.LocalCounter)

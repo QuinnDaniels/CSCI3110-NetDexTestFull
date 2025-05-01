@@ -35,6 +35,7 @@ namespace NetDexTest_01_MVC.Services
         /// <returns>boolean</returns>
         Task<bool> CheckInputAgainstSessionAsync(string id);
         Task<bool> CheckIfUserExistsAsync(string id);
+        Task<bool> CheckIfUserExistsAsync(string id, string criteria);
         Task<DexHolderMiddleVM?> CheckIfUserExistsReturnObjectAsync(string id);
         // FIXME
         //object GetSavedClaims();

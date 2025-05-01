@@ -9,39 +9,45 @@ namespace NetDexTest_01.Services
     {
         public async Task<ApplicationUser?> GetByEmailAsync(string email, string password)
         {
-            var conversion = await _db.Users.FirstOrDefaultAsync(u => u.Email == email);
+            var conversion = await _db.Users.Include(u => u.DexHolder).ThenInclude(dh => dh.People)
+                .FirstOrDefaultAsync(u => u.Email == email);
             var t = await _userManager.CheckPasswordAsync((ApplicationUser?)conversion, password);
-            if (t == true) return (ApplicationUser?)conversion;
+            if (t == true) return conversion;
             else return null;
         }
         public async Task<ApplicationUser?> GetByEmailAsync(string email)
         {
-            var conversion = await _db.Users.FirstOrDefaultAsync(u => u.Email == email);
-            return (ApplicationUser?)conversion;
+            var conversion = await _db.Users.Include(u => u.DexHolder).ThenInclude(dh => dh.People)
+                .FirstOrDefaultAsync(u => u.Email == email);
+            return conversion;
         }
         public async Task<ApplicationUser?> GetByUsernameAsync(string username, string password)
         {
-            var conversion = await _db.Users.FirstOrDefaultAsync(u => u.UserName == username);
+            var conversion = await _db.Users.Include(u => u.DexHolder).ThenInclude(dh => dh.People)
+                .FirstOrDefaultAsync(u => u.UserName == username);
             var t = await _userManager.CheckPasswordAsync((ApplicationUser?)conversion, password);
-            if (t == true) return (ApplicationUser?)conversion;
+            if (t == true) return conversion;
             else return null;
         }
         public async Task<ApplicationUser?> GetByUsernameAsync(string username)
         {
-            var conversion = await _db.Users.FirstOrDefaultAsync(u => u.UserName == username);
-            return (ApplicationUser?)conversion;
+            var conversion = await _db.Users.Include(u => u.DexHolder).ThenInclude(dh => dh.People)
+                .FirstOrDefaultAsync(u => u.UserName == username);
+            return conversion;
         }
         public async Task<ApplicationUser?> GetByIdAsync(string id, string password)
         {
-            var conversion = await _db.Users.FirstOrDefaultAsync(u => u.Id == id);
+            var conversion = await _db.Users.Include(u => u.DexHolder).ThenInclude(dh => dh.People)
+                .FirstOrDefaultAsync(u => u.Id == id);
             var t = await _userManager.CheckPasswordAsync((ApplicationUser?)conversion, password);
-            if (t == true) return (ApplicationUser?)conversion;
+            if (t == true) return conversion;
             else return null;
         }
         public async Task<ApplicationUser?> GetByIdAsync(string id)
         {
-            var conversion = await _db.Users.FirstOrDefaultAsync(u => u.Id == id);
-            return (ApplicationUser?)conversion;
+            var conversion = await _db.Users.Include(u => u.DexHolder).ThenInclude(dh => dh.People)
+                .FirstOrDefaultAsync(u => u.Id == id);
+            return conversion;
         }
 
         public async Task<ApplicationUser?> GetUserAsync(PropertyField pType, string input)

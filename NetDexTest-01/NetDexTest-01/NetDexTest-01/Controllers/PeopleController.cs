@@ -110,6 +110,56 @@ namespace NetDexTest_01.Controllers
 
 
 
+
+
+        [Route("retrieveRequestpath/{input}/{criteria}")]
+        [HttpGet()]
+        public async Task<ActionResult<PersonDexListVM>> GetPersonWithVM(string input, string criteria)
+        {
+            //var person = _context.Person.FirstOrDefault(a => a.Id.Equals(id));
+            //await Console.Out.WriteLineAsync($"\n\n\n\n serialized: {personRequest.ToJson()}\n \n\n\n\n");
+            var id = criteria;
+            var userId = input;
+
+
+            PersonPlusDexListVM? personVM = null;
+
+            if (int.TryParse(id, out int idout)) // in case you want to try to use the local counter
+            {
+                personVM = await _userRepo.GetPersonPlusDexListVMAsync(userId, id);
+            }
+            else
+            {
+                personVM = await _userRepo.GetPersonPlusDexListVMAsync(userId, id);
+
+            }
+
+            await Console.Out.WriteLineAsync($"\n\n\nLOG:\n\t{personVM.ToJson()} \n\n\n");
+
+
+            if (personVM == null)
+            {
+                return NotFound();
+            }
+            JsonSerializerOptions options = new()
+            {
+                ReferenceHandler = ReferenceHandler.IgnoreCycles, //IgnoreCycles, //Preserve
+                WriteIndented = true
+            };
+
+            string modelJson = JsonSerializer.Serialize(personVM, options);
+
+            //var model = all;
+
+            await Console.Out.WriteLineAsync($"\n\n\n\n serialized: {modelJson}\n \n\n\n\n");
+
+            var model = modelJson;
+            return Ok(model);
+        }
+
+
+
+
         //all
         // all by user input
         // one via request
@@ -457,6 +507,55 @@ namespace NetDexTest_01.Controllers
 
             return NoContent();
         }
+
+
+
+
+        // DELETE: api/People/5
+        [Route("delete/{input}/{criteria}")]
+        [HttpDelete()]
+        public async Task<IActionResult> DeletePersonSpecific(string input, string criteria)
+        {
+            //var person = await _context.Person.FindAsync(id);
+            var id = criteria;
+            var userId = input;
+
+
+            PersonPlusDexListVM? personVM = null;
+
+            if (int.TryParse(id, out int idout)) // in case you want to try to use the local counter
+            {
+                personVM = await _userRepo.GetPersonPlusDexListVMAsync(userId, id);
+            }
+            else
+            {
+                personVM = await _userRepo.GetPersonPlusDexListVMAsync(userId, id);
+
+            }
+            if (personVM == null)
+            {
+                return NotFound();
+            }
+            var personToDelete = _context.Person.FirstOrDefault(a => a.Id.Equals(personVM.Id));
+
+            if (personToDelete == null)
+            {
+                return NotFound();
+            }
+
+
+
+
+
+            _context.Person.Remove(personToDelete);
+            await _context.SaveChangesAsync();
+
+            return NoContent();
+        }
+
+
+
+
 
 
 
