@@ -126,15 +126,21 @@ namespace NetDexTest_01.Controllers
 
             if (int.TryParse(id, out int idout)) // in case you want to try to use the local counter
             {
-                personVM = await _userRepo.GetPersonPlusDexListVMAsync(userId, id);
+                await Console.Out.WriteLineAsync($"\nCriteria, {id}, is an int!");
+                var setter = await _userRepo.GetPersonPlusDexListVMAsync(userId, id);
+                personVM = setter;
+                await Console.Out.WriteLineAsync($"\nPersonVM:\t, {personVM?.Nickname ?? $"PERSON {id} NOT FOUND"}!!!\n");
             }
             else
             {
-                personVM = await _userRepo.GetPersonPlusDexListVMAsync(userId, id);
+                await Console.Out.WriteLineAsync($"\nCriteria, {id}, is NOT an int!");
+                var setter = await _userRepo.GetPersonPlusDexListVMAsync(userId, id);
+                personVM = setter;
+                await Console.Out.WriteLineAsync($"\nPersonVM:\t, {personVM?.Nickname ?? $"PERSON {id} NOT FOUND"}!!!\n");
 
             }
 
-            await Console.Out.WriteLineAsync($"\n\n\nLOG:\n\t{personVM.ToJson()} \n\n\n");
+            await Console.Out.WriteLineAsync($"\n==>\tGetting Person with input and criteria\n\nLOG:\n\t{personVM.ToJson()} \n\n\n");
 
 
             if (personVM == null)
@@ -151,7 +157,7 @@ namespace NetDexTest_01.Controllers
 
             //var model = all;
 
-            await Console.Out.WriteLineAsync($"\n\n\n\n serialized: {modelJson}\n \n\n\n\n");
+            await Console.Out.WriteLineAsync($"\n\nGetPersonWithVM\n\t{input}\n\t{criteria}\nserialized: {modelJson}\n \n\n\n\n");
 
             var model = modelJson;
             return Ok(model);
@@ -311,7 +317,7 @@ namespace NetDexTest_01.Controllers
 
             //var model = all;
 
-            await Console.Out.WriteLineAsync($"\n\n\n\n serialized: {modelJson}\n \n\n\n\n");
+            await Console.Out.WriteLineAsync($"\n\nGetPerson\n\n serialized: {modelJson}\n \n\n\n\n");
 
             var model = modelJson;
             return Ok(model);
@@ -400,7 +406,7 @@ namespace NetDexTest_01.Controllers
         [HttpPut("forms/update/{id}")]
         public async Task<ActionResult> UpdatePerson([FromForm]EditPersonFullVM person, int id) // TODO: add DexHolder id
         {
-            await Console.Out.WriteLineAsync("\n\n\n ----------------------- \n\n CreatePerson Endpoint Reached! \n\n -------------------\n\n ");
+            await Console.Out.WriteLineAsync("\n\n\n ----------------------- \n\n UpdatePerson Endpoint Reached! \n\n -------------------\n\n ");
 
             await Console.Out.WriteLineAsync($"\n\t {person?.Nickname ?? "Nickname is null!"}\n  ");
             
@@ -447,7 +453,58 @@ namespace NetDexTest_01.Controllers
                 await Console.Out.WriteLineAsync($"\n\t {personToUpdate.Favorite} => {person?.Favorite ?? personToUpdate.Favorite}\n  ");
                 personToUpdate.Favorite = person?.Favorite ?? personToUpdate.Favorite;
 
+                //await Console.Out.WriteLineAsync($"\n\t " +
+                //    $"{personToUpdate.Favorite}" +
+                //    $" => " +
+                //    $"{person?.Favorite ?? personToUpdate.Favorite}" +
+                //    $"\n  ");
+
+                await Console.Out.WriteLineAsync($"\n\t " +
+                    $"{personToUpdate.FullName.NameFirst}" +
+                    $" => " +
+                    $"{person?.NameFirst ?? personToUpdate.FullName.NameFirst }" +
+                    $"\n  ");
+                personToUpdate.FullName.NameFirst = person?.NameFirst ?? personToUpdate.FullName.NameFirst ;
+                
+                await Console.Out.WriteLineAsync($"\n\t " +
+                    $"{personToUpdate.FullName.NameMiddle}" +
+                    $" => " +
+                    $"{person?.NameMiddle ?? personToUpdate.FullName.NameMiddle }" +
+                    $"\n  ");
+                personToUpdate.FullName.NameMiddle = person?.NameMiddle ?? personToUpdate.FullName.NameMiddle ;
+                
+                await Console.Out.WriteLineAsync($"\n\t " +
+                    $"{personToUpdate.FullName.NameLast}" +
+                    $" => " +
+                    $"{person?.NameLast ?? personToUpdate.FullName.NameLast }" +
+                    $"\n  ");
+                personToUpdate.FullName.NameLast = person?.NameLast ?? personToUpdate.FullName.NameLast ;
+                
+                await Console.Out.WriteLineAsync($"\n\t " +
+                    $"{personToUpdate.FullName.PhNameFirst}" +
+                    $" => " +
+                    $"{person?.PhNameFirst ?? personToUpdate.FullName.PhNameFirst }" +
+                    $"\n  ");
+                personToUpdate.FullName.PhNameFirst = person?.PhNameFirst ?? personToUpdate.FullName.PhNameFirst ;
+                
+                await Console.Out.WriteLineAsync($"\n\t " +
+                    $"{personToUpdate.FullName.PhNameMiddle}" +
+                    $" => " +
+                    $"{person?.PhNameMiddle ?? personToUpdate.FullName.PhNameMiddle }" +
+                    $"\n  ");
+                personToUpdate.FullName.PhNameMiddle = person?.PhNameMiddle ?? personToUpdate.FullName.PhNameMiddle ;
+                
+                await Console.Out.WriteLineAsync($"\n\t " +
+                    $"{personToUpdate.FullName.PhNameLast}" +
+                    $" => " +
+                    $"{person?.PhNameLast ?? personToUpdate.FullName.PhNameLast}" +
+                    $"\n  ");
+                personToUpdate.FullName.PhNameLast = person?.PhNameLast ?? personToUpdate.FullName.PhNameLast;
+
+
+
                 _context.Person.Update(personToUpdate);
+                _context.FullName.Update(personToUpdate.FullName);
 
                 await _context.SaveChangesAsync();
                 await Console.Out.WriteLineAsync("\n\n\n ----------------------- \n\n Changes saved to context! \n\n -------------------\n\n ");

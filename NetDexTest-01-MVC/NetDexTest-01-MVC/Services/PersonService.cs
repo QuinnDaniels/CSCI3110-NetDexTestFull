@@ -116,8 +116,8 @@ namespace NetDexTest_01_MVC.Services
 
         public async Task<PersonPlusDexListVM?> GetPersonPlusDexListVMAsync(string input, string criteria)
         {
-            var url =   _config["apiService:peopleUrl"];
-            url = url + $"/retrieveRequestpath/{input}/{criteria}";
+            var url = "https://localhost:7134/api/people";// _config["apiService:peopleUrl"];
+            url = url + $"/retrieveRequestpath/{input}/{criteria}"; //criteria null?
             //var url = _config["apiService:userLogin2Url"];
             var httpResponse = await _apiService.MakeHttpCallAsync(
                 httpMethod: HttpMethod.Get,
@@ -125,15 +125,18 @@ namespace NetDexTest_01_MVC.Services
                 //, bodyContent: request
                 );
             //LoginResponse loginResponse = new LoginResponse();
-            PersonPlusDexListVM? personPlusResponse = new();
+            //PersonPlusDexListVMRes? personPlusResponse = new();
+            PersonPlusDexListVM? personPlus = new();
+
 
             //if call was successful
             if (httpResponse.StatusCode == HttpStatusCode.OK) //httpResponse.IsSuccessStatusCode
             {
-                personPlusResponse = await httpResponse.Content.ReadFromJsonAsync<PersonPlusDexListVM>();
-                await Console.Out.WriteLineAsync($"\n\n\n--------HTTP RESPONSE-----------------\n\n{personPlusResponse.ToString}\n\n\n-----------------------");
+                personPlus = await httpResponse.Content.ReadFromJsonAsync<PersonPlusDexListVM>();
+                await Console.Out.WriteLineAsync($"\n\n\n--------HTTP RESPONSE--PersonPlus-----\n\n{personPlus?.ToString()??" null!!! "}\n\n\n-----------------------");
+                //await Console.Out.WriteLineAsync($"\n\n\n--------HTTP RESPONSE--PersonPlus-----\n\n{personPlusResponse.ToString}\n\n\n-----------------------");
 
-                return personPlusResponse;//.AdminUserVMs;
+                return personPlus;//.AdminUserVMs;
                 //userResponse.Status = httpResponse.StatusCode;
 
             }

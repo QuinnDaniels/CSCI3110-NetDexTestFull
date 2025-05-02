@@ -228,8 +228,8 @@ namespace NetDexTest_01_MVC.Controllers
         //TODO
         //TODO
         
-        [Route("u/{input}/edit/{criteria}")]
-        [HttpGet()]
+        [Route("u/{input}/edit/{edit}")]
+        [HttpGet]
         public async Task<IActionResult> UpdatePerson(string input, string edit)
         {
             await Console.Out.WriteLineAsync($"\n\n\n\n\n\n\n--GET---UpdatePerson()----ACCESSING------------\n");
@@ -265,10 +265,6 @@ namespace NetDexTest_01_MVC.Controllers
                     //return RedirectToAction("DetailsViewByRoute", "People");
 
 
-
-
-                    
-                    
                     // - get all person by user
                         // - get dexholdervm -> .People.include fullname
                     // - get the person by searching criteria
@@ -285,6 +281,46 @@ namespace NetDexTest_01_MVC.Controllers
                     
                     if (editPersonVM != null)
                     {
+                        //populate ViewData here
+
+
+                        ViewData["_LocalCounter"] = personPlus.LocalCounter;
+                        ViewData["_Email"] = personPlus.AppEmail;
+                        ViewData["_Id"] = editPersonVM.Id;
+                        ViewData["_Nickname"] = editPersonVM.Nickname;
+                        ViewData["_NameFirst"] = editPersonVM.NameFirst;
+                        ViewData["_NameMiddle"] = editPersonVM.NameMiddle;
+                        ViewData["_NameLast"] = editPersonVM.NameLast;
+                        ViewData["_PhNameFirst"] = editPersonVM.PhNameFirst;
+                        ViewData["_PhNameMiddle"] = editPersonVM.PhNameMiddle;
+                        ViewData["_PhNameLast"] = editPersonVM.PhNameLast;
+                        ViewData["_DateOfBirth"] = editPersonVM.DateOfBirth;
+                        ViewData["_Gender"] = editPersonVM.Gender;
+                        ViewData["_Pronouns"] = editPersonVM.Pronouns;
+                        ViewData["_Rating"] = editPersonVM.Rating;
+                        ViewData["_Favorite"] = editPersonVM.Favorite;
+
+                        TempData["_LocalCounter"] = personPlus.LocalCounter;
+                        TempData["_Email"] = personPlus.AppEmail;
+                        TempData["_Id"] = editPersonVM.Id;
+                        TempData["_Nickname"] = editPersonVM.Nickname;
+                        TempData["_NameFirst"] = editPersonVM.NameFirst;
+                        TempData["_NameMiddle"] = editPersonVM.NameMiddle;
+                        TempData["_NameLast"] = editPersonVM.NameLast;
+                        TempData["_PhNameFirst"] = editPersonVM.PhNameFirst;
+                        TempData["_PhNameMiddle"] = editPersonVM.PhNameMiddle;
+                        TempData["_PhNameLast"] = editPersonVM.PhNameLast;
+                        TempData["_DateOfBirth"] = editPersonVM.DateOfBirth;
+                        TempData["_Gender"] = editPersonVM.Gender;
+                        TempData["_Pronouns"] = editPersonVM.Pronouns;
+                        TempData["_Rating"] = editPersonVM.Rating;
+                        TempData["_Favorite"] = editPersonVM.Favorite;
+
+
+
+
+
+
                         ViewData["EditPersonData"] = editPersonVM;
                         return View(editPersonVM);
                     }
@@ -304,7 +340,12 @@ namespace NetDexTest_01_MVC.Controllers
 
 
                     var personPlus = await _personService.GetPersonPlusDexListVMAsync(input, edit);
+                    await Console.Out.WriteLineAsync($"\n--GET---DetailsViewByRoute(id)------ {personPlus?.Nickname??"Response is null!"} -----\n\t");
+                    //await Console.Out.WriteLineAsync($"\n--GET---DetailsViewByRoute(id)------ {personPlus?.Nickname??"Response is null!"} -----\n\tSTATUS:\t{personPlusResponse?.Status.ToString()??"Status is null!"}");
                     EditPersonFullVM? editPersonVM = null;
+
+                    //PersonPlusDexListVM? personPlus = personPlusResponse.getPlusDexInstance();
+                    //await Console.Out.WriteLineAsync($"\n--GET---DetailsViewByRoute(id)------ personPlusGetInstance: not null? {personPlus!=null} -----\n\tSTATUS:\t{personPlusResponse?.Status.ToString()??"Status is null!"}");
 
                     // - if person is not null
                     if (personPlus != null)
@@ -316,7 +357,50 @@ namespace NetDexTest_01_MVC.Controllers
 
                     if (editPersonVM != null)
                     {
+
+                        ViewData["_testData"] = "this is a test";
+                        TempData["_tmpData"] = "this is a test of tempData";
+
+                        ViewData["_LocalCounter"] = personPlus.LocalCounter;
+                        ViewData["_Email"] = personPlus.AppEmail;
+
+                        ViewData["_Email"] = editPersonVM.Email;
+                        ViewData["_Id"] = editPersonVM.Id;
+                        ViewData["_Nickname"] = editPersonVM.Nickname;
+                        ViewData["_NameFirst"] = editPersonVM.NameFirst;
+                        ViewData["_NameMiddle"] = editPersonVM.NameMiddle;
+                        ViewData["_NameLast"] = editPersonVM.NameLast;
+                        ViewData["_PhNameFirst"] = editPersonVM.PhNameFirst;
+                        ViewData["_PhNameMiddle"] = editPersonVM.PhNameMiddle;
+                        ViewData["_PhNameLast"] = editPersonVM.PhNameLast;
+                        ViewData["_DateOfBirth"] = editPersonVM.DateOfBirth;
+                        ViewData["_Gender"] = editPersonVM.Gender;
+                        ViewData["_Pronouns"] = editPersonVM.Pronouns;
+                        ViewData["_Rating"] = editPersonVM.Rating;
+                        ViewData["_Favorite"] = editPersonVM.Favorite;
+
+
+
+                        TempData["_tmpLocalCounter"] = personPlus.LocalCounter;
+                        TempData["_tmpEmail"] = personPlus.AppEmail;
+                        TempData["_tmpEmail"] = editPersonVM.Email;
+                        TempData["_tmpId"] = editPersonVM.Id;
+                        TempData["_tmpNickname"] = editPersonVM.Nickname;
+                        TempData["_tmpNameFirst"] = editPersonVM.NameFirst;
+                        TempData["_tmpNameMiddle"] = editPersonVM.NameMiddle;
+                        TempData["_tmpNameLast"] = editPersonVM.NameLast;
+                        TempData["_tmpPhNameFirst"] = editPersonVM.PhNameFirst;
+                        TempData["_tmpPhNameMiddle"] = editPersonVM.PhNameMiddle;
+                        TempData["_tmpPhNameLast"] = editPersonVM.PhNameLast;
+                        TempData["_tmpDateOfBirth"] = editPersonVM.DateOfBirth;
+                        TempData["_tmpGender"] = editPersonVM.Gender;
+                        TempData["_tmpPronouns"] = editPersonVM.Pronouns;
+                        TempData["_tmpRating"] = editPersonVM.Rating;
+                        TempData["_tmpFavorite"] = editPersonVM.Favorite;
+
+
                         ViewData["EditPersonData"] = editPersonVM;
+                        TempData["_tmpEditPersonData"] = editPersonVM;
                         return View(editPersonVM);
                     }
 

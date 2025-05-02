@@ -180,6 +180,47 @@ namespace NetDexTest_01_MVC.Models.ViewModels
         public string? Title { get; set; } = "default title";
         public string? Message { get; set; } = "default message";
 
+
+
+        public PersonPlusDexListVM getPlusDexInstance()
+        {
+            return new PersonPlusDexListVM
+            {
+                Id = this.Id,
+                AppUsername = this.AppUsername,
+                AppEmail = this.AppEmail,
+                LocalCounter = this.LocalCounter,
+                DexId = this.DexId,
+                Nickname = this.Nickname,
+                NameFirst = this.NameFirst,
+                NameMiddle = this.NameMiddle,
+                NameLast = this.NameLast,
+                PhNameFirst = this.PhNameFirst,
+                PhNameMiddle = this.PhNameMiddle,
+                PhNameLast = this.PhNameLast,
+                DateOfBirth = this.DateOfBirth,
+                Gender = this.Gender,
+                Pronouns = this.Pronouns,
+                Rating = this.Rating,
+                Favorite = this.Favorite,
+                RcEntryItemsCount = this.RcEntryItemsCount,
+                CiSocialMediasCount = this.CiSocialMediasCount,
+                PersonParentsCount = this.PersonParentsCount,
+                PersonChildrenCount = this.PersonChildrenCount,
+                SocialMedias = this.SocialMedias,
+                Entries = this.Entries
+            }; 
+}
+
+
+
+
+
+
+
+
+
+
     }
 
 

@@ -2,92 +2,222 @@
 
 @{
     ViewData["Title"] = "UpdatePerson";
+    var targetPerson = ViewData["EditPersonData"] as EditPersonFullVM;
+    var tmpEmail = ViewData["_Email"] as string;
+    var tmpId = ViewData["_Id"];
+    var tmpNickname = ViewData["_Nickname"] as string;
+    var tmpNameFirst = ViewData["_NameFirst"] as string;
+    var tmpNameMiddle = ViewData["_NameMiddle"] as string;
+    var tmpNameLast = ViewData["_NameLast"] as string;
+    var tmpPhNameFirst = ViewData["_PhNameFirst"] as string;
+    var tmpPhNameMiddle = ViewData["_PhNameMiddle"] as string;
+    var tmpPhNameLast = ViewData["_PhNameLast"] as string;
+    var tmpDateOfBirth = ViewData["_DateOfBirth"];
+    var tmpGender = ViewData["_Gender"] as string;
+    var tmpPronouns = ViewData["_Pronouns"] as string;
+    var tmpRating = ViewData["_Rating"];
+    var tmpFavorite = ViewData["_Favorite"];
+    
+    
+    
+    
 }
 
 <h1>UpdatePerson</h1>
 
-<h4>EditPersonFullVM</h4>
+<h4>Edit Person</h4>
+
+
+ <input  id="targetPerson" value="@ViewData["EditPersonData"]" />
+ <input  id="tmpEmail" value="@ViewData["_Email"]" />
+ <input  id="tmpId" value="@ViewData["_Id"]" />
+ <input  id="tmpNickname" value="@ViewData["_Nickname"]" />
+ <input  id="tmpNameFirst" value="@ViewData["_NameFirst"]" />
+ <input  id="tmpNameMiddle" value="@ViewData["_NameMiddle"]" />
+ <input  id="tmpNameLast" value="@ViewData["_NameLast"]" />
+ <input  id="tmpPhNameFirst" value="@ViewData["_PhNameFirst"]" />
+ <input  id="tmpPhNameMiddle" value="@ViewData["_PhNameMiddle"]" />
+ <input  id="tmpPhNameLast" value="@ViewData["_PhNameLast"]" />
+ <input  id="tmpDateOfBirth" value="@ViewData["_DateOfBirth"]" />
+ <input  id="tmpGender" value="@ViewData["_Gender"]" />
+ <input  id="tmpPronouns" value="@ViewData["_Pronouns"]" />
+ <input  id="tmpRating" value="@ViewData["_Rating"]" />
+ <input  id="tmpFavorite" value="@ViewData["_Favorite"]" />
+ 
+@ViewData["_LocalCounter"]
+
+ @ViewData["EditPersonData"]
+ @ViewData["_Email"]
+ @ViewData["_Id"]
+ @ViewData["_Nickname"]
+ @ViewData["_NameFirst"]
+ @ViewData["_NameMiddle"]
+ @ViewData["_NameLast"]
+ @ViewData["_PhNameFirst"]
+ @ViewData["_PhNameMiddle"]
+ @ViewData["_PhNameLast"]
+ @ViewData["_DateOfBirth"]
+ @ViewData["_Gender"]
+ @ViewData["_Pronouns"]
+ @ViewData["_Rating"]
+ @ViewData["_Favorite"]
+
+<br />
+ @targetPerson <br/>
+ @tmpEmail <br/>
+ @tmpId <br/>
+ @tmpNickname <br/>
+ @tmpNameFirst <br/>
+ @tmpNameMiddle <br/>
+ @tmpNameLast <br/>
+ @tmpPhNameFirst <br/>
+ @tmpPhNameMiddle <br/>
+ @tmpPhNameLast <br/>
+ @tmpDateOfBirth <br/>
+ @tmpGender <br/>
+ @tmpPronouns <br/>
+ @tmpRating <br/>
+ @tmpFavorite <br/>
+
+ <h4>this is a temporary separation</h4>
+
+@ViewData["_tmpLocalCounter"]
+@ViewData["_tmpEditPersonData"]
+@ViewData["_tmpEmail"]
+@ViewData["_tmpId"]
+@ViewData["_tmpNickname"]
+@ViewData["_tmpNameFirst"]
+@ViewData["_tmpNameMiddle"]
+@ViewData["_tmpNameLast"]
+@ViewData["_tmpPhNameFirst"]
+@ViewData["_tmpPhNameMiddle"]
+@ViewData["_tmpPhNameLast"]
+@ViewData["_tmpDateOfBirth"]
+@ViewData["_tmpGender"]
+@ViewData["_tmpPronouns"]
+@ViewData["_tmpRating"]
+@ViewData["_tmpFavorite"]
+
+ <h4>this is a temporary separation</h4>
+
+@TempData["_tmpLocalCounter"]
+@TempData["_tmpEditPersonData"]
+@TempData["_tmpEmail"]
+@TempData["_tmpId"]
+@TempData["_tmpNickname"]
+@TempData["_tmpNameFirst"]
+@TempData["_tmpNameMiddle"]
+@TempData["_tmpNameLast"]
+@TempData["_tmpPhNameFirst"]
+@TempData["_tmpPhNameMiddle"]
+@TempData["_tmpPhNameLast"]
+@TempData["_tmpDateOfBirth"]
+@TempData["_tmpGender"]
+@TempData["_tmpPronouns"]
+@TempData["_tmpRating"]
+@TempData["_tmpFavorite"]
+
+@* 
+    type="hidden"
+    type="hidden"
+    type="hidden"
+    type="hidden"
+    type="hidden"
+    type="hidden"
+    type="hidden"
+    type="hidden"
+    type="hidden"
+    type="hidden"
+    type="hidden"
+    type="hidden"
+    type="hidden"
+    type="hidden"
+    type="hidden"
+ *@
+
+
+
 <hr />
-<div class="row">
+@* <div class="row">
     <div class="col-md-4">
-        <form asp-action="UpdatePerson">
+        <form asp-action="UpdatePerson" id="updatePersonForm">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="NameFirst" class="control-label"></label>
-                <input asp-for="NameFirst" class="form-control" />
-                <span asp-validation-for="NameFirst" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="NameMiddle" class="control-label"></label>
-                <input asp-for="NameMiddle" class="form-control" />
-                <span asp-validation-for="NameMiddle" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="NameLast" class="control-label"></label>
-                <input asp-for="NameLast" class="form-control" />
-                <span asp-validation-for="NameLast" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="PhNameFirst" class="control-label"></label>
-                <input asp-for="PhNameFirst" class="form-control" />
-                <span asp-validation-for="PhNameFirst" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="PhNameMiddle" class="control-label"></label>
-                <input asp-for="PhNameMiddle" class="form-control" />
-                <span asp-validation-for="PhNameMiddle" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="PhNameLast" class="control-label"></label>
-                <input asp-for="PhNameLast" class="form-control" />
-                <span asp-validation-for="PhNameLast" class="text-danger"></span>
+                <label asp-for="Email" class="control-label"></label>
+                <input asp-for="Email" id="tmpEmail" value="@tmpEmail" readonly class="form-control" />
+                <span asp-validation-for="Email" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Id" class="control-label"></label>
-                <input asp-for="Id" readonly class="form-control" />
+                <input asp-for="Id" id="tmpId" value="@tmpId" readonly class="form-control" />
                 <span asp-validation-for="Id" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Nickname" class="control-label"></label>
-                <input asp-for="Nickname" class="form-control" />
+                <input asp-for="Nickname" id="tmpNickname" value="@tmpNickname" class="form-control" />
                 <span asp-validation-for="Nickname" class="text-danger"></span>
             </div>
             <div class="form-group">
+                <label asp-for="NameFirst" class="control-label"></label>
+                <input asp-for="NameFirst" id="tmpNameFirst" value="@tmpNameFirst" class="form-control" />
+                <span asp-validation-for="NameFirst" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PhNameFirst" class="control-label"></label>
+                <input asp-for="PhNameFirst" id="tmpPhNameFirst" value="@tmpPhNameFirst" class="form-control" />
+                <span asp-validation-for="PhNameFirst" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="NameMiddle" class="control-label"></label>
+                <input asp-for="NameMiddle" id="tmpNameMiddle" value="@tmpNameMiddle" class="form-control" />
+                <span asp-validation-for="NameMiddle" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PhNameMiddle" class="control-label"></label>
+                <input asp-for="PhNameMiddle" id="tmpPhNameMiddle" value="@tmpPhNameMiddle" class="form-control" />
+                <span asp-validation-for="PhNameMiddle" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="NameLast" class="control-label"></label>
+                <input asp-for="NameLast" id="tmpNameLast" value="@tmpNameLast" class="form-control" />
+                <span asp-validation-for="NameLast" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PhNameLast" class="control-label"></label>
+                <input asp-for="PhNameLast" id="tmpPhNameLast" value="@tmpPhNameLast" class="form-control" />
+                <span asp-validation-for="PhNameLast" class="text-danger"></span>
+            </div>
+            <div class="form-group">
                 <label asp-for="DateOfBirth" class="control-label"></label>
-                <input asp-for="DateOfBirth" class="form-control" />
+                <input asp-for="DateOfBirth" id="tmpDateOfBirth" value="@tmpDateOfBirth" class="form-control" />
                 <span asp-validation-for="DateOfBirth" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Gender" class="control-label"></label>
-                <input asp-for="Gender" class="form-control" />
+                <input asp-for="Gender" id="tmpGender" value="@tmpGender" class="form-control" />
                 <span asp-validation-for="Gender" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Pronouns" class="control-label"></label>
-                <input asp-for="Pronouns" class="form-control" />
+                <input asp-for="Pronouns" id="tmpPronouns" value="@tmpPronouns" class="form-control" />
                 <span asp-validation-for="Pronouns" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Rating" class="control-label"></label>
-                <input asp-for="Rating" class="form-control" />
+                <input asp-for="Rating" id="tmpRating" value="@tmpRating" class="form-control" />
                 <span asp-validation-for="Rating" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Favorite" class="control-label"></label>
-                <input asp-for="Favorite" class="form-control" />
+                <input asp-for="Favorite" id="tmpFavorite" value="@tmpFavorite" class="form-control" />
                 <span asp-validation-for="Favorite" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Email" class="control-label"></label>
-                <input asp-for="Email" class="form-control" />
-                <span asp-validation-for="Email" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />
             </div>
         </form>
     </div>
-</div>
+</div> *@
 
 <div>
     <a asp-action="Index">Back to List</a>

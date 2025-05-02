@@ -786,7 +786,7 @@ export let DOM = {
 
         // Fourteenth td - edit links
         const tdLinks = document.createElement('td');
-        tdLinks.innerHTML = `<a href="/People/Edit">Edit</a> | 
+        tdLinks.innerHTML = `<a href="/dex/u/${input}/edit/${pi.Nickname}">Edit</a> | 
                          <a href="/dex/u/${input}/p/${pi.LocalCounter}">Details</a> | 
                          <a href="/People/Delete">Delete</a>`;
         tr.appendChild(tdLinks);
