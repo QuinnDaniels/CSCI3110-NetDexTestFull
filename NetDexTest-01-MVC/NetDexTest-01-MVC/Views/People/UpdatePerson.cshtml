@@ -2,8 +2,8 @@
 
 @{
     ViewData["Title"] = "UpdatePerson";
-    var targetPerson = ViewData["EditPersonData"] as EditPersonFullVM;
-    var tmpEmail = ViewData["_Email"] as string;
+    // var targetPerson = ViewData["EditPersonData"] as EditPersonFullVM;
+    var tmpEmail = ViewData["LoggedInEmail"] as string;
     var tmpId = ViewData["_Id"];
     var tmpNickname = ViewData["_Nickname"] as string;
     var tmpNameFirst = ViewData["_NameFirst"] as string;
@@ -25,43 +25,51 @@
 
 <h1>UpdatePerson</h1>
 
-<h4>Edit Person</h4>
+<h4 id="personHeading">Edit Person</h4>
 
 
- <input  id="targetPerson" value="@ViewData["EditPersonData"]" />
- <input  id="tmpEmail" value="@ViewData["_Email"]" />
- <input  id="tmpId" value="@ViewData["_Id"]" />
- <input  id="tmpNickname" value="@ViewData["_Nickname"]" />
- <input  id="tmpNameFirst" value="@ViewData["_NameFirst"]" />
- <input  id="tmpNameMiddle" value="@ViewData["_NameMiddle"]" />
- <input  id="tmpNameLast" value="@ViewData["_NameLast"]" />
- <input  id="tmpPhNameFirst" value="@ViewData["_PhNameFirst"]" />
- <input  id="tmpPhNameMiddle" value="@ViewData["_PhNameMiddle"]" />
- <input  id="tmpPhNameLast" value="@ViewData["_PhNameLast"]" />
- <input  id="tmpDateOfBirth" value="@ViewData["_DateOfBirth"]" />
- <input  id="tmpGender" value="@ViewData["_Gender"]" />
- <input  id="tmpPronouns" value="@ViewData["_Pronouns"]" />
- <input  id="tmpRating" value="@ViewData["_Rating"]" />
- <input  id="tmpFavorite" value="@ViewData["_Favorite"]" />
- 
-@ViewData["_LocalCounter"]
+<div hidden>
+     <input readonly type="hidden" id="_Email" value="@ViewData["LoggedInEmail"]" />
+     <input readonly type="hidden" id="_LocalCounter" value="@ViewData["_LocalCounter"]" />
+     <input readonly type="hidden" id="_Id" value="@ViewData["_Id"]" />
+     <input readonly type="hidden" id="_Nickname" value="@ViewData["_Nickname"]" />
+     <input readonly type="hidden" id="_NameFirst" value="@ViewData["_NameFirst"]" />
+     <input readonly type="hidden" id="_NameMiddle" value="@ViewData["_NameMiddle"]" />
+     <input readonly type="hidden" id="_NameLast" value="@ViewData["_NameLast"]" />
+     <input readonly type="hidden" id="_PhNameFirst" value="@ViewData["_PhNameFirst"]" />
+     <input readonly type="hidden" id="_PhNameMiddle" value="@ViewData["_PhNameMiddle"]" />
+     <input readonly type="hidden" id="_PhNameLast" value="@ViewData["_PhNameLast"]" />
+     <input readonly type="hidden" id="_DateOfBirth" value="@ViewData["_DateOfBirth"]" />
+     <input readonly type="hidden" id="_Gender" value="@ViewData["_Gender"]" />
+     <input readonly type="hidden" id="_Pronouns" value="@ViewData["_Pronouns"]" />
+     <input readonly type="hidden" id="_Rating" value="@ViewData["_Rating"]" />
+     <input readonly type="hidden" id="_Favorite" value="@ViewData["_Favorite"]" />
+</div>
+ <div>
 
- @ViewData["EditPersonData"]
- @ViewData["_Email"]
- @ViewData["_Id"]
- @ViewData["_Nickname"]
- @ViewData["_NameFirst"]
- @ViewData["_NameMiddle"]
- @ViewData["_NameLast"]
- @ViewData["_PhNameFirst"]
- @ViewData["_PhNameMiddle"]
- @ViewData["_PhNameLast"]
- @ViewData["_DateOfBirth"]
- @ViewData["_Gender"]
- @ViewData["_Pronouns"]
- @ViewData["_Rating"]
- @ViewData["_Favorite"]
+@* @ViewData["_LocalCounter"] <br/> *@
+@*  @ViewData["EditPersonData"] <br /> *@
+<!--
 
+ @ViewData["LoggedInEmail"] <br />
+ @ViewData["LastPerson"] <br />
+ _Id: @ViewData["_Id"] <br />
+ _Nickname: @ViewData["_Nickname"] <br />
+ _NameFirst: @ViewData["_NameFirst"] <br />
+ _NameMiddle: @ViewData["_NameMiddle"] <br />
+ _NameLast: @ViewData["_NameLast"] <br />
+ _PhNameFirst: @ViewData["_PhNameFirst"] <br />
+ _PhNameMiddle: @ViewData["_PhNameMiddle"] <br />
+ _PhNameLast: @ViewData["_PhNameLast"] <br />
+ _DateOfBirth: @ViewData["_DateOfBirth"] <br />
+ _Gender: @ViewData["_Gender"] <br />
+ _Pronouns: @ViewData["_Pronouns"] <br />
+ _Rating: @ViewData["_Rating"] <br />
+ _Favorite: @ViewData["_Favorite"] <br />
+ </div>
+
+-->
+ @*
 <br />
  @targetPerson <br/>
  @tmpEmail <br/>
@@ -78,76 +86,21 @@
  @tmpPronouns <br/>
  @tmpRating <br/>
  @tmpFavorite <br/>
-
- <h4>this is a temporary separation</h4>
-
-@ViewData["_tmpLocalCounter"]
-@ViewData["_tmpEditPersonData"]
-@ViewData["_tmpEmail"]
-@ViewData["_tmpId"]
-@ViewData["_tmpNickname"]
-@ViewData["_tmpNameFirst"]
-@ViewData["_tmpNameMiddle"]
-@ViewData["_tmpNameLast"]
-@ViewData["_tmpPhNameFirst"]
-@ViewData["_tmpPhNameMiddle"]
-@ViewData["_tmpPhNameLast"]
-@ViewData["_tmpDateOfBirth"]
-@ViewData["_tmpGender"]
-@ViewData["_tmpPronouns"]
-@ViewData["_tmpRating"]
-@ViewData["_tmpFavorite"]
-
- <h4>this is a temporary separation</h4>
-
-@TempData["_tmpLocalCounter"]
-@TempData["_tmpEditPersonData"]
-@TempData["_tmpEmail"]
-@TempData["_tmpId"]
-@TempData["_tmpNickname"]
-@TempData["_tmpNameFirst"]
-@TempData["_tmpNameMiddle"]
-@TempData["_tmpNameLast"]
-@TempData["_tmpPhNameFirst"]
-@TempData["_tmpPhNameMiddle"]
-@TempData["_tmpPhNameLast"]
-@TempData["_tmpDateOfBirth"]
-@TempData["_tmpGender"]
-@TempData["_tmpPronouns"]
-@TempData["_tmpRating"]
-@TempData["_tmpFavorite"]
-
-@* 
-    type="hidden"
-    type="hidden"
-    type="hidden"
-    type="hidden"
-    type="hidden"
-    type="hidden"
-    type="hidden"
-    type="hidden"
-    type="hidden"
-    type="hidden"
-    type="hidden"
-    type="hidden"
-    type="hidden"
-    type="hidden"
-    type="hidden"
+ 
  *@
 
 
-
 <hr />
-@* <div class="row">
+<div class="row">
     <div class="col-md-4">
         <form asp-action="UpdatePerson" id="updatePersonForm">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
+            <div hidden class="form-group">
                 <label asp-for="Email" class="control-label"></label>
                 <input asp-for="Email" id="tmpEmail" value="@tmpEmail" readonly class="form-control" />
                 <span asp-validation-for="Email" class="text-danger"></span>
             </div>
-            <div class="form-group">
+            <div hidden class="form-group">
                 <label asp-for="Id" class="control-label"></label>
                 <input asp-for="Id" id="tmpId" value="@tmpId" readonly class="form-control" />
                 <span asp-validation-for="Id" class="text-danger"></span>
@@ -209,7 +162,7 @@
             </div>
             <div class="form-group">
                 <label asp-for="Favorite" class="control-label"></label>
-                <input asp-for="Favorite" id="tmpFavorite" value="@tmpFavorite" class="form-control" />
+                <input  asp-for="Favorite" id="tmpFavorite" value="@tmpFavorite" class="form-control" />
                 <span asp-validation-for="Favorite" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -217,12 +170,15 @@
             </div>
         </form>
     </div>
-</div> *@
+</div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    @* asp-action="DexIndexSingle" *@
+    <a asp-controller="dex" asp-action="u" asp-route-id="@ViewData["LoggedInEmail"]">Back to List</a>
+
 </div>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script src="~/js/personUpdate.js" type="module" defer></script>
 }

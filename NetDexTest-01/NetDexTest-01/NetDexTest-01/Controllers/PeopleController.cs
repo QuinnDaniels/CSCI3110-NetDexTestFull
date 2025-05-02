@@ -15,6 +15,7 @@ using System.Text.Json;
 using Microsoft.AspNetCore.Cors;
 
 using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages.Manage;
+//using Newtonsoft.Json;
 
 namespace NetDexTest_01.Controllers
 {
@@ -114,7 +115,7 @@ namespace NetDexTest_01.Controllers
 
         [Route("retrieveRequestpath/{input}/{criteria}")]
         [HttpGet()]
-        public async Task<ActionResult<PersonDexListVM>> GetPersonWithVM(string input, string criteria)
+        public async Task<ActionResult<PersonPlusDexListVM>> GetPersonWithVM(string input, string criteria)
         {
             //var person = _context.Person.FirstOrDefault(a => a.Id.Equals(id));
             //await Console.Out.WriteLineAsync($"\n\n\n\n serialized: {personRequest.ToJson()}\n \n\n\n\n");
@@ -149,9 +150,13 @@ namespace NetDexTest_01.Controllers
             }
             JsonSerializerOptions options = new()
             {
-                ReferenceHandler = ReferenceHandler.IgnoreCycles, //IgnoreCycles, //Preserve
-                WriteIndented = true
-            };
+                ReferenceHandler = ReferenceHandler.IgnoreCycles, //Preserve
+                WriteIndented = true,
+                
+
+                //ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
+                //PreserveReferencesHandling = PreserveReferencesHandling.None
+        };
 
             string modelJson = JsonSerializer.Serialize(personVM, options);
 
@@ -160,7 +165,7 @@ namespace NetDexTest_01.Controllers
             await Console.Out.WriteLineAsync($"\n\nGetPersonWithVM\n\t{input}\n\t{criteria}\nserialized: {modelJson}\n \n\n\n\n");
 
             var model = modelJson;
-            return Ok(model);
+            return Ok(personVM); // bug solved with chatgpt. pass object directly instead of model
         }
 
 

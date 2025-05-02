@@ -10,6 +10,7 @@
 <input type="hidden" id="lastPerson" value="@ViewData["LastPerson"]" />
 
 <div>
+    <h2 id="personHeading">PersonDetailsVM</h2>
     <h4>PersonDetailsVM</h4>
     <hr />
     <dl class="row">
@@ -145,18 +146,22 @@
         </dd>
     </dl>
 </div>
-<div>
+<div id="redirectLinkHolder" >
    @*  @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) *@ 
    
-    <a asp-controller="dex" asp-action="u" asp-route-id="@ViewData["LoggedInEmail"]">Back to List</a>
+@*     <a asp-controller="dex" asp-action="u" asp-route-id="@ViewData["LoggedInEmail"]">Back to List</a>
    
     |
+    <br />
+    <a asp-protocol="https" asp-host="localhost:7005/dex/u/@ViewData["LoggedInEmail"]" asp-controller="p" asp-action="edit"  asp-route-id="edit">Edit</a>
+    <br />
+    <a asp-protocol="https" asp-host="localhost:7005/dex/u/@ViewData["LoggedInEmail"]/p/nickname" asp-controller="rec" asp-action="edit"   asp-route-id="@ViewData["LoggedInEmail"]">Delete</a>
 
     <a asp-controller="dex" asp-action="u" asp-route-id="@ViewData["LoggedInEmail"]">Back to List</a>
-    @* /p/@ViewData["LastPerson"]"
+ *@    @* /p/@ViewData["LastPerson"]"
     *@
 </div>
 
 @section Scripts{
-    <script src="~/js/personDetails.js" type="module" defer></script>
+    <script src="~/js/personDetails.js" type="module" ></script>
 }

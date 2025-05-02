@@ -40,15 +40,15 @@ UserAccounts
 
 --------
 
-[ ] Person
+[ ] Person `api/people`
 -------
 |  ?     | Description                      | HTML   | Definition               | Request Body | Response Body        |
 | -------| -------------------------------- | ------ | ----------------------------   | ------- | ---------------- |
 | [HACK] | ~~RA - Read People List~~ [^1]   | ~~GET~~ |    (See: Get User Dex)        |         |                  |
-|        | R1 - Read Person Details         | GET    | `api/people/retrieveViewModel` |         |                  |
-|    y   | C  - Create Person w Email       | POST   | `api/people/forms/Create`      | NewPersonVM formData | Person Object |
+|        | R1 - Read Person Details         | GET    | `/retrieveViewModel` `api/people/retrieveRequestpath/{input}/{criteria}` | PersonRequest bodyData | PersonDetail                 |
+|    y   | C  - Create Person w Email       | POST   | `/forms/Create`      | NewPersonVM formData | Person Object |
 |        | U - Update Person                | PUT    | ``                             | Person form-data | None  |
-|        | D - Delete Person                | DELETE | `api/people/retrieveViewModel` |             | None  |
+|        | D - Delete Person                | DELETE | `/retrieveViewModel` |             | None  |
 
 
 [^1]: workaround by reading array from DexHolder

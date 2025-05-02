@@ -2,6 +2,21 @@
 
 import { DOM } from "./DOMCreator.js"; // import repository
 import { UserRepository } from "./UserRepository.js"; // import repository
+
+const dexHeading = document.getElementById("dexHeading");
+try {
+    DOM.removeChildren(dexHeading);
+    dexHeading.appendChild(
+        DOM.createImg("/images/ajax-loader.gif", "Loading image"));
+
+} catch (e) {
+    console.log("heading error:", e);
+
+
+} 
+
+
+
 const userRepo = new UserRepository("https://localhost:7134/api/user"); // instantiate repository, set base address
 
 //const f = new Date("2015-03-25T12:00:00-06:00");
@@ -16,6 +31,7 @@ const userRepo = new UserRepository("https://localhost:7134/api/user"); // insta
 const email = document.getElementById("email").value;
 //DOM.logElementToConsole(email);
 const dexResponse = await userRepo.readDex(email);
+const dexEmail = dexResponse.ApplicationEmail;
 //console.log(dexResponse);
 
 
@@ -203,6 +219,39 @@ async function populateDetails(userRepo, DexHolderMiddleVM) {
 }
 
 
+let links = document.querySelector("#operationButtonHolder");
+async function runner(userRepo, DexHolderMiddleVM, dexEmail, links) {
+    let kinks = document.getElementById("operationButtonHolder");
+
+    DOM.removeChildren(kinks);
+    await populateDetails(userRepo, DexHolderMiddleVM)
+    console.log("kinks:",kinks);
+    console.log("links:",links);
+    const divhere = document.createElement("div");
+    const line = document.createElement("hr");
+    console.log("divhere:",divhere);
+    //console.log("links:",links);
+    divhere.appendChild(DOM.userDetailsButtons(dexEmail));
+
+    kinks.appendChild(divhere);
+    kinks.appendChild(line);
+
+    DOM.removeChildren(dexHeading);
 
 
-populateDetails(userRepo, dexResponse);
+    console.log(links);
+    dexHeading.appendChild(document.createTextNode(`#<b>${DexHolderMiddleVM.DexId}</b> - ${DexHolderMiddleVM.ApplicationUserName}`));
+
+}
+
+try {
+    await runner(userRepo, dexResponse, dexEmail, links);
+
+}
+catch (error) {
+    console.log("trycatch1:", error);
+    //window.location.replace(`/dex/u/${email}/p/${lastperson}`);
+}
+
+
+//populateDetails(userRepo, dexResponse);

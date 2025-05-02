@@ -7,8 +7,8 @@
 
 <h1>CreatePerson</h1>
 
-@* <input type="hidden" id="email" value="@ViewData["LoggedInEmail"]" />
- *@
+<input type="hidden" id="emailexample" value="@ViewData["LoggedInEmail"]" />
+
 
 <h4 id="headOfPerson" onclick="tellMeForm()">Person</h4>
 <hr />
@@ -21,7 +21,8 @@
                 <input type="hidden" readonly id="email" value="@ViewData["LoggedInEmail"]"  asp-for="Email" />
 
 @*                 <input asp-for="Email" readonly value="@(User.Claims.FirstOrDefault(c=>c.Type == ClaimTypes.Email).Value)" class="form-control" />
- *@@*                 <input asp-for="Email" readonly value="@(User.Claims.FirstOrDefault(c=>c.Type == ClaimTypes.Email).Value)" class="form-control" />
+ *@
+ @*                 <input asp-for="Email" readonly value="@(User.Claims.FirstOrDefault(c=>c.Type == ClaimTypes.Email).Value)" class="form-control" />
  *@            </div>
             <div class="form-group">
                 <label asp-for="Nickname" class="control-label"></label>
@@ -63,7 +64,7 @@
 
 <div>
     @* asp-action="DexIndexSingle" *@
-    <a asp-controller="dex" asp-action="u" asp-route-id="@ViewData["LoggedInEmail"]">Back to List</a> 
+    <a class="btn"  asp-controller="dex" asp-action="u" asp-route-id="@ViewData["LoggedInEmail"]">Back to List</a> 
     <br />
     <a asp-controller="nickname" asp-action="edit" asp-protocol="https" asp-host="localhost:7005/dex/u/@ViewData["LoggedInEmail"]/p" asp-route-id="@ViewData["LoggedInEmail"]">testing long route 1</a>
     <br />

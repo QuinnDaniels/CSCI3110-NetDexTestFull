@@ -1,0 +1,112 @@
+﻿@model NetDexTest_01_MVC.Models.ViewModels.DexHolderUserEditVM
+
+@{
+    ViewData["Title"] = "UpdateDex";
+
+    var editApplicationUserId = ViewData["_ApplicationUserId"]  as string;
+    var editApplicationUserName = ViewData["_ApplicationUserName"]  as string;
+    var editApplicationEmail = ViewData["_ApplicationEmail"]  as string;
+    var editFirstName = ViewData["_FirstName"]  as string;
+    var editMiddleName = ViewData["_MiddleName"]  as string;
+    var editLastName = ViewData["_LastName"]  as string;
+    var editGender = ViewData["_Gender"]  as string;
+    var editPronouns = ViewData["_Pronouns"]  as string;
+    var editDateOfBirth = ViewData["_DateOfBirth"];
+    var editDexId = ViewData["_DexId"];
+
+
+
+
+
+}
+
+<h1>UpdateDex</h1>
+
+<h4 id="personHeading">DexHolderUserEditPlusVM</h4>
+
+<div hidden>
+     <input readonly type="hidden" id="_ApplicationUserId" value="@ViewData["_ApplicationUserId"]" />
+     <input readonly type="hidden" id="_ApplicationUserName" value="@ViewData["_ApplicationUserName"]" />
+     <input readonly type="hidden" id="_ApplicationEmail" value="@ViewData["_ApplicationEmail"]" />
+     <input readonly type="hidden" id="_FirstName" value="@ViewData["_FirstName"]" />
+     <input readonly type="hidden" id="_MiddleName" value="@ViewData["_MiddleName"]" />
+     <input readonly type="hidden" id="_LastName" value="@ViewData["_LastName"]" />
+     <input readonly type="hidden" id="_Gender" value="@ViewData["_Gender"]" />
+     <input readonly type="hidden" id="_Pronouns" value="@ViewData["_Pronouns"] " />
+     <input readonly type="hidden" id="_DateOfBirth" value="@ViewData["_DateOfBirth"]" />
+     <input readonly type="hidden" id="_DexId" value="@ViewData["_DexId"]" />
+</div>
+
+
+
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="UpdateDex" id="updateDexForm">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div hidden class="form-group">
+                <label asp-for="ApplicationUserId" class="control-label"></label>
+                <input  value="@editApplicationUserId" id="tmpApplicationUserId" asp-for="ApplicationUserId" class="form-control" />
+                <span asp-validation-for="ApplicationUserId" readonly class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ApplicationUserName" class="control-label"></label>
+                <input  value="@editApplicationUserName" id="tmpApplicationUserName" asp-for="ApplicationUserName" class="form-control" />
+                <span asp-validation-for="ApplicationUserName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ApplicationEmail" class="control-label"></label>
+                <input  value="@editApplicationEmail" id="tmpApplicationEmail" asp-for="ApplicationEmail" class="form-control" />
+                <span asp-validation-for="ApplicationEmail" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="FirstName" class="control-label"></label>
+                <input  value="@editFirstName" id="tmpFirstName" asp-for="FirstName" class="form-control" />
+                <span asp-validation-for="FirstName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="MiddleName" class="control-label"></label>
+                <input  value="@editMiddleName" id="tmpMiddleName" asp-for="MiddleName" class="form-control" />
+                <span asp-validation-for="MiddleName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="LastName" class="control-label"></label>
+                <input  value="@editLastName" id="tmpLastName" asp-for="LastName" class="form-control" />
+                <span asp-validation-for="LastName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Gender" class="control-label"></label>
+                <input  value="@editGender" id="tmpGender" asp-for="Gender" class="form-control" />
+                <span asp-validation-for="Gender" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DateOfBirth" class="control-label"></label>
+                <input  value="@editDateOfBirth" id="tmpDateOfBirth" asp-for="DateOfBirth" class="form-control" />
+                <span asp-validation-for="DateOfBirth" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Pronouns" class="control-label"></label>
+                <input  value="@editPronouns" id="tmpPronouns" asp-for="Pronouns" class="form-control" />
+                <span asp-validation-for="Pronouns" class="text-danger"></span>
+            </div>
+            <div hidden class="form-group">
+                <label asp-for="DexId" class="control-label"></label>
+                <input  value="@editDexId" id="tmpDexId" asp-for="DexId" class="form-control" />
+                <span asp-validation-for="DexId" readonly class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-controller="dex" asp-action="u" asp-route-id="@ViewData["LoggedInEmail"]">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+        <script src="~/js/dexUpdate.js" type="module" defer></script>
+
+}

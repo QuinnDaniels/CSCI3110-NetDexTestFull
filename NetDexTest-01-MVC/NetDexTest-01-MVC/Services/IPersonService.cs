@@ -14,7 +14,9 @@ namespace NetDexTest_01_MVC.Services
     {
         Task<PeopleResponse> CreatePersonAsync(Person person);
         Task<PeopleResponse> CreatePersonAsync(NewPersonVM person);
+        //HACK
         Task<DexHolderMiddleVM?> GetDexHolderMiddleVMAsync(string input);
         Task<PersonPlusDexListVM?> GetPersonPlusDexListVMAsync(string input, string criteria);
+        Task<PersonDexListVM?> GetPersonDexListVMAsync(string input, string criteria);
     }
 }

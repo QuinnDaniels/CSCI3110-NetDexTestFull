@@ -150,8 +150,9 @@ export class PersonRepository { //create a class and export it (for use in UserI
 
 
 
-    async update(formData) {
-        const address = `${this.#baseAddress}/update`;
+    async update(formData, personId) {
+        const address = `${this.#baseAddress}/forms/update/${personId}`; // /api/people
+        console.log("Address:", address);
         const response = await fetch(address, {
             method: "put",
             body: formData
@@ -162,6 +163,17 @@ export class PersonRepository { //create a class and export it (for use in UserI
         return await response.text();
     }
 
+    async deletePerson(input, criteria) {
+        const address = `${this.#baseAddress}/delete/${input}/${criteria}`;
+        console.log("Address:", address);
+        const response = await fetch(address, {
+            method: "delete"
+        });
+        if (!response.ok) {
+            throw new Error("There was an HTTP error deleting the person data.");
+        }
+        return await response.text();
+    }
 
 
 

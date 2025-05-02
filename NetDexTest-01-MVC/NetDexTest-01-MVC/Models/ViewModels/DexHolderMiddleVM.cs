@@ -9,6 +9,25 @@ using NetDexTest_01_MVC.Models.Entities;
 namespace NetDexTest_01_MVC.Models.ViewModels
 {
 
+    public class DexHolderUserEditVM
+    {
+        public string? ApplicationUserId { get; set; }
+        public string ApplicationUserName { get; set; }
+        public string ApplicationEmail { get; set; }
+        public string? FirstName { get; set; }
+        public string? MiddleName { get; set; }
+        public string? LastName { get; set; }
+        public string? Gender { get; set; }
+        public string? Pronouns { get; set; }
+        public DateTime? DateOfBirth { get; set; }
+        public int DexId { get; set; }
+    }
+
+    public class DexHolderUserEditPlusVM : DexHolderUserEditVM
+    {
+        public int? PeopleCount { get; set; } = -1;
+    }
+
     public class DexHolderMiddleVM
     {
         public int DexId { get; set; } = -1;
@@ -25,6 +44,27 @@ namespace NetDexTest_01_MVC.Models.ViewModels
         public List<PersonDexListVM> People { get; set; } = new List<PersonDexListVM>();
         //public ApplicationUser ApplicationUser { get; set; }
         public int PeopleCount { get; set; } = -1;
+
+
+        public DexHolderUserEditVM getEditInstance()
+        {
+            return new DexHolderUserEditVM()
+            {
+                ApplicationUserId = this.ApplicationUserId,
+                ApplicationUserName = this.ApplicationUserName,
+                ApplicationEmail = this.ApplicationEmail,
+                FirstName = this.FirstName,
+                MiddleName = this.MiddleName,
+                LastName = this.LastName,
+                Gender = this.Gender,
+                Pronouns = this.Pronouns,
+                DateOfBirth = this.DateOfBirth,
+                DexId = this.DexId,
+
+            };
+        }
+
+
     }
 
 
@@ -93,6 +133,31 @@ namespace NetDexTest_01_MVC.Models.ViewModels
         public int? PersonParentsCount { get; set; } = -1;
         public int? PersonChildrenCount { get; set; } = -1;
 
+        public EditPersonFullVM getEditInstance()
+        {
+            return new EditPersonFullVM
+            {
+                Id = this.Id,
+                Nickname = this.Nickname,
+                DateOfBirth = this.DateOfBirth,
+                Gender = this.Gender,
+                Pronouns = this.Pronouns,
+                Rating = this.Rating,
+                Favorite = this.Favorite,
+                //Email = this.AppEmail,
+                Email = null,
+                NameFirst = this.NameFirst,
+                NameMiddle = this.NameMiddle,
+                NameLast = this.NameLast,
+                PhNameFirst = this.PhNameFirst,
+                PhNameMiddle = this.PhNameMiddle,
+                PhNameLast = this.PhNameLast
+            };
+
+        }
+
+
+
     }
 
 
@@ -115,6 +180,28 @@ namespace NetDexTest_01_MVC.Models.ViewModels
         public List<PersonPlusDexListVM> People { get; set; } = new List<PersonPlusDexListVM>();
         //public ApplicationUser ApplicationUser { get; set; }
         public int PeopleCount { get; set; } = -1;
+
+
+        public DexHolderUserEditVM getEditInstance()
+        {
+            return new DexHolderUserEditVM()
+            {
+                ApplicationUserId = this.ApplicationUserId,
+                ApplicationUserName = this.ApplicationUserName ,
+                ApplicationEmail = this.ApplicationEmail ,
+                FirstName = this.FirstName ,
+                MiddleName = this.MiddleName ,
+                LastName = this.LastName ,
+                Gender = this.Gender ,
+                Pronouns = this.Pronouns ,
+                DateOfBirth = this.DateOfBirth ,
+                DexId = this.DexId,
+
+            };
+        }
+
+
+
     }
 
 
@@ -143,8 +230,8 @@ namespace NetDexTest_01_MVC.Models.ViewModels
         public int PersonParentsCount { get; set; } = -1;
         public int PersonChildrenCount { get; set; } = -1;
 
-        public List<SocialMediaVM> SocialMedias { get; set; } = new();
-        public List<EntryItemVM> Entries { get; set; } = new();
+        public ICollection<SocialMediaVM>? SocialMedias { get; set; }
+        public ICollection<EntryItemVM>? Entries { get; set; }
 
 
         public EditPersonFullVM getEditInstance()
@@ -168,6 +255,9 @@ namespace NetDexTest_01_MVC.Models.ViewModels
             };
 
         }
+
+
+
 
     }
 
@@ -209,8 +299,8 @@ namespace NetDexTest_01_MVC.Models.ViewModels
                 PersonChildrenCount = this.PersonChildrenCount,
                 SocialMedias = this.SocialMedias,
                 Entries = this.Entries
-            }; 
-}
+            };
+        }
 
 
 
@@ -272,6 +362,45 @@ namespace NetDexTest_01_MVC.Models.ViewModels
         [DataType(DataType.DateTime)]
         public DateTime LogTimestamp { get; set; }// = DateTime.Now;
     }
+
+
+
+
+
+    //public class Rootobject
+    //{
+    //    public int Id { get; set; }
+    //    public string AppUsername { get; set; }
+    //    public string AppEmail { get; set; }
+    //    public int LocalCounter { get; set; }
+    //    public int DexId { get; set; }
+    //    public string Nickname { get; set; }
+    //    public string NameFirst { get; set; }
+    //    public string NameMiddle { get; set; }
+    //    public string NameLast { get; set; }
+    //    public string PhNameFirst { get; set; }
+    //    public string PhNameMiddle { get; set; }
+    //    public string PhNameLast { get; set; }
+    //    public object DateOfBirth { get; set; }
+    //    public string Gender { get; set; }
+    //    public string Pronouns { get; set; }
+    //    public int Rating { get; set; }
+    //    public bool Favorite { get; set; }
+    //    public int RcEntryItemsCount { get; set; }
+    //    public int CiSocialMediasCount { get; set; }
+    //    public int PersonParentsCount { get; set; }
+    //    public int PersonChildrenCount { get; set; }
+    //    public Socialmedia[] SocialMedias { get; set; }
+    //    public Entry[] Entries { get; set; }
+    //}
+
+
+
+
+
+
+
+
 
 
 }

@@ -5,22 +5,26 @@ using System.ComponentModel.DataAnnotations;
 
 namespace NetDexTest_01.Models.ViewModels
 {
-    public class DexHolderHomeVM
+    public class DexHolderUserEditVM
     {
-        public int Id { get; set; }
-        public string ApplicationUserId { get; set; }
-        public string ApplicationUserName { get; set; }
-        public string FirstName { get; set; }
-        public object MiddleName { get; set; }
-        public string LastName { get; set; }
-        public string Gender { get; set; }
-        public string Pronouns { get; set; }
-        public List<Person> People { get; set; }
-        public ApplicationUser ApplicationUser { get; set; }
-        public int PeopleCount { get; set; }
-        public DateTime DateOfBirth { get; set; }
+        public int DexId { get; set; }
+        public string? ApplicationUserId { get; set; }
+        public string? ApplicationUserName { get; set; }
+        public string? ApplicationEmail { get; set; }
+        public string? FirstName { get; set; }
+        public string? MiddleName { get; set; }
+        public string? LastName { get; set; }
+        public string? Gender { get; set; }
+        public string? Pronouns { get; set; }
+        public DateTime? DateOfBirth { get; set; }
     }
 
+    public class DexHolderUserVM : DexHolderUserEditVM
+    {
+        public string? ApplicationUserId { get; set; }
+        public int PeopleCount { get; set; } = -1;
+
+    }
 
 
     public class DexHolderMiddleVM
@@ -63,6 +67,9 @@ namespace NetDexTest_01.Models.ViewModels
         public int CiSocialMediasCount { get; set; } = -1;
         public int PersonParentsCount { get; set; } = -1;
         public int PersonChildrenCount { get; set; } = -1;
+
+
+
 
     }
 
@@ -117,6 +124,36 @@ namespace NetDexTest_01.Models.ViewModels
 
         public List<SocialMediaVM> SocialMedias { get; set; } = new();
         public List<EntryItemVM> Entries { get; set; } = new();
+        public PersonDexListVM getPersonDexVMInstance()
+        {
+            return new PersonDexListVM
+            {
+                Id = this.Id,
+                //AppUsername = this.AppUsername,
+                //AppEmail = this.AppEmail,
+                LocalCounter = this.LocalCounter,
+                DexId = this.DexId,
+                Nickname = this.Nickname,
+                NameFirst = this.NameFirst,
+                NameMiddle = this.NameMiddle,
+                NameLast = this.NameLast,
+                PhNameFirst = this.PhNameFirst,
+                PhNameMiddle = this.PhNameMiddle,
+                PhNameLast = this.PhNameLast,
+                DateOfBirth = this.DateOfBirth,
+                Gender = this.Gender,
+                Pronouns = this.Pronouns,
+                Rating = this.Rating,
+                Favorite = this.Favorite,
+                RcEntryItemsCount = this.RcEntryItemsCount,
+                CiSocialMediasCount = this.CiSocialMediasCount,
+                PersonParentsCount = this.PersonParentsCount,
+                PersonChildrenCount = this.PersonChildrenCount
+            };
+
+        }
+
+
 
     }
 

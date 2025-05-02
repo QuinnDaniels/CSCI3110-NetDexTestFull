@@ -10,7 +10,7 @@ function loadingText() {
 
     //// Create Text <td>
     const tr1 = document.createElement("tr");
-    document.querySelector("#tbodyBoardGameTable").appendChild(tr1);
+    document.querySelector("#tbodyAdminUserVMTable").appendChild(tr1);
 
     const td1 = document.createElement("td");
     td1.appendChild(document.createTextNode('loading...'));
@@ -22,7 +22,7 @@ function loadingText() {
 
 async function fetchData() {
 
-    console.log('Checkpoint 2: using fetch().then().then().catch() to get all boardgames')
+    console.log('Checkpoint 2: using fetch().then().then().catch() to get all users')
     const response = fetch('https://localhost:7134/api/user/admin/all')       // use the full URL from the other RUNNING application
         .then(response => response.json()) // Get the json from the response
         .then(data => console.log('Checkpoint 2 Data: ', data)) // Log the data to the console
@@ -96,22 +96,38 @@ function addUserToTable(tbody, AdminUserVM) {
 
     // CHATGPT
     // Add View Link TD
-    const viewTd = document.createElement("td");
+    //const viewTd = document.createElement("td");
+    //console.log("LOG: BTN: ", viewTd)
+    //const link = document.createElement("a");
+    //console.log("LOG: BTN: ", link )
+    //link.setAttribute("href", `/dex/u/${AdminUserVM.Email}`);
+    //console.log("LOG: BTN: ", link)
+    //link.setAttribute("class", "btn btn-info btn-sm");
+    //console.log("LOG: BTN: ", link)
+    //link.textContent = "View Dex";
+    //console.log("LOG: BTN: ", link)
+    //viewTd.appendChild(link);
+
+
+    const viewTd = createTDWithLinks(AdminUserVM.Email);
+/*    AdminUserVM.Email*/
+    //AdminUserVM.Email
+
+
+    //viewTd.appendChild(DOM.createButtonLink("View", `/dex/u/${AdminUserVM.Email}`, 'success'));
+    //viewTd.appendChild(DOM.createButtonLink("Edit", `/dex/edit/${AdminUserVM.Email}`, 'warning'));
+    //viewTd.appendChild(document.createTextNode(" | "));
+    ////DOM.createButtonLink("Details", `/user/details/${id}`, 'info'));
+    ////document.createTextNode(" | "));
+    //viewTd.appendChild(DOM.createButtonLink("Delete", `/dex/delete/${AdminUserVM.Email}`, 'danger'));
     console.log("LOG: BTN: ", viewTd)
-    const link = document.createElement("a");
-    console.log("LOG: BTN: ", link )
-    link.setAttribute("href", `/dex/u/${AdminUserVM.Email}`);
-    console.log("LOG: BTN: ", link)
-    link.setAttribute("class", "btn btn-info btn-sm");
-    console.log("LOG: BTN: ", link)
-    link.textContent = "View Dex";
-    console.log("LOG: BTN: ", link)
-    viewTd.appendChild(link);
-    console.log("LOG: BTN: ", viewTd)
+
+
+
     tr.appendChild(viewTd);
 
 
-    tr.appendChild(DOM.createTextTD(AdminUserVM.AccessFailedCount));
+    //tr.appendChild(DOM.createTextTD(AdminUserVM.AccessFailedCount));
 
     //const uRoles = AdminUserVM.Roles.filter(user)
 
@@ -174,11 +190,14 @@ await populateUsers(userRepo);
 // CHECKPOINT 8:
 function createTDWithLinks(id) {
     const td = document.createElement("td");
-    td.appendChild(DOM.createButtonLink("Edit", `/boardgame/edit/${id}`, 'warning'));
+    td.appendChild(DOM.createButtonLink("Edit", `/dex/u/${id}`, 'warning'));
+    //td.appendChild(DOM.createButtonLink("Edit", `/user/edit/${id}`, 'warning'));
     td.appendChild(document.createTextNode(" | "));
-    td.appendChild(DOM.createButtonLink("Details", `/boardgame/details/${id}`, 'info'));
+    td.appendChild(DOM.createButtonLink("Details", `/dex/edit/${id}`, 'info'));
+    //td.appendChild(DOM.createButtonLink("Details", `/user/details/${id}`, 'info'));
     td.appendChild(document.createTextNode(" | "));
-    td.appendChild(DOM.createButtonLink("Delete", `/boardgame/delete/${id}`, 'danger'));
+    td.appendChild(DOM.createButtonLink("Delete", `/dex/delete/${id}`, 'danger'));
+    //td.appendChild(DOM.createButtonLink("Delete", `/user/delete/${id}`, 'danger'));
     return td;
 }
 
