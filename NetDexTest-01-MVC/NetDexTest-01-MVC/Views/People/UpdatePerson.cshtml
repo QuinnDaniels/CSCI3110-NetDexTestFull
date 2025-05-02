@@ -1,0 +1,184 @@
+﻿@model NetDexTest_01_MVC.Models.ViewModels.EditPersonFullVM
+
+@{
+    ViewData["Title"] = "UpdatePerson";
+    // var targetPerson = ViewData["EditPersonData"] as EditPersonFullVM;
+    var tmpEmail = ViewData["LoggedInEmail"] as string;
+    var tmpId = ViewData["_Id"];
+    var tmpNickname = ViewData["_Nickname"] as string;
+    var tmpNameFirst = ViewData["_NameFirst"] as string;
+    var tmpNameMiddle = ViewData["_NameMiddle"] as string;
+    var tmpNameLast = ViewData["_NameLast"] as string;
+    var tmpPhNameFirst = ViewData["_PhNameFirst"] as string;
+    var tmpPhNameMiddle = ViewData["_PhNameMiddle"] as string;
+    var tmpPhNameLast = ViewData["_PhNameLast"] as string;
+    var tmpDateOfBirth = ViewData["_DateOfBirth"];
+    var tmpGender = ViewData["_Gender"] as string;
+    var tmpPronouns = ViewData["_Pronouns"] as string;
+    var tmpRating = ViewData["_Rating"];
+    var tmpFavorite = ViewData["_Favorite"];
+    
+    
+    
+    
+}
+
+<h1>UpdatePerson</h1>
+
+<h4 id="personHeading">Edit Person</h4>
+
+
+<div hidden>
+     <input readonly type="hidden" id="_Email" value="@ViewData["LoggedInEmail"]" />
+     <input readonly type="hidden" id="_LocalCounter" value="@ViewData["_LocalCounter"]" />
+     <input readonly type="hidden" id="_Id" value="@ViewData["_Id"]" />
+     <input readonly type="hidden" id="_Nickname" value="@ViewData["_Nickname"]" />
+     <input readonly type="hidden" id="_NameFirst" value="@ViewData["_NameFirst"]" />
+     <input readonly type="hidden" id="_NameMiddle" value="@ViewData["_NameMiddle"]" />
+     <input readonly type="hidden" id="_NameLast" value="@ViewData["_NameLast"]" />
+     <input readonly type="hidden" id="_PhNameFirst" value="@ViewData["_PhNameFirst"]" />
+     <input readonly type="hidden" id="_PhNameMiddle" value="@ViewData["_PhNameMiddle"]" />
+     <input readonly type="hidden" id="_PhNameLast" value="@ViewData["_PhNameLast"]" />
+     <input readonly type="hidden" id="_DateOfBirth" value="@ViewData["_DateOfBirth"]" />
+     <input readonly type="hidden" id="_Gender" value="@ViewData["_Gender"]" />
+     <input readonly type="hidden" id="_Pronouns" value="@ViewData["_Pronouns"]" />
+     <input readonly type="hidden" id="_Rating" value="@ViewData["_Rating"]" />
+     <input readonly type="hidden" id="_Favorite" value="@ViewData["_Favorite"]" />
+</div>
+ <div>
+
+@* @ViewData["_LocalCounter"] <br/> *@
+@*  @ViewData["EditPersonData"] <br /> *@
+<!--
+
+ @ViewData["LoggedInEmail"] <br />
+ @ViewData["LastPerson"] <br />
+ _Id: @ViewData["_Id"] <br />
+ _Nickname: @ViewData["_Nickname"] <br />
+ _NameFirst: @ViewData["_NameFirst"] <br />
+ _NameMiddle: @ViewData["_NameMiddle"] <br />
+ _NameLast: @ViewData["_NameLast"] <br />
+ _PhNameFirst: @ViewData["_PhNameFirst"] <br />
+ _PhNameMiddle: @ViewData["_PhNameMiddle"] <br />
+ _PhNameLast: @ViewData["_PhNameLast"] <br />
+ _DateOfBirth: @ViewData["_DateOfBirth"] <br />
+ _Gender: @ViewData["_Gender"] <br />
+ _Pronouns: @ViewData["_Pronouns"] <br />
+ _Rating: @ViewData["_Rating"] <br />
+ _Favorite: @ViewData["_Favorite"] <br />
+ </div>
+
+-->
+ @*
+<br />
+ @targetPerson <br/>
+ @tmpEmail <br/>
+ @tmpId <br/>
+ @tmpNickname <br/>
+ @tmpNameFirst <br/>
+ @tmpNameMiddle <br/>
+ @tmpNameLast <br/>
+ @tmpPhNameFirst <br/>
+ @tmpPhNameMiddle <br/>
+ @tmpPhNameLast <br/>
+ @tmpDateOfBirth <br/>
+ @tmpGender <br/>
+ @tmpPronouns <br/>
+ @tmpRating <br/>
+ @tmpFavorite <br/>
+ 
+ *@
+
+
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="UpdatePerson" id="updatePersonForm">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div hidden class="form-group">
+                <label asp-for="Email" class="control-label"></label>
+                <input asp-for="Email" id="tmpEmail" value="@tmpEmail" readonly class="form-control" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+            <div hidden class="form-group">
+                <label asp-for="Id" class="control-label"></label>
+                <input asp-for="Id" id="tmpId" value="@tmpId" readonly class="form-control" />
+                <span asp-validation-for="Id" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Nickname" class="control-label"></label>
+                <input asp-for="Nickname" id="tmpNickname" value="@tmpNickname" class="form-control" />
+                <span asp-validation-for="Nickname" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="NameFirst" class="control-label"></label>
+                <input asp-for="NameFirst" id="tmpNameFirst" value="@tmpNameFirst" class="form-control" />
+                <span asp-validation-for="NameFirst" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PhNameFirst" class="control-label"></label>
+                <input asp-for="PhNameFirst" id="tmpPhNameFirst" value="@tmpPhNameFirst" class="form-control" />
+                <span asp-validation-for="PhNameFirst" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="NameMiddle" class="control-label"></label>
+                <input asp-for="NameMiddle" id="tmpNameMiddle" value="@tmpNameMiddle" class="form-control" />
+                <span asp-validation-for="NameMiddle" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PhNameMiddle" class="control-label"></label>
+                <input asp-for="PhNameMiddle" id="tmpPhNameMiddle" value="@tmpPhNameMiddle" class="form-control" />
+                <span asp-validation-for="PhNameMiddle" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="NameLast" class="control-label"></label>
+                <input asp-for="NameLast" id="tmpNameLast" value="@tmpNameLast" class="form-control" />
+                <span asp-validation-for="NameLast" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PhNameLast" class="control-label"></label>
+                <input asp-for="PhNameLast" id="tmpPhNameLast" value="@tmpPhNameLast" class="form-control" />
+                <span asp-validation-for="PhNameLast" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DateOfBirth" class="control-label"></label>
+                <input asp-for="DateOfBirth" id="tmpDateOfBirth" value="@tmpDateOfBirth" class="form-control" />
+                <span asp-validation-for="DateOfBirth" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Gender" class="control-label"></label>
+                <input asp-for="Gender" id="tmpGender" value="@tmpGender" class="form-control" />
+                <span asp-validation-for="Gender" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Pronouns" class="control-label"></label>
+                <input asp-for="Pronouns" id="tmpPronouns" value="@tmpPronouns" class="form-control" />
+                <span asp-validation-for="Pronouns" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Rating" class="control-label"></label>
+                <input asp-for="Rating" id="tmpRating" value="@tmpRating" class="form-control" />
+                <span asp-validation-for="Rating" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Favorite" class="control-label"></label>
+                <input  asp-for="Favorite" id="tmpFavorite" value="@tmpFavorite" class="form-control" />
+                <span asp-validation-for="Favorite" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    @* asp-action="DexIndexSingle" *@
+    <a asp-controller="dex" asp-action="u" asp-route-id="@ViewData["LoggedInEmail"]">Back to List</a>
+
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script src="~/js/personUpdate.js" type="module" defer></script>
+}

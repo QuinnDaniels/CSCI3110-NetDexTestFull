@@ -58,9 +58,9 @@ namespace NetDexTest_01_MVC.Services
             var httpResponse = await _apiService.MakeHttpCallAsync(
                 httpMethod: HttpMethod.Post,
                 url: _url,
-                bodyContent: person,
-                authScheme: "bearer",
-                authToken: token
+                bodyContent: person
+            //authScheme: "bearer",
+            //authToken: token
             );
             PeopleResponse response = new PeopleResponse();
             if (httpResponse.StatusCode == HttpStatusCode.OK)
@@ -80,7 +80,7 @@ namespace NetDexTest_01_MVC.Services
 
         public async Task<DexHolderMiddleVM?> GetDexHolderMiddleVMAsync(string input)
         {
-            var url = _config["apiService:dexViewUrl"];
+            var url = "https://localhost:7134/api/user/find";//_config["apiService:dexViewUrl"];
             url = url + $"/{input}";
             //var url = _config["apiService:userLogin2Url"];
             var httpResponse = await _apiService.MakeHttpCallAsync(
@@ -113,6 +113,82 @@ namespace NetDexTest_01_MVC.Services
             }
         }
 
+
+        public async Task<PersonPlusDexListVM?> GetPersonPlusDexListVMAsync(string input, string criteria)
+        {
+            var url = "https://localhost:7134/api/people";// _config["apiService:peopleUrl"];
+            url = url + $"/retrieveRequestpath/{input}/{criteria}"; //criteria null?
+            //var url = _config["apiService:userLogin2Url"];
+            var httpResponse = await _apiService.MakeHttpCallAsync(
+                httpMethod: HttpMethod.Get,
+                url: url
+                //, bodyContent: request
+                );
+            //LoginResponse loginResponse = new LoginResponse();
+            //PersonPlusDexListVMRes? personPlusResponse = new();
+            PersonPlusDexListVM? personPlus = new();
+
+
+            //if call was successful
+            if (httpResponse.StatusCode == HttpStatusCode.OK) //httpResponse.IsSuccessStatusCode
+            {
+                personPlus = await httpResponse.Content.ReadFromJsonAsync<PersonPlusDexListVM>();
+                await Console.Out.WriteLineAsync($"\n\n\n--------HTTP RESPONSE--PersonPlus-----\n\n{personPlus?.ToString()??" null!!! "}\n\n\n-----------------------");
+                //await Console.Out.WriteLineAsync($"\n\n\n--------HTTP RESPONSE--PersonPlus-----\n\n{personPlusResponse.ToString}\n\n\n-----------------------");
+
+                return personPlus;//.AdminUserVMs;
+                //userResponse.Status = httpResponse.StatusCode;
+
+            }
+            else
+            {
+                await Console.Out.WriteLineAsync($"\n\n\n--------HTTP RESPONSE----is success?--\n\n{httpResponse.IsSuccessStatusCode}\n\n\n-----------------------");
+                //else if login failed, map the error message
+                var errMessage = await httpResponse.Content.ReadAsStringAsync();
+                //userResponses.Status = httpResponse.StatusCode;
+                //userResponses.Message = errMessage;
+                return null;
+                //return userResponses;
+            }
+        }
+
+        public async Task<PersonDexListVM?> GetPersonDexListVMAsync(string input, string criteria)
+        {
+            var url = "https://localhost:7134/api/people";// _config["apiService:peopleUrl"];
+            url = url + $"/retrieveRequestpath/{input}/{criteria}"; //criteria null?
+            //var url = _config["apiService:userLogin2Url"];
+            var httpResponse = await _apiService.MakeHttpCallAsync(
+                httpMethod: HttpMethod.Get,
+                url: url
+                //, bodyContent: request
+                );
+            //LoginResponse loginResponse = new LoginResponse();
+            //PersonPlusDexListVMRes? personPlusResponse = new();
+            PersonDexListVM? personPlus = new();
+
+
+            //if call was successful
+            if (httpResponse.StatusCode == HttpStatusCode.OK) //httpResponse.IsSuccessStatusCode
+            {
+                personPlus = await httpResponse.Content.ReadFromJsonAsync<PersonDexListVM>();
+                await Console.Out.WriteLineAsync($"\n\n\n--------HTTP RESPONSE--PersonDexList-----\n\n{personPlus?.ToString() ?? " null!!! "}\n\n\n-----------------------");
+                //await Console.Out.WriteLineAsync($"\n\n\n--------HTTP RESPONSE--PersonDexList-----\n\n{personPlusResponse.ToString}\n\n\n-----------------------");
+
+                return personPlus;//.AdminUserVMs;
+                //userResponse.Status = httpResponse.StatusCode;
+
+            }
+            else
+            {
+                await Console.Out.WriteLineAsync($"\n\n\n--------HTTP RESPONSE----is success?--\n\n{httpResponse.IsSuccessStatusCode}\n\n\n-----------------------");
+                //else if login failed, map the error message
+                var errMessage = await httpResponse.Content.ReadAsStringAsync();
+                //userResponses.Status = httpResponse.StatusCode;
+                //userResponses.Message = errMessage;
+                return null;
+                //return userResponses;
+            }
+        }
 
 
 

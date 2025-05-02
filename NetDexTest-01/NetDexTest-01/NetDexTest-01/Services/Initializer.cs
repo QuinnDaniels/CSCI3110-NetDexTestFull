@@ -206,6 +206,7 @@ namespace NetDexTest_01.Services
                 {
                     Nickname = tempNickname1,
                     DexHolder = drillman,
+                    Rating = 2,
                     FullName = new FullName()
                     {
                         NameFirst = "Drill",
@@ -268,7 +269,7 @@ namespace NetDexTest_01.Services
 
                 if (drillman != null)
                 {
-                    var new2 = new Person(tempNickname2, drillman);
+                    var new2 = new Person(tempNickname2, drillman, 4);
                     
                     Console.WriteLine($"\n\n\n---------------------------------"
                    + $"\n\n\n"

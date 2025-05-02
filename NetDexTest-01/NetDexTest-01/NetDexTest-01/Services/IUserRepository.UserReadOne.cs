@@ -33,6 +33,13 @@ namespace NetDexTest_01.Services
         Task<ApplicationUser?> ReadByUsernameAsync(string username);
         Task<ApplicationUser?> ReadByIdAsync(string id);
 
+        /// <summary>
+        /// use an id, email, or username to get a DexHolderMiddleVM
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
         Task<DexHolderMiddleVM?> GetDexHolderMiddleVMAsync(string input);
+        Task<DexHolderPlusVM?> GetDexHolderPlusVMAsync(string input);
+        Task<PersonPlusDexListVM?> GetPersonPlusDexListVMAsync(string input, string criteria);
     }
 }

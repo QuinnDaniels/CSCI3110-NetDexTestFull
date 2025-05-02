@@ -9,31 +9,31 @@
 ### BACKEND **TO-DO** LIST
 
 
-- [ ] AuthApiController
+- [x] AuthApiController
 
 - [ ] AdminUserController
-  - [ ] Get Users
-  - [ ] Get Users(string id)
-  - [ ] ? Insert User (ApplicationUser user)
+  - [x] &#x2714;Get Users
+  - [x] &#x2714;Get Users(string id)
+  - [x] &#x2714;? Insert User (ApplicationUser user)
   - [ ] Update User (string id, ApplicationUser user)
   - [ ] Delete User (string id)
 
 - [ ] AdminDexHolderController
   - [ ] Get DexHolder
   - [ ] Get DexHolder(string id)
-  - [ ] ? Insert DexHolder (DexHolder User)
+  - ~~[ ] ? Insert DexHolder (DexHolder User)~~
   - [ ] Update DexHolder (string id, DexHolder dexHolder)
   - [ ] Delete DexHolder (string id)
 
-- [ ] AdminPeopleController
-  - [ ] GetAllPeople
-  - [ ] GetAllPeople ()
+- ~~[ ] AdminPeopleController~~
+  - ~~[ ] GetAllPeople~~
+  - ~~[ ] GetAllPeople ()~~
 
 - [ ] PeopleController
-  - [ ] Get People ()
-  - [ ] ~~Get People (int id)~~ <-- (wait until id is not just an int)
-  - [ ] Get People (string nickname)
-  - [ ] Insert Person (Person person)
+  - [x] &#x2714;Get People ()
+  - ~~[ ] Get People (int id)~~ <-- (wait until id is not just an int)
+  - [x] &#x2714;Get People (string nickname)
+  - [x] &#x2714;Insert Person (Person person)
   - [ ] Update Person
     - [ ] (string nickname, Person updatedPerson)
     - [ ] (int pId, Person updatedPerson)
@@ -42,12 +42,12 @@
     - [ ] (string pId)
   
 - [ ] AdminRecordCollectorController
-    - [ ] Get All Entries
+    - [x] &#x2714;Get All Entries
 
 
-- [ ] EntryItemsController
-    - [ ] Get Entries
-    - [ ] Get Entries ()
+- ~~[ ] EntryItemsController~~
+    - [x] &#x2714;Get Entries
+    - [x] &#x2714;Get Entries ()
 
 
 ***Misc***

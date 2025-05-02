@@ -95,3 +95,14 @@ V
      - just include the string
 
 
+
+Javascript golden snippet
+```
+const email = document.getElementById("email").value;
+DOM.logElementToConsole(email);
+const dexResponse = await userRepo.readDex(email);
+console.log("LIST dexResponse: ", dexResponse);
+console.log("LIST people: ", dexResponse.People);
+const PeopleArray = dexResponse.People;
+
+```

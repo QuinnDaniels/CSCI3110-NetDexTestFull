@@ -27,6 +27,15 @@ function _formatDateDDMMYYYY(dateString) {
     return `${day}-${month}-${year}`;
 }
 
+
+function _formatDateYYYYMMDD(dateString) {
+    const date = new Date(dateString);
+    const month = (date.getMonth() + 1).toString().padStart(2, '0');
+    const day = date.getDate().toString().padStart(2, '0');
+    const year = date.getFullYear();
+    return `${year}-${month}-${day}`;
+}
+
 // CHATGPT
 function _calculateAge(dateString) {
     const birthDate = new Date(dateString);
@@ -75,6 +84,9 @@ function _formatStrDisplay(str) {
     }
 }
 
+function _isDate(value) {
+    return value instanceof Date && !isNaN(value);
+}
 
 function _formatRatingAsFiveStars(rate) {
     const rateMax = 5;
@@ -163,6 +175,8 @@ export let DOM = {
             //const row = table.insertRow();
             console.log(`${property}`, `${arrayItem[prop]}`);
             const li = document.createElement('li');
+
+            // TODO issues here with DateStrings? Revisit after semester end
             li.appendChild(document.createTextNode(arrayItem[prop]));
             ul.appendChild(li);
         });
@@ -189,10 +203,55 @@ export let DOM = {
         element.appendChild(document.createTextNode(text));
     },
 
+    setElementValue: (elementId, value) => {
+        var modifier = "";
+        if (value == undefined) {
+            value = "";
+            console.info(`setting element ${elementId} to blank`, value);
+        }
+        try {
+            if (_isDate(value)) {
+                console.info(`Date Value detected! attempting conversion`, value);
+                value = _formatDateYYYYMMDD(value)
+                console.log(value);
+            }
+        }
+        catch (e) {
+            console.info(e);
+        }
+        finally {
+
+            console.log(elementId, value);
+            const element = document.querySelector(elementId);
+            element.value = value;
+        }
+    },
+
     removeChildren: (element) => {
         while (element.firstChild) {
             element.removeChild(element.firstChild);
         }
+    },
+
+    createImg: (src, alt) => {
+        const img = document.createElement("img");
+        img.setAttribute("src", src);
+        img.setAttribute("alt", alt);
+        return img;
+    },
+    createImageTR: (src, alt) => {
+        const tr = document.createElement("tr");
+        const td = DOM.createImageTD(src, alt);
+        td.setAttribute("colspan", "4");
+        tr.appendChild(td);
+        return tr;
+    },
+
+    createImageTD: (src, alt) => {
+        const td = document.createElement("td");
+        const img = DOM.createImg(src, alt);
+        td.appendChild(img);
+        return td;
     },
 
 
@@ -548,7 +607,7 @@ export let DOM = {
     },
 
     // modified from CHATGPT
-    createPersonDexListRow: (PersonDexListVM) => {
+    createPersonDexListRow: (PersonDexListVM, input) => {
         const tr = document.createElement('tr');
         const pi = PersonDexListVM;
         tr.setAttribute('id', 'templateRow');
@@ -782,19 +841,51 @@ export let DOM = {
         tdPersonPerson.appendChild(spanEndSymbol);
 
         tr.appendChild(tdPersonPerson);
+        console.log("LOG input DOM: ", input);
 
         // Fourteenth td - edit links
         const tdLinks = document.createElement('td');
-        tdLinks.innerHTML = `<a href="/People/Edit">Edit</a> | 
-                         <a href="/People/Details">Details</a> | 
-                         <a href="/People/Delete">Delete</a>`;
+        tdLinks.innerHTML = `<a href="/dex/u/${input}/edit/${pi.Nickname}">Edit</a> | 
+                         <a href="/dex/u/${input}/p/${pi.LocalCounter}">Details</a> | 
+                         <a href="/dex/u/${input}/delete/${pi.Nickname}">Delete</a>`;
         tr.appendChild(tdLinks);
 
         return tr;
+    },
+
+    personDetailsButtons: (input, criteria) => {
+
+        //const div = document.getElementById(elementId);
+        const innerDiv = document.createElement('div');
+        innerDiv.innerHTML =
+            `<a class="btn btn-outline-primary" href="/dex/u/${input}/edit/${criteria}">Edit</a> | 
+             <a class="btn btn-outline-danger" href="/dex/u/${input}/delete/${criteria}">Delete</a> |
+             <a class="btn btn-link" href="/dex/u/${input}">Back to List</a> `;
+        //div.appendChild(innerDiv);
+        console.log("div button to add",innerDiv);
+        return innerDiv;
+        //const aEdit = document.createElement('a');
+        //.classList.add()
+        //const aDelete = document.createElement('a');
+        //.classList.add()
+        //const aList = document.createElement('a');
+        //.classList.add()
+
+    },
+
+
+    userDetailsButtons: (input) => {
+
+        //const div = document.getElementById(elementId);
+        const innerDiv = document.createElement('div');
+        innerDiv.innerHTML =
+            `<a class="btn btn-outline-primary" href="/dex/edit/${input}">Edit</a> | 
+             <a class="btn btn-outline-danger" href="/dex/delete/${input}">Delete</a> |
+             <a class="btn btn-link" disabled style="text-decoration:line-through;" href="/dex/u/${input}">Back</a> `;
+        //div.appendChild(innerDiv);
+        console.log("div button to add", innerDiv);
+        return innerDiv;
     }
-
-    
-
 
 
 }

@@ -1,5 +1,7 @@
-"use strict";
-export class DexHolderRepository { //create a class and export it (for use in UserIndex)
+﻿"use strict";
+
+
+export class PersonRepository { //create a class and export it (for use in UserIndex)
     #baseAddress;
     constructor(baseAddress) {
         this.#baseAddress = baseAddress;    // constructor initializes private member, #baseAddress, to the incoming argument
@@ -35,7 +37,7 @@ export class DexHolderRepository { //create a class and export it (for use in Us
         const address = `${this.#baseAddress}/admin/all`; //`https://localhost:7134/api/user/admin/all`;
         const response = await fetch(address);
         if (!response.ok) {
-            throw new Error("There was an HTTP error getting the user DexHolder data.");
+            throw new Error("There was an HTTP error getting the boardgame data.");
         }
         return await response.json();
     }
@@ -51,14 +53,39 @@ export class DexHolderRepository { //create a class and export it (for use in Us
     //    4.	Return the object
     /*---------------------------*/
     /**/
-    async read(input) {
-        const address = `${this.#baseAddress}/dex/${input}`;
-        const response = await fetch(address);
+    async read(input, criteria) {
+        const address = `${this.#baseAddress}/retrieveRequestpath/${input}/${criteria}`;
+        //return await response.json();
+        
+        const response = await fetch(address, {
+            method: "GET",
+            //body: formData
+        });
+        //const data = { key1: 'value1', key2: 'value2' };
+        //const data = { 'Input': input, 'Criteria': criteria };
+
+
+        //const response = await makeHttpCallAsync('GET', address, data)
+        //    .then(result => console.log('Success:', result))
+        //    .catch(error => console.error('Failed:', error));
+
+
+
+        console.log("response: ", response, response.body);
         if (!response.ok) {
-            throw new Error("There was an HTTP error getting the dex data.");
+            console.log(response.status);
+            console.log(response.statusText);
+            console.log(address);
+            throw new Error("There was an HTTP error creating the person data.");
         }
-        return await response.json();
-    }
+        const result = await response.json();
+        console.log("Success:", result);
+        return result;
+        }
+        catch(error) {
+            console.error("Error:", error);
+        }
+    
 
 
 
@@ -84,13 +111,13 @@ export class DexHolderRepository { //create a class and export it (for use in Us
         }
     }
 
-    // Example usage:
-    //const url = 'https://api.example.com/data';
-    //const data = { key1: 'value1', key2: 'value2' };
+// Example usage:
+//const url = 'https://api.example.com/data';
+//const data = { key1: 'value1', key2: 'value2' };
 
-    //makeHttpCallAsync(url, data)
-    //    .then(result => console.log('Success:', result))
-    //    .catch(error => console.error('Failed:', error));
+//makeHttpCallAsync(url, data)
+//    .then(result => console.log('Success:', result))
+//    .catch(error => console.error('Failed:', error));
 
 
 
@@ -117,14 +144,14 @@ export class DexHolderRepository { //create a class and export it (for use in Us
         const result = await response.json();
         console.log("Success:", result);
         return result;
-    } catch(error) {
-        console.error("Error:", error);
+        } catch(error) {
+            console.error("Error:", error);
     }
 
 
 
     async update(formData, personId) {
-        const address = `${this.#baseAddress}/update/${personId}`; // /api/people
+        const address = `${this.#baseAddress}/forms/update/${personId}`; // /api/people
         console.log("Address:", address);
         const response = await fetch(address, {
             method: "put",
@@ -136,8 +163,8 @@ export class DexHolderRepository { //create a class and export it (for use in Us
         return await response.text();
     }
 
-    async deletePerson(input) {
-        const address = `${this.#baseAddress}/delete/${input}/`;
+    async deletePerson(input, criteria) {
+        const address = `${this.#baseAddress}/delete/${input}/${criteria}`;
         console.log("Address:", address);
         const response = await fetch(address, {
             method: "delete"
@@ -150,18 +177,6 @@ export class DexHolderRepository { //create a class and export it (for use in Us
 
 
 
-
-}
-
-
-
-
-
-
-
-
-
-
-
+    }
 
 

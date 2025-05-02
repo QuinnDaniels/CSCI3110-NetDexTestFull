@@ -19,7 +19,8 @@ const dexResponse = await userRepo.readDex(email);
 console.log("LIST dexResponse: ", dexResponse);
 console.log("LIST people: ", dexResponse.People);
 const PeopleArray = dexResponse.People;
-
+var inputSelector = "";
+console.log("LOG input: ", inputSelector);
 
 /*--------------------------------*/
 async function standardFetchTest() {
@@ -143,6 +144,9 @@ async function populatePeopleList(userRepo, PersonDexListVM) {
         DexHolderMiddleVM.LastName
     ]
 
+    inputSelector = DexHolderMiddleVM.ApplicationUserName;
+    console.log("LOG input: ", inputSelector);
+
     if (elemArray.length == textArray.length) {
         console.info("Beginning loop...");
 
@@ -213,11 +217,13 @@ async function populatePeopleList(userRepo, PersonDexListVM) {
 
 
 
-function addPersonToTable(tbody, PersonDexListVM) {
+function addPersonToTable(tbody, PersonDexListVM, input) {
     //const tr = document.createElement("tr");
     try {
+        console.log("LOG input: ", input);
+
         console.log("LOG: addPersonToTable(PersonDexListVM): ", PersonDexListVM);
-        let tr = DOM.createPersonDexListRow(PersonDexListVM);
+        let tr = DOM.createPersonDexListRow(PersonDexListVM, input);
         tbody.appendChild(tr);
         console.log("LOG: addPersonToTable(tbody): ", tr);
         return tr
@@ -232,11 +238,12 @@ async function populatePeople(peopleIn) {
     try {
         let people = peopleIn.toSorted(function (a, b) { return a.Id - b.Id });
         console.log(people);
+        console.log("LOG input Populate: ",email);
 
         people.forEach((PersonDexListVM) => {
             console.log('POPULATING LIST: ',
                 tbody.appendChild(
-                    addPersonToTable(tbody, PersonDexListVM)
+                    addPersonToTable(tbody, PersonDexListVM, email)
                 ))
         });
 

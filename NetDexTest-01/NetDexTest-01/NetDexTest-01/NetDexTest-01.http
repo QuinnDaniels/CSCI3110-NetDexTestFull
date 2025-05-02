@@ -1,0 +1,5 @@
+﻿@NetDexTest-01_HostAddress = https://localhost:7134
+
+GET {{NetDexTest-01_HostAddress}}/api/people/retrieveRequestpath/string/string
+
+###

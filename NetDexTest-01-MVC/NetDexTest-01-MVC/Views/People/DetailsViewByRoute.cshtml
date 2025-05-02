@@ -1,0 +1,167 @@
+﻿@model NetDexTest_01_MVC.Models.ViewModels.PersonDetailsVM
+
+@{
+    ViewData["Title"] = "PersonDetailsViewByRoute";
+}
+
+<h1>PersonDetailsViewByRoute</h1>
+
+<input type="hidden" id="email" value="@ViewData["LoggedInEmail"]" />
+<input type="hidden" id="lastPerson" value="@ViewData["LastPerson"]" />
+
+<div>
+    <h2 id="personHeading">PersonDetailsVM</h2>
+    <h4>PersonDetailsVM</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-3">
+            @Html.DisplayNameFor(model => model.Id)
+        </dt>
+        <dd class = "col-sm-10" id="personId" >
+            @* @Html.DisplayFor(model => model.Id) *@
+        </dd>
+        <dt class = "col-sm-3">
+            @Html.DisplayNameFor(model => model.AppUsername)
+        </dt>
+        <dd class = "col-sm-10" id="personAppUsername" >
+            @* @Html.DisplayFor(model => model.AppUsername) *@
+        </dd>
+        <dt class = "col-sm-3">
+            @Html.DisplayNameFor(model => model.AppEmail)
+        </dt>
+        <dd class = "col-sm-10" id="personAppEmail" >
+            @* @Html.DisplayFor(model => model.AppEmail) *@
+        </dd>
+        <dt class = "col-sm-3">
+            @Html.DisplayNameFor(model => model.LocalCounter)
+        </dt>
+        <dd class = "col-sm-10" id="personLocalCounter" >
+            @* @Html.DisplayFor(model => model.LocalCounter) *@
+        </dd>
+        <dt class = "col-sm-3">
+            @Html.DisplayNameFor(model => model.DexId)
+        </dt>
+        <dd class = "col-sm-10" id="personDexId" >
+            @* @Html.DisplayFor(model => model.DexId) *@
+        </dd>
+        <dt class = "col-sm-3">
+            @Html.DisplayNameFor(model => model.Nickname)
+        </dt>
+        <dd class = "col-sm-10" id="personNickname" >
+            @* @Html.DisplayFor(model => model.Nickname) *@
+        </dd>
+        <dt class = "col-sm-3">
+            @Html.DisplayNameFor(model => model.NameFirst)
+        </dt>
+        <dd class = "col-sm-10" id="personNameFirst" >
+            @* @Html.DisplayFor(model => model.NameFirst) *@
+        </dd>
+        <dt class = "col-sm-3">
+            @Html.DisplayNameFor(model => model.NameMiddle)
+        </dt>
+        <dd class = "col-sm-10" id="personNameMiddle" >
+            @* @Html.DisplayFor(model => model.NameMiddle) *@
+        </dd>
+        <dt class = "col-sm-3">
+            @Html.DisplayNameFor(model => model.NameLast)
+        </dt>
+        <dd class = "col-sm-10" id="personNameLast" >
+            @* @Html.DisplayFor(model => model.NameLast) *@
+        </dd>
+        <dt class = "col-sm-3">
+            @Html.DisplayNameFor(model => model.PhNameFirst)
+        </dt>
+        <dd class = "col-sm-10" id="personPhNameFirst" >
+            @* @Html.DisplayFor(model => model.PhNameFirst) *@
+        </dd>
+        <dt class = "col-sm-3">
+            @Html.DisplayNameFor(model => model.PhNameMiddle)
+        </dt>
+        <dd class = "col-sm-10" id="personPhNameMiddle" >
+            @* @Html.DisplayFor(model => model.PhNameMiddle) *@
+        </dd>
+        <dt class = "col-sm-3">
+            @Html.DisplayNameFor(model => model.PhNameLast)
+        </dt>
+        <dd class = "col-sm-10" id="personPhNameLast" >
+            @* @Html.DisplayFor(model => model.PhNameLast) *@
+        </dd>
+        <dt class = "col-sm-3">
+            @Html.DisplayNameFor(model => model.DateOfBirth)
+        </dt>
+        <dd class = "col-sm-10" id="personDateOfBirth" >
+            @* @Html.DisplayFor(model => model.DateOfBirth) *@
+        </dd>
+        <dt class = "col-sm-3">
+            @Html.DisplayNameFor(model => model.Gender)
+        </dt>
+        <dd class = "col-sm-10" id="personGender" >
+            @* @Html.DisplayFor(model => model.Gender) *@
+        </dd>
+        <dt class = "col-sm-3">
+            @Html.DisplayNameFor(model => model.Pronouns)
+        </dt>
+        <dd class = "col-sm-10" id="personPronouns" >
+            @* @Html.DisplayFor(model => model.Pronouns) *@
+        </dd>
+        <dt class = "col-sm-3">
+            @Html.DisplayNameFor(model => model.Rating)
+        </dt>
+        <dd class = "col-sm-10" id="personRating">
+            @* @Html.DisplayFor(model => model.Rating) *@
+        </dd>
+        <dt class = "col-sm-3">
+            @Html.DisplayNameFor(model => model.Favorite)
+        </dt>
+        <dd class = "col-sm-10" id="personFavorite" >
+            @* @Html.DisplayFor(model => model.Favorite) *@
+        </dd>
+        <dt class = "col-sm-3">
+            @* @Html.DisplayNameFor(model => model.RcEntryItemsCount) *@
+            Entries Made:
+        </dt>
+        <dd class = "col-sm-10" id="personRcEntryItemsCount" >
+            @* @Html.DisplayFor(model => model.RcEntryItemsCount) *@
+        </dd>
+        <dt class = "col-sm-3">
+            @* @Html.DisplayNameFor(model => model.CiSocialMediasCount) *@
+            SocialMedias Saved:
+        </dt>
+        <dd class = "col-sm-10" id="personCiSocialMediasCount" >
+            @* @Html.DisplayFor(model => model.CiSocialMediasCount) *@
+        </dd>
+        <dt class = "col-sm-3">
+            @* @Html.DisplayNameFor(model => model.PersonParentsCount) *@
+            # of Principals:
+        </dt>
+        <dd class = "col-sm-10" id="personPersonParentsCount" >
+            @* @Html.DisplayFor(model => model.PersonParentsCount) *@
+        </dd>
+        <dt class = "col-sm-3">
+            @* @Html.DisplayNameFor(model => model.PersonChildrenCount) *@
+            # of Dependants:
+        </dt>
+        <dd class = "col-sm-10" id="personPersonChildrenCount" >
+            @* @Html.DisplayFor(model => model.PersonChildrenCount) *@
+        </dd>
+    </dl>
+</div>
+<div id="redirectLinkHolder" >
+   @*  @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) *@ 
+   
+@*     <a asp-controller="dex" asp-action="u" asp-route-id="@ViewData["LoggedInEmail"]">Back to List</a>
+   
+    |
+    <br />
+    <a asp-protocol="https" asp-host="localhost:7005/dex/u/@ViewData["LoggedInEmail"]" asp-controller="p" asp-action="edit"  asp-route-id="edit">Edit</a>
+    <br />
+    <a asp-protocol="https" asp-host="localhost:7005/dex/u/@ViewData["LoggedInEmail"]/p/nickname" asp-controller="rec" asp-action="edit"   asp-route-id="@ViewData["LoggedInEmail"]">Delete</a>
+
+    <a asp-controller="dex" asp-action="u" asp-route-id="@ViewData["LoggedInEmail"]">Back to List</a>
+ *@    @* /p/@ViewData["LastPerson"]"
+    *@
+</div>
+
+@section Scripts{
+    <script src="~/js/personDetails.js" type="module" ></script>
+}

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using NetDexTest_01_MVC.Models;
+using NetDexTest_01_MVC.Models.ViewModels;
 using NetDexTest_01_MVC.Models.Authentication;
 using NuGet.Protocol.Plugins;
 
@@ -34,7 +35,8 @@ namespace NetDexTest_01_MVC.Services
         /// <returns>boolean</returns>
         Task<bool> CheckInputAgainstSessionAsync(string id);
         Task<bool> CheckIfUserExistsAsync(string id);
-        
+        Task<bool> CheckIfUserExistsAsync(string id, string criteria);
+        Task<DexHolderMiddleVM?> CheckIfUserExistsReturnObjectAsync(string id);
         // FIXME
         //object GetSavedClaims();
         Claims GetSavedClaims();

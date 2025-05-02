@@ -1,4 +1,11 @@
-﻿<!DOCTYPE html>
+﻿@inject IUserSessionService _userSessionService
+@using System.Security.Claims
+@using Microsoft.AspNetCore.Http
+@using System.Text
+@inject IHttpContextAccessor HttpContextAccessor
+
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -33,6 +40,46 @@
                         </li>
 
                     </ul>
+                </div>
+                <div class="userInfo">
+
+                    @if (User.Identity.IsAuthenticated || _userSessionService.IsLoggedIn())
+                    {
+                        <div id="infoLeft" class="d-inline-block">
+                            <p>Hello @(_userSessionService.GetEmail())</p>
+                            @{
+                                var listRoles = await _userSessionService.GetRolesAsync();
+                                var data = new StringBuilder();
+                                string outputter = "";
+                                string delimit = ", ";
+                                if (listRoles.Count == 1) delimit = "";
+                                for ( int i = 0; i < listRoles.Count; i++)
+                                {
+                                    data.Append(outputter);
+                                    data.Append(listRoles[i]);
+                                    if (listRoles.Count - 1 > (i))
+                                    {
+                                        data.Append(delimit);
+
+                                    }
+                                }
+                                string dataout = data.ToString();
+                                <p>Roles: @dataout</p>
+                            }
+                        </div>
+                        <div class="infoRightable-info d-inline-block">
+                            <a class="btn btn-danger" asp-controller="auth" asp-action="logout">Logout</a>
+
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="infoRightable-info d-rigk">
+                            <a class="btn btn-success" asp-controller="auth" asp-action="login">Login</a>
+
+                        </div>
+
+                    }
                 </div>
             </div>
         </nav>

@@ -141,11 +141,13 @@ namespace NetDexTest_01_MVC.Services
             session.SetString("RefreshToken", "");
             session.SetString("Pass", "");
             session.SetString("TempEmail", "");
+            session.SetString("TempPerson", "");
             
             await Console.Out.WriteLineAsync($"\n\nClearing Session...");
             session.Clear();
 
             await Console.Out.WriteLineAsync($"\n\nEmail:\t{session.GetString("Email")}");
+            await Console.Out.WriteLineAsync($"\n\nTempPerson:\t{session.GetString("TempPerson")}");
             await Console.Out.WriteLineAsync($"\n\nTempEmail:\t{session.GetString("TempEmail")}");
             await Console.Out.WriteLineAsync($"\n\nUsername:\t{session.GetString("Username")}");
             await Console.Out.WriteLineAsync($"\n\nPassword:\t{session.GetString("Pass")}");
@@ -274,6 +276,7 @@ namespace NetDexTest_01_MVC.Services
         public string GetPass() => _httpContextAccessor.HttpContext.Session.GetString("Pass");
         public string GetEmail() => _httpContextAccessor.HttpContext.Session.GetString("Email");
         public string GetTempEmail() => _httpContextAccessor.HttpContext.Session.GetString("TempEmail");
+        public string GetTempPerson() => _httpContextAccessor.HttpContext.Session.GetString("TempPerson");
         public string GetUsername() => _httpContextAccessor.HttpContext.Session.GetString("Username");
         public string GetStringRoles() => _httpContextAccessor.HttpContext.Session.GetString("StringRoles");
         
@@ -324,17 +327,54 @@ namespace NetDexTest_01_MVC.Services
 
         }
 
+        /// <summary>
+        /// Store user input and criteria (person nickname and id)
+        /// </summary>
+        /// <param name="email"></param>
+        /// <param name="criteria"></param>
+        /// <returns></returns>
+        public async Task SetTempCheckAsync(string email, string criteria)
+        {
+            var session = _httpContextAccessor.HttpContext.Session;
+            await ConOut("Setting Temp User Session....");
+
+            session.SetString("TempEmail", email);
+            session.SetString("TempPerson", criteria);
+            await Console.Out.WriteLineAsync($"\n\nTempEmail:\t{session.GetString("TempEmail")}");
+            await Console.Out.WriteLineAsync($"\n\nTempPerson:\t{session.GetString("TempPerson")}");
+        }
+
+
+        /// <summary>
+        /// Store user input and criteria (person nickname and id)
+        /// </summary>
+        /// <param name="email"></param>
+        /// <param name="criteria"></param>
+        /// <returns></returns>
+        public async Task SetTempPersonAsync(string criteria)
+        {
+            var session = _httpContextAccessor.HttpContext.Session;
+            await ConOut("Setting Temp User Session....");
+
+            session.SetString("TempPerson", criteria);
+            await Console.Out.WriteLineAsync($"\n\nTempPerson:\t{session.GetString("TempPerson")}");
+        }
+
+
         public async Task CloseTempSessionData()
         {
             var session = _httpContextAccessor.HttpContext.Session;
             await ConOut("Closing Temp Session....");
             await Console.Out.WriteLineAsync($"\n\nSetting Session Strings to empty...");
             session.SetString("TempEmail", "");
+            session.SetString("TempPerson", "");
 
             await Console.Out.WriteLineAsync($"\n\nClearing Temp Session...");
             session.Remove("TempEmail");
+            session.Remove("TempPerson");
 
             await Console.Out.WriteLineAsync($"\n\nTempEmail:\t{session.GetString("TempEmail")}");
+            await Console.Out.WriteLineAsync($"\n\nTempPerson:\t{session.GetString("TempPerson")}");
 
         }
 

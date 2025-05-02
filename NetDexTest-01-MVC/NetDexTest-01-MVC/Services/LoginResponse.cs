@@ -26,4 +26,9 @@ namespace NetDexTest_01_MVC.Services
         public string? Roles { get; set; }
 
     }
+
+
+
+
+
 }
