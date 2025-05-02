@@ -2,6 +2,7 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Net;
 using System.Security.Cryptography.Pkcs;
+using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages.Manage;
 using NetDexTest_01_MVC.Models.Entities;
 
 
@@ -145,10 +146,54 @@ namespace NetDexTest_01_MVC.Models.ViewModels
         public List<SocialMediaVM> SocialMedias { get; set; } = new();
         public List<EntryItemVM> Entries { get; set; } = new();
 
+
+        public EditPersonFullVM getEditInstance()
+        {
+            return new EditPersonFullVM
+            {
+                Id = this.Id,
+                Nickname = this.Nickname,
+                DateOfBirth = this.DateOfBirth,
+                Gender = this.Gender,
+                Pronouns = this.Pronouns,
+                Rating = this.Rating,
+                Favorite = this.Favorite,
+                Email = this.AppEmail,
+                NameFirst = this.NameFirst,
+                NameMiddle = this.NameMiddle,
+                NameLast = this.NameLast,
+                PhNameFirst = this.PhNameFirst,
+                PhNameMiddle = this.PhNameMiddle,
+                PhNameLast = this.PhNameLast
+            };
+
+        }
+
     }
 
 
 
+
+    public class PersonPlusDexListVMResponse : PersonPlusDexListVM
+    {
+        public HttpStatusCode Status { get; set; }
+        public string? Title { get; set; } = "default title";
+        public string? Message { get; set; } = "default message";
+
+    }
+
+
+    /*--------------------------*/
+
+
+
+    public class SocialMediaVMResponse : SocialMediaVM
+    {
+        public HttpStatusCode Status { get; set; }
+        public string? Title { get; set; } = "default title";
+        public string? Message { get; set; } = "default message";
+
+    }
     public class SocialMediaVM
     {
 
@@ -161,6 +206,16 @@ namespace NetDexTest_01_MVC.Models.ViewModels
 
     }
 
+
+    /*-----------------------------*/
+
+    public class EntryItemVMResponse : EntryItemVM
+    {
+        public HttpStatusCode Status { get; set; }
+        public string? Title { get; set; } = "default title";
+        public string? Message { get; set; } = "default message";
+
+    }
     public class EntryItemVM
     {
 

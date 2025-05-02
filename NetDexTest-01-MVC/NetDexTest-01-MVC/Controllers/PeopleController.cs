@@ -6,6 +6,7 @@ using NetDexTest_01_MVC.Models.Entities;
 using NetDexTest_01_MVC.Models.Authentication;
 using NetDexTest_01_MVC.Services;
 using Microsoft.Docs.Samples;
+using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages.Manage;
 
 namespace NetDexTest_01_MVC.Controllers
 {
@@ -17,10 +18,12 @@ namespace NetDexTest_01_MVC.Controllers
         private readonly IUserSessionService _userSessionService;
         private readonly IUserService _userService;
         private readonly IPersonService _personService;
+        private readonly IApiCallerService _apiCallerService;
 
 
         public PeopleController(ILogger<AuthController> logger,
             IAuthService authService,
+            IApiCallerService apiCallerService,
             IUserService userService,
             IPersonService personService,
             IUserSessionService userSessionService)
@@ -28,6 +31,7 @@ namespace NetDexTest_01_MVC.Controllers
             _logger = logger;
             _authService = authService;
             _userSessionService = userSessionService;
+            _apiCallerService = apiCallerService;
             _userService = userService;
             _personService = personService;
 
@@ -226,7 +230,7 @@ namespace NetDexTest_01_MVC.Controllers
         
         [Route("u/{input}/edit/{criteria}")]
         [HttpGet()]
-        public async Task<IActionResult> UpdatePerson(string input)
+        public async Task<IActionResult> UpdatePerson(string input, string edit)
         {
             await Console.Out.WriteLineAsync($"\n\n\n\n\n\n\n--GET---UpdatePerson()----ACCESSING------------\n");
             await Console.Out.WriteLineAsync($"\n\n--GET---UpdatePerson()----Checking tmpData---\n\n\t{TempData["tEmail"]}");
@@ -259,21 +263,32 @@ namespace NetDexTest_01_MVC.Controllers
                     ViewData["LoggedInEmail"] = _userSessionService.GetEmail();
                     TempData["tEmail"] = _userSessionService.GetEmail();
                     //return RedirectToAction("DetailsViewByRoute", "People");
-                    
-                    
+
+
+
+
                     
                     
                     // - get all person by user
                         // - get dexholdervm -> .People.include fullname
-
                     // - get the person by searching criteria
+                    var personPlus = await _personService.GetPersonPlusDexListVMAsync(input, edit);
+                    EditPersonFullVM? editPersonVM = null;
 
                     // - if person is not null
+                    if (personPlus != null)
+                    {
                         // - instantiate new vm
+                        editPersonVM = personPlus.getEditInstance();
+                    }
                     // - endif
                     
+                    if (editPersonVM != null)
+                    {
+                        ViewData["EditPersonData"] = editPersonVM;
+                        return View(editPersonVM);
+                    }
                     // - pass the resulting EditFullPersonVM into view
-                    return View();
                     //return ControllerContext.MyDisplayRouteInfo("", $" URL = {url}");
                 }
                 else if (roleFlag)
@@ -285,6 +300,26 @@ namespace NetDexTest_01_MVC.Controllers
                     TempData["tEmail"] = _userSessionService.GetTempEmail();
                     TempData["LastPerson"] = _userSessionService.GetTempPerson();
                     ViewData["LastPerson"] = _userSessionService.GetTempPerson();
+
+
+
+                    var personPlus = await _personService.GetPersonPlusDexListVMAsync(input, edit);
+                    EditPersonFullVM? editPersonVM = null;
+
+                    // - if person is not null
+                    if (personPlus != null)
+                    {
+                        // - instantiate new vm
+                        editPersonVM = personPlus.getEditInstance();
+                    }
+                    // - endif
+
+                    if (editPersonVM != null)
+                    {
+                        ViewData["EditPersonData"] = editPersonVM;
+                        return View(editPersonVM);
+                    }
+
 
                     // HACK disbling for now for if an admin goes to another user to create a person
                     //await _userSessionService.CloseTempSessionData();

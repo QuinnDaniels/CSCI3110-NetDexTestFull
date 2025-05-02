@@ -398,7 +398,7 @@ namespace NetDexTest_01.Controllers
         // PUT: api/People/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("forms/update/{id}")]
-        public async Task<ActionResult> UpdatePerson([FromForm]EditPersonVM person, int id) // TODO: add DexHolder id
+        public async Task<ActionResult> UpdatePerson([FromForm]EditPersonFullVM person, int id) // TODO: add DexHolder id
         {
             await Console.Out.WriteLineAsync("\n\n\n ----------------------- \n\n CreatePerson Endpoint Reached! \n\n -------------------\n\n ");
 
@@ -411,7 +411,7 @@ namespace NetDexTest_01.Controllers
 
 
 
-            var personToUpdate = _context.Person.FirstOrDefault(a => a.Id.Equals(person.Id) || a.Id == id  || a.Id == person.Id);
+            var personToUpdate = _context.Person.Include(p => p.FullName).FirstOrDefault(a => a.Id.Equals(person.Id) || a.Id == id  || a.Id == person.Id);
 
             if (personToUpdate == null) // added to conform to tutorial. is likely redundant, considering scaffold result
             {

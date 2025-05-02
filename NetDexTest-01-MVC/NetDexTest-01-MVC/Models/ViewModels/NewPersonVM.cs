@@ -161,6 +161,13 @@ namespace NetDexTest_01_MVC.Models.ViewModels
 
     }
 
+    public class EditPersonFullVMResponse : EditPersonFullVM
+    {
+        public HttpStatusCode Status { get; set; }
+        public string? Title { get; set; } = "default title";
+        public string? Message { get; set; } = "default message";
+
+    }
     public class EditPersonFullVM : EditPersonVM
     {
         [StringLength(120)]
@@ -175,6 +182,30 @@ namespace NetDexTest_01_MVC.Models.ViewModels
         public string? PhNameMiddle { get; set; }
         [StringLength(120)]
         public string? PhNameLast { get; set; }
+
+        public EditPersonFullVM()
+        {
+
+        }
+        public EditPersonFullVM(PersonPlusDexListVM pPlus)
+        {
+            Id = pPlus.Id;
+            Nickname = pPlus.Nickname;
+            DateOfBirth = pPlus.DateOfBirth;
+            Gender = pPlus.Gender;
+            Pronouns = pPlus.Pronouns;
+            Rating = pPlus.Rating;
+            Favorite = pPlus.Favorite;
+            Email = pPlus.AppEmail;
+            NameFirst = pPlus.NameFirst;
+            NameMiddle = pPlus.NameMiddle;
+            NameLast = pPlus.NameLast;
+            PhNameFirst = pPlus.PhNameFirst;
+            PhNameMiddle = pPlus.PhNameMiddle;
+            PhNameLast = pPlus.PhNameLast;
+        }
+
+
 
     }
 
