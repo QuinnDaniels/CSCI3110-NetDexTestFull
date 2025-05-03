@@ -157,8 +157,35 @@ namespace NetDexTest_01.Services
 
         public async Task<Person?> ReadPersonByIdAsync(int personId)
         {
-            var person = await _db.Person.FirstOrDefaultAsync(p => p.Id == personId);
+            var person = await _db.Person
+                .Include(p => p.RecordCollector)
+                .Include(p => p.ContactInfo)
+                .Include(p => p.FullName)
+                .Include(p => p.PersonParents)
+                .Include(p => p.PersonChildren)
+                .Include(p => p.DexHolder)
+                .FirstOrDefaultAsync(p => p.Id == personId);
             return person;
         }
+
+
+        public async Task<ContactInfo?> ReadContactInfoByIdAsync(Int64 ContactInfoId)
+        {
+            var contact = await _db.ContactInfo
+                .Include(c => c.Person)
+                .Include(c => c.SocialMedias)
+                .FirstOrDefaultAsync(c => c.Id == ContactInfoId);
+            return contact;
+        }
+        public async Task<RecordCollector?> ReadRecordByIdAsync(Int64 RecordCollectorId)
+        {
+            var contact = await _db.RecordCollector
+                .Include(r => r.Person)
+                .Include(r => r.EntryItems)
+                .FirstOrDefaultAsync(r => r.Id == RecordCollectorId);
+            return contact;
+        }
+
+
     }
 }

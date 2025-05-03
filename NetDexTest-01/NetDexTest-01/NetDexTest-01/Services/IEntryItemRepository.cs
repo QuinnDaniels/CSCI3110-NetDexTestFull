@@ -17,16 +17,29 @@ namespace NetDexTest_01.Services
 {
     public partial interface IEntryItemRepository
     {
-        Task<ICollection<EntryItem>> ReadAllEntriesAsync();
-        Task<ICollection<EntryItem>> ReadAllEntriesAsync(string criteria);
-        Task<ICollection<EntryItem>?> ReadAllEntriesByUserAsync(string criteria);
+        // Task<ICollection<EntryItem>> ReadAllEntriesAsync();
+        // Task<ICollection<EntryItem>> ReadAllEntriesAsync(string criteria);
+        // Task<ICollection<EntryItem>?> ReadAllEntriesByUserAsync(string criteria);
+        Task<EntryItem?> GetEntryItemAsync(Int64 id);
+        Task<List<EntryItem>?> GetAllEntryItemsByUserAsync(string input);
+        Task<List<EntryItem>> GetAllEntryItemsAsync();
+        Task<bool> CreateEntryItemAsync(EntryItem item);
+        Task<bool> UpdateEntryItemAsync(Int64 id, string newTitle, string newText);
+        Task<bool> UpdateEntryItemAsync(Int64 id, EntryItemVM item);
+        Task<bool> UpdateEntryItemAsync(EntryItemVM item);
 
+        Task<bool> DeleteEntryItemAsync(Int64 id);
+        Task<bool> CreateEntryItemWithVMAsync(EntryItemVM item);
     }
+
+
+
+}
 
 
     public partial class DbEntryItemRepository : IEntryItemRepository
     {
-        private readonly ApplicationDbContext _db; //_context
+        private readonly ApplicationDbContext _context; //_context
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
@@ -60,7 +73,7 @@ namespace NetDexTest_01.Services
         {
             _userRepo = userRepo;
             _personRepo = personRepo;
-            _db = db; //context
+            _context = db; //context
             _userManager = userManager;
             _roleManager = roleManager;
             _userStore = userStore;
@@ -72,92 +85,304 @@ namespace NetDexTest_01.Services
             _tools = tools;
 
         }
+    /*---------------------------------*/
 
 
-        public async Task<ICollection<EntryItem>> ReadAllEntriesAsync()
+    public async Task<EntryItem?> GetEntryItemAsync(Int64 id)
+    {
+        return await _context.EntryItem
+            .Include(e => e.RecordCollector)
+                .ThenInclude(rc => rc.Person)
+                    .ThenInclude(p => p.FullName)
+            .Include(e => e.RecordCollector)
+                .ThenInclude(rc => rc.Person)
+                    .ThenInclude(p => p.DexHolder)
+                        .ThenInclude(dh => dh.ApplicationUser)
+            .FirstOrDefaultAsync(e => e.Id == id);
+    }
+
+
+    public async Task<List<EntryItem>?> GetAllEntryItemsByUserAsync(string input)
+    {
+        List<EntryItem>? tasker = null;
+
+        if (Int64.TryParse(input, out Int64 idout))
         {
-            return await _db.EntryItem
+            await Console.Out.WriteLineAsync($"\n\nGetEntriesByUser:\n\t Criteria, {input}, is an Int64. Checking DexHolderID!!!\n");
+            tasker = await _context.EntryItem
                 .Include(e => e.RecordCollector)
-                    .ThenInclude(r => r.Person)
-                        //.ThenInclude(p => p.FullName)
+                    .ThenInclude(rc => rc.Person)
+                        .ThenInclude(p => p.FullName)
+                .Include(e => e.RecordCollector)
+                    .ThenInclude(rc => rc.Person)
+                        .ThenInclude(p => p.DexHolder)
+                            .ThenInclude(dh => dh.ApplicationUser)
+                .Where(e => e.RecordCollector.Person.DexHolder.Id == idout)
                 .ToListAsync();
         }
-
-
-        public async Task<ICollection<EntryItem>> ReadAllEntriesAsync(string criteria)
+        else
         {
-            if (int.TryParse(criteria, out int idout))
-            {
-                await Console.Out.WriteLineAsync($"\nReadAllEntries:\n\t Criteria, {criteria}, is an int. Checking PersonId!!!\n");
-                return await _db.EntryItem
+            await Console.Out.WriteLineAsync($"\n\nGetEntriesByUser:\n\t Criteria, {input}, is NOT an Int64. Checking DexHolderID!!!\n");
+            tasker = await _context.EntryItem
                     .Include(e => e.RecordCollector)
-                        .ThenInclude(r => r.Person)
-                        //// HACK - Discluded due to error (see end of file)
-                            //.ThenInclude(p => p.FullName)
-                        .Where(e => e.RecordCollector.Person.Id == idout)
-                    .ToListAsync();
-            }
-            else
-            {
-                await Console.Out.WriteLineAsync($"\n\nReadAllEntries:\n\t Criteria, {criteria}, is not an int. Checking nickname!!!\n");
-                return await _db.EntryItem
+                        .ThenInclude(rc => rc.Person)
+                            .ThenInclude(p => p.FullName)
                     .Include(e => e.RecordCollector)
-                        .ThenInclude(r => r.Person)
-                            //.ThenInclude(p => p.FullName)
-                        .Where(e => e.RecordCollector.Person.Nickname == criteria)
+                        .ThenInclude(rc => rc.Person)
+                            .ThenInclude(p => p.DexHolder)
+                                .ThenInclude(dh => dh.ApplicationUser)
+                    .Where(e => e.RecordCollector.Person.DexHolder.ApplicationUser.UserName == input
+                    || e.RecordCollector.Person.DexHolder.ApplicationUser.Id == input
+                    || e.RecordCollector.Person.DexHolder.ApplicationUser.Email == input
+                        )
                     .ToListAsync();
-            }
+        }
+        if (tasker != null)
+        {
+            return tasker;
+        }
+        else
+        {
+        await Console.Out.WriteLineAsync($"\n\nGetEntriesByUser:\n\t Criteria, {input}, NOT FOUND!!! Returning null...\n");
+            return null;
+        }
+    }
 
+
+    public async Task<List<EntryItem>> GetAllEntryItemsAsync()
+    {
+        return await _context.EntryItem
+            .Include(e => e.RecordCollector)
+                .ThenInclude(rc => rc.Person)
+                    .ThenInclude(p => p.FullName)
+            .Include(e => e.RecordCollector)
+                .ThenInclude(rc => rc.Person)
+                    .ThenInclude(p => p.DexHolder)
+                        .ThenInclude(dh => dh.ApplicationUser)
+            .ToListAsync();
+    }
+
+    public async Task<bool> CreateEntryItemAsync(EntryItem item)
+    {
+        RecordCollector? recordsExist = await _personRepo.ReadRecordByIdAsync(item.RecordCollectorId);// != null;
+        if (recordsExist != null) {
+            await Console.Out.WriteLineAsync($"\n\nNOTICE: RecordCollector not found for item.RecordCollectorId, {item.RecordCollectorId} ");
+        return false;
+        }
+        var pId = recordsExist!.PersonId;
+        Person? personExists = await _personRepo.ReadPersonByIdAsync(recordsExist.PersonId); //!= null;
+        if (personExists != null) {
+            await Console.Out.WriteLineAsync($"\n\nNOTICE: Person not found for RecordCollector, {pId} ");
+        return false;
         }
 
-        public async Task<ICollection<EntryItem>?> ReadAllEntriesByUserAsync(string input)
+        item.RecordCollector = recordsExist;
+        item.RecordCollectorId = recordsExist.Id;
+        item.RecordCollector.LastUpdated = DateTime.UtcNow;
+
+        _context.EntryItem.Add(item);
+        return await _context.SaveChangesAsync() > 0;
+    }
+
+    public async Task<bool> CreateEntryItemWithVMAsync(EntryItemVM item)
+    {
+        RecordCollector? recordsExist = await _personRepo.ReadRecordByIdAsync(item.RecordCollectorId);// != null;
+        if (recordsExist == null)
         {
-                await Console.Out.WriteLineAsync($"\n\nReadAllEntriesByUser:\n\t Criteria, {input}, is an int. Checking DexHolderID!!!\n");
-                var tasker = await _db.EntryItem
-                        // .Include(e => e.RecordCollector)
-                        //     .ThenInclude(r => r.Person)
-                        //         .ThenInclude(p => p.FullName)
+            await Console.Out.WriteLineAsync($"\n\nNOTICE: RecordCollector not found for item.RecordCollectorId, {item.RecordCollectorId}:");
+            return false;
+        }
+        var pId = recordsExist!.PersonId;
+        Person? personExists = await _personRepo.ReadPersonByIdAsync(recordsExist.PersonId); //!= null;
+        if (personExists == null)
+        {
+            await Console.Out.WriteLineAsync($"\n\nNOTICE: Person not found for RecordCollector, {pId} ");
+            return false;
+        }
+
+        EntryItem toAdd = new EntryItem(){
+            RecordCollectorId = recordsExist.Id,
+            ShortTitle = item.ShortTitle,
+            FlavorText = item.FlavorText,
+            RecordCollector = recordsExist
+        };
+        _context.EntryItem.Add(toAdd);
+        return await _context.SaveChangesAsync() > 0;
+    }
+
+    public async Task<bool> UpdateEntryItemAsync(Int64 id, string newTitle, string newText)
+    {
+        var entry = await _context.EntryItem.FindAsync(id);
+        if (entry == null) return false;
+
+        var personExists = await _personRepo.ReadPersonByIdAsync(entry.RecordCollector.PersonId) != null;
+        if (!personExists) return false;
+
+        entry.ShortTitle = newTitle;
+        entry.FlavorText = newText;
+        return await _context.SaveChangesAsync() > 0;
+    }
+
+
+    public async Task<bool> UpdateEntryItemAsync(Int64 id, EntryItemVM item)
+    {
+        var entry = await _context.EntryItem.FindAsync(id);
+        if (entry == null) return false;
+
+        RecordCollector? recordsExist = await _personRepo.ReadRecordByIdAsync(item.RecordCollectorId);// != null;
+        if (recordsExist != null)
+        {
+            await Console.Out.WriteLineAsync($"\n\nNOTICE: RecordCollector not found for item.RecordCollectorId, {item.RecordCollectorId} ");
+            return false;
+        }
+        var pId = recordsExist!.PersonId;
+        Person? personExists = await _personRepo.ReadPersonByIdAsync(recordsExist.PersonId); //!= null;
+        if (personExists != null)
+        {
+            await Console.Out.WriteLineAsync($"\n\nNOTICE: Person not found for RecordCollector, {pId} ");
+            return false;
+        }
+
+
+        // HACK - I should really put lastUpdated on the items, then have a calc column on the collector tables or smthg
+        entry.LogTimestamp = DateTime.UtcNow;
+
+        entry.ShortTitle = item.ShortTitle;
+        entry.FlavorText = item.FlavorText;
+        return await _context.SaveChangesAsync() > 0;
+    }
+
+
+
+    public async Task<bool> UpdateEntryItemAsync(EntryItemVM item)
+    {
+        var entry = await _context.EntryItem.FindAsync(item.Id);
+        if (entry == null) return false;
+
+        RecordCollector? recordsExist = await _personRepo.ReadRecordByIdAsync(entry.RecordCollectorId);// != null;
+        if (recordsExist == null)
+        {
+            await Console.Out.WriteLineAsync($"\n\nNOTICE: RecordCollector not found for item.RecordCollectorId, {item.RecordCollectorId} ");
+            return false;
+        }
+        var pId = recordsExist!.PersonId;
+        Person? personExists = await _personRepo.ReadPersonByIdAsync(recordsExist.PersonId); //!= null;
+        if (personExists == null)
+        {
+            await Console.Out.WriteLineAsync($"\n\nNOTICE: Person not found for RecordCollector, {pId} ");
+            return false;
+        }
+
+
+        // HACK - I should really put lastUpdated on the items, then have a calc column on the collector tables or smthg
+        entry.LogTimestamp = DateTime.UtcNow;
+
+        entry.ShortTitle = item.ShortTitle ;
+        entry.FlavorText = item.FlavorText;
+        return await _context.SaveChangesAsync() > 0;
+    }
+
+
+
+
+    public async Task<bool> DeleteEntryItemAsync(Int64 id)
+    {
+        var entry = await _context.EntryItem.FindAsync(id);
+        if (entry == null) return false;
+
+        var personExists = await _personRepo.ReadPersonByIdAsync(entry.RecordCollector.PersonId) != null;
+        if (!personExists) return false;
+
+        _context.EntryItem.Remove(entry);
+        return await _context.SaveChangesAsync() > 0;
+    }
+
+
+
+
+
+
+
+
+
+
+    /*--------------------------------------------*/
+    //*/
+    #region BadCode
+    /*
+
+            public async Task<ICollection<EntryItem>> ReadAllEntriesAsync()
+            {
+                return await _context.EntryItem
+                    .Include(e => e.RecordCollector)
+                        .ThenInclude(r => r.Person)
+                            //.ThenInclude(p => p.FullName)
+                    .ToListAsync();
+            }
+
+
+            public async Task<ICollection<EntryItem>> ReadAllEntriesAsync(string criteria)
+            {
+                if (Int64.TryParse(criteria, out int idout))
+                {
+                    await Console.Out.WriteLineAsync($"\nReadAllEntries:\n\t Criteria, {criteria}, is an int. Checking PersonId!!!\n");
+                    return await _context.EntryItem
                         .Include(e => e.RecordCollector)
                             .ThenInclude(r => r.Person)
-                                .ThenInclude(p => p.DexHolder)
-                                    .ThenInclude(p => p.ApplicationUser)
-                        .Where(e => e.RecordCollector.Person.DexHolder.ApplicationUser.UserName == input
-                                ||e.RecordCollector.Person.DexHolder.ApplicationUser.Id == input
-                                ||e.RecordCollector.Person.DexHolder.ApplicationUser.Email == input
-                                    )
+                            //// HACK - Discluded due to error (see end of file)
+                                //.ThenInclude(p => p.FullName)
+                            .Where(e => e.RecordCollector.Person.Id == idout)
                         .ToListAsync();
-                if (tasker != null)
-                {
-                    return tasker;
                 }
                 else
                 {
-                    return null;
+                    await Console.Out.WriteLineAsync($"\n\nReadAllEntries:\n\t Criteria, {criteria}, is not an int. Checking nickname!!!\n");
+                    return await _context.EntryItem
+                        .Include(e => e.RecordCollector)
+                            .ThenInclude(r => r.Person)
+                                //.ThenInclude(p => p.FullName)
+                            .Where(e => e.RecordCollector.Person.Nickname == criteria)
+                        .ToListAsync();
                 }
-                //await Console.Out.WriteLineAsync($"\n\nReadAllEntriesByUser:\n\t Criteria, {criteria}!!!\n");
-                //await Console.Out.WriteAsync($"\t\t ApplicationUserName, {criteria}!!!\n");
-                //await Console.Out.WriteAsync($"\t\t ApplicationUserId, {criteria}!!!\n");
-                //await Console.Out.WriteAsync($"\t\t Email, {criteria}!!!\n");
+
             }
 
+            public async Task<ICollection<EntryItem>?> ReadAllEntriesByUserAsync(string input)
+            {
+                    await Console.Out.WriteLineAsync($"\n\nReadAllEntriesByUser:\n\t Criteria, {input}, is an int. Checking DexHolderID!!!\n");
+                    var tasker = await _context.EntryItem
+                            // .Include(e => e.RecordCollector)
+                            //     .ThenInclude(r => r.Person)
+                            //         .ThenInclude(p => p.FullName)
+                            .Include(e => e.RecordCollector)
+                                .ThenInclude(r => r.Person)
+                                    .ThenInclude(p => p.DexHolder)
+                                        .ThenInclude(p => p.ApplicationUser)
+                            .Where(e => e.RecordCollector.Person.DexHolder.ApplicationUser.UserName == input
+                                    ||e.RecordCollector.Person.DexHolder.ApplicationUser.Id == input
+                                    ||e.RecordCollector.Person.DexHolder.ApplicationUser.Email == input
+                                        )
+                            .ToListAsync();
+                    if (tasker != null)
+                    {
+                        return tasker;
+                    }
+                    else
+                    {
+                        return null;
+                    }
+                    //await Console.Out.WriteLineAsync($"\n\nReadAllEntriesByUser:\n\t Criteria, {criteria}!!!\n");
+                    //await Console.Out.WriteAsync($"\t\t ApplicationUserName, {criteria}!!!\n");
+                    //await Console.Out.WriteAsync($"\t\t ApplicationUserId, {criteria}!!!\n");
+                    //await Console.Out.WriteAsync($"\t\t Email, {criteria}!!!\n");
+                }
+
+            }
+    */
+    #endregion
 
 
-
-
-
-
-
-
-
-        }
-
-
-
-
-
-
-
-    }
+}
 
 
 

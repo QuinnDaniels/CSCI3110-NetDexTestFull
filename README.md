@@ -82,3 +82,14 @@ Notes from lecture 4-15-25
   (after/when using .Find() )
     - ReadAsync - for single person
 - CreateRecommendVM
+
+
+
+------
+
+-----
+
+
+future:
+---
+- apparently Int64 can sometimes cause issues with JSON. should be fine for now but may want to change after project due

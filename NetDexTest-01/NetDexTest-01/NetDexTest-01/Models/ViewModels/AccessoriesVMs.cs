@@ -34,7 +34,7 @@ namespace NetDexTest_01.Models.ViewModels
     public class EntryItemVM
     {
 
-        public Int64 Id { get; set; }
+        public Int64 Id { get; set; } = 0;
         /// <summary>
         /// A short title to easily identify an Entry. Nullable, because on
         /// the frontend, if null, it should be replaced with a breif preview of flavortext 
@@ -47,6 +47,26 @@ namespace NetDexTest_01.Models.ViewModels
         public DateTime LogTimestamp { get; set; }// = DateTime.Now;
         public Int64 RecordCollectorId { get; set; }
 
+    
     }
+
+
+
+
+    // NOTE - later: create a /Models/DTOs/EntryItemDTOs.cs file
+    public class EntryItemDTO
+    {
+        public Int64 EntryItemId { get; set; }
+        public Int64 RecordCollectorId { get; set; }
+        public int PersonId { get; set; }
+        public int DexHolderId { get; set; }
+        public string PersonNickname { get; set; }
+        public string ApplicationUserEmail { get; set; }
+        public string ApplicationUserName { get; set; }
+        public string? ShortTitle { get; set; }
+        public string? FlavorText { get; set; }
+        public DateTime LogTimestamp { get; set; }
+    }
+
 
 }

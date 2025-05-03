@@ -191,6 +191,34 @@ namespace NetDexTest_01
 
             services.AddDatabaseDeveloperPageExceptionFilter();
 
+            // HACK
+            // TODO - later, look into Using DTOs to avoid cycles
+            /* From ChatGPT:
+             Optional: Use DTOs to Avoid Cycles (Best Practice)
+                For public APIs, consider projecting your data into flat ViewModels or DTOs that only expose what's needed. This avoids exposing full EF models and gives more control.
+                
+             Example:
+                        public class EntryItemDTO
+                            {
+                                public int Id { get; set; }
+                                public string ShortTitle { get; set; }
+                                public string FlavorText { get; set; }
+
+                                public string PersonName { get; set; }
+                                public string AppEmail { get; set; }
+                            }
+
+                Then project in your repository using .Select(...) or AutoMapper.
+             */ // QUINN - isn't this pretty similar to ViewModels though??? Need to do more research
+            // CHATGPT - ignore cycles globally
+            services.AddControllers()
+                .AddJsonOptions(options =>
+                {
+                    options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.IgnoreCycles;
+                    options.JsonSerializerOptions.WriteIndented = true;
+                });
+
+
 
             //Adding Athentication - JWT
             //services.AddAuthentication(options =>
