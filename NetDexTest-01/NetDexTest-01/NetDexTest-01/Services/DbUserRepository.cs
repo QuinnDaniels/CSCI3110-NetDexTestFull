@@ -105,6 +105,8 @@ namespace NetDexTest_01.Services
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly IUserStore<ApplicationUser> _userStore;
         private readonly IRoleStore<IdentityRole> _roleStore;
+        //private readonly IUserRepository _userRepo;
+        //private readonly IPersonRepository _personRepo;
         //private readonly IUserEmailStore<ApplicationUser> _emailStore;
         private readonly ILogger<ApplicationUser> _logger;
         private readonly IEmailSender _emailSender;
@@ -116,9 +118,12 @@ namespace NetDexTest_01.Services
         /// Initializes a new instance of the <see cref="DbUserRepository"/> class.
         /// </summary>
         /// <param name="db">The db.</param>
-        public DbUserRepository(ApplicationDbContext db,
+        public DbUserRepository(
+            ApplicationDbContext db,
             UserManager<ApplicationUser> userManager,
             IUserStore<ApplicationUser> userStore,
+            //IUserRepository userRepo,
+            //IPersonRepository personRepo,
             IRoleStore<IdentityRole> roleStore,
             SignInManager<ApplicationUser> signInManager,
             RoleManager<IdentityRole> roleManager,
@@ -128,6 +133,8 @@ namespace NetDexTest_01.Services
             IToolService tools
             )
         {
+            //_userRepo = userRepo;
+            //_personRepo = personRepo;
             _db = db; //context
             _userManager = userManager;
             _roleManager = roleManager;

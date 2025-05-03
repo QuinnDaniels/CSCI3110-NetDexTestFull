@@ -22,7 +22,8 @@ namespace NetDexTest_01.Services
         private readonly IToolService _tools;
 
 
-        public DbPersonRepository(ApplicationDbContext db,
+        public DbPersonRepository(
+            ApplicationDbContext db,
             UserManager<ApplicationUser> userManager,
             IUserStore<ApplicationUser> userStore,
             SignInManager<ApplicationUser> signInManager,

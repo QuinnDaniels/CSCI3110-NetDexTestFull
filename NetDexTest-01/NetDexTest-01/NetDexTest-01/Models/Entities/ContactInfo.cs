@@ -30,7 +30,7 @@ namespace NetDexTest_01.Models.Entities
         public Int64 Id { get; set; }
 
         [StringLength(456)]
-        public string NoteText { get; set; } = string.Empty;
+        public string NoteText { get; set; } = "";
         
         // replace this?
         [NotMapped]

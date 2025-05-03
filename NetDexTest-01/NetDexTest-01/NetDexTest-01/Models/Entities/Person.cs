@@ -60,6 +60,7 @@ namespace NetDexTest_01.Models.Entities
                     {
                         new SocialMedia {  CategoryField = "example category", SocialHandle = "@NetDexTest-01_Example_SocialHandle" }
                     }
+
             };
 
         }

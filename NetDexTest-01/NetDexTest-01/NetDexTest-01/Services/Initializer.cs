@@ -215,7 +215,7 @@ namespace NetDexTest_01.Services
                     },
                     RecordCollector = new RecordCollector()
                     {
-                        NoteText = "Testing a new way to add multiple things at once",
+                        //NoteText = "Testing a new way to add multiple things at once",
                         EntryItems = new List<EntryItem> 
                         {
                             new EntryItem { ShortTitle = "Creation" , FlavorText = "Created by Dr Cossack (me!)" },
@@ -225,7 +225,7 @@ namespace NetDexTest_01.Services
                     },
                     ContactInfo = new ContactInfo()
                     {
-                        NoteText = "Testing a new way to add multiple things at once",
+                        NoteText = "INITIALIZED Testing a new way to add multiple things at once",
                         SocialMedias = new List<SocialMedia>
                         { 
                             new SocialMedia { CategoryField = "Reddit", SocialHandle = "u/dwn027" },

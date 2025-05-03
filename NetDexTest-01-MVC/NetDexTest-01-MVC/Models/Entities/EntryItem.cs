@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-
+using NetDexTest_01_MVC.Models.ViewModels;
 namespace NetDexTest_01_MVC.Models.Entities
 {
     public class EntryItem
@@ -28,6 +28,20 @@ namespace NetDexTest_01_MVC.Models.Entities
         /// Navigation property from EntryItem to RecordCollector
         ///</summary>
         public virtual RecordCollector RecordCollector { get; set; }
+
+
+        public EntryItemVM getEntryItemVM()
+        {
+            return new EntryItemVM
+            {
+                Id = this.Id,
+                ShortTitle = this.ShortTitle,
+                FlavorText = this.FlavorText,
+                LogTimestamp = this.LogTimestamp,
+                RecordCollectorId = this.RecordCollectorId
+            };
+
+        }
 
     }
 }

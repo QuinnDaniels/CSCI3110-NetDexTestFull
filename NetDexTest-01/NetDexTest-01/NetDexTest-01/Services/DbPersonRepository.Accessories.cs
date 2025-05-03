@@ -1,7 +1,10 @@
-﻿namespace NetDexTest_01.Services
+﻿using NetDexTest_01.Models.Entities;
+using NetDexTest_01.Models.ViewModels;
+
+namespace NetDexTest_01.Services
 {
     // TODO: CONTACT INFO
-    public partial interface IPersonRepository // Contact-Info
+    public partial class DbPersonRepository : IPersonRepository// Contact-Info
     {
         // create just a contact info
         // create a social media Contact
