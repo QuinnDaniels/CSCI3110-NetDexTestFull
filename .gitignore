@@ -396,6 +396,7 @@ FodyWeavers.xsd
 
 # JetBrains Rider
 *.sln.iml
+
 NetDexTest-01-MVC.zip
 NetDexTest-01.zip
 _prompts/

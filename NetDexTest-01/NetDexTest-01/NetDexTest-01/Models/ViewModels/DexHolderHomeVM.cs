@@ -97,6 +97,10 @@ namespace NetDexTest_01.Models.ViewModels
     }
 
 
+    /* TODO add ContactInfo notes to this view. 
+    Upon inspection I realized that I had set it up in an odd way, so it makes more
+    sense to add the column to the person rather than the individual social items. 
+    */
 
     public class PersonPlusDexListVM
     {
@@ -122,7 +126,9 @@ namespace NetDexTest_01.Models.ViewModels
         public int PersonParentsCount { get; set; } = -1;
         public int PersonChildrenCount { get; set; } = -1;
 
+        // NOTE How do I create a way to add ContactInfo notes
         public List<SocialMediaVM> SocialMedias { get; set; } = new();
+        //public List<SocialMediaVMNotes> SocialMedias { get; set; } = new();
         public List<EntryItemVM> Entries { get; set; } = new();
         public PersonDexListVM getPersonDexVMInstance()
         {
@@ -159,33 +165,6 @@ namespace NetDexTest_01.Models.ViewModels
 
 
 
-    public class SocialMediaVM
-    {
-       
-        public Int64 Id { get; set; }
-        [StringLength(120)]
-        public string CategoryField { get; set; } = string.Empty;
-        public string? SocialHandle { get; set; }
-        [DataType(DataType.DateTime)]
-        public DateTime LogTimestamp { get; set; }// = DateTime.Now;
-
-    }
-
-    public class EntryItemVM
-    {
-
-        public Int64 Id { get; set; }
-        /// <summary>
-        /// A short title to easily identify an Entry. Nullable, because on
-        /// the frontend, if null, it should be replaced with a breif preview of flavortext 
-        /// </summary>
-        [StringLength(240)]
-        public string? ShortTitle { get; set; }
-        [StringLength(456)]
-        public string FlavorText { get; set; } = string.Empty;
-        [DataType(DataType.DateTime)]
-        public DateTime LogTimestamp { get; set; }// = DateTime.Now;
-    }
 
 
 

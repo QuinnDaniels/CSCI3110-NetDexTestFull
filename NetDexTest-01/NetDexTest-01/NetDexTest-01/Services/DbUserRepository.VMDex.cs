@@ -316,11 +316,36 @@ namespace NetDexTest_01.Services
                                 Id = e.Id,
                                 ShortTitle = e.ShortTitle,
                                 FlavorText = e?.FlavorText ?? "---",
-                                LogTimestamp = e.LogTimestamp
+                                LogTimestamp = e.LogTimestamp,  //?? new DateTime(DateTime.UnixEpoch.ToString()),
+                                RecordCollectorId = e.RecordCollectorId
                             };
 
                             pdl.Entries.Add(eivm);
                         }));
+
+
+
+                        //var taskContacts = Task.Run(() => p.ContactInfo.ToList().ForEach(c =>
+                        //{
+                        //    var texter = c.NoteText;
+                        //    var taskSocialMediasAlternative = Task.Run(() => c.SocialMedias.ToList().ForEach(s =>
+                        //    {
+                        //        SocialMediaVM smvm = new()
+                        //        {
+                        //            Id = s.Id,
+                        //            CategoryField = s.CategoryField,
+                        //            SocialHandle = s?.SocialHandle ?? "---",
+                        //            LogTimestamp = s.LogTimestamp,
+                        //            NoteText =
+                        //        };
+                        //        pdl.SocialMedias.Add(smvm);
+                        //    }));
+                        //}));
+
+
+
+
+
                         var taskSocialMedias = Task.Run(() => p.ContactInfo.SocialMedias.ToList().ForEach(s =>
                         {
                             SocialMediaVM smvm = new()
@@ -328,7 +353,8 @@ namespace NetDexTest_01.Services
                                 Id = s.Id,
                                 CategoryField = s.CategoryField,
                                 SocialHandle = s?.SocialHandle ?? "---",
-                                LogTimestamp = s.LogTimestamp
+                                LogTimestamp = s.LogTimestamp,
+                                ContactInfoId = s.ContactInfoId
                             };
                             pdl.SocialMedias.Add(smvm);
                         }));

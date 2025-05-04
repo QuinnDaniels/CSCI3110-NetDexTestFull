@@ -9,6 +9,8 @@
             _logger = logger;
         }
 
+
+
         public string Writer(string input)
         {
             string output = "";

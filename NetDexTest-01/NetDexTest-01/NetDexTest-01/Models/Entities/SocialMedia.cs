@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using NetDexTest_01.Models.ViewModels;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -24,5 +25,20 @@ namespace NetDexTest_01.Models.Entities
         ///</summary>
         public virtual ContactInfo ContactInfo { get; set; }
 
+
+        public SocialMediaVM getSocialMediaVM()
+        {
+            return new SocialMediaVM
+            {
+                Id = this.Id,
+                CategoryField = this.CategoryField,
+                SocialHandle = this.SocialHandle,
+                LogTimestamp = this.LogTimestamp,
+                ContactInfoId = this.ContactInfoId
+            };
+
+
+
+        }
     }
 }

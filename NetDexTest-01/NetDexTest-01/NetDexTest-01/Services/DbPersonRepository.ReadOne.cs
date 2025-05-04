@@ -103,6 +103,12 @@ namespace NetDexTest_01.Services
         public async Task<Person?> GetPersonByNickNameWithUser(string nickName, ApplicationUser user)
         {
             var pp = await _db.Person
+                            .Include(p => p.RecordCollector)
+                .Include(p => p.ContactInfo)
+                .Include(p => p.FullName)
+                .Include(p => p.PersonParents)
+                .Include(p => p.PersonChildren)
+                .Include(p => p.DexHolder)
                 .Where(p => p.DexHolderId == user.DexHolder.Id)
                 .Where(p => p.Nickname == nickName).FirstOrDefaultAsync();
             return pp;
@@ -111,16 +117,31 @@ namespace NetDexTest_01.Services
         public async Task<Person?> GetPersonByNickNameWithDex(string nickName, DexHolder dexHolder)
         {
             var pp = await _db.Person
+                            .Include(p => p.RecordCollector)
+                .Include(p => p.ContactInfo)
+                .Include(p => p.FullName)
+                .Include(p => p.PersonParents)
+                .Include(p => p.PersonChildren)
+                .Include(p => p.DexHolder)
                 .Where(p => p.DexHolderId == dexHolder.Id)
                 .Where(p => p.Nickname == nickName).FirstOrDefaultAsync();
             return pp;
         }
+
+
+
 
         public async Task<Person?> GetPersonByNickNameWithUserNameAsync(string userName, string nickName)
         {
             var dex = await _userRepo.GetDexHolderByUserNameAsync(userName);
 
             var pp = await _db.Person
+                            .Include(p => p.RecordCollector)
+                .Include(p => p.ContactInfo)
+                .Include(p => p.FullName)
+                .Include(p => p.PersonParents)
+                .Include(p => p.PersonChildren)
+                .Include(p => p.DexHolder)
                 .Where(p => p.DexHolderId == dex.Id)
                 .Where(p => p.Nickname == nickName).FirstOrDefaultAsync();
             return pp;
@@ -131,6 +152,12 @@ namespace NetDexTest_01.Services
             var dex = await _userRepo.GetDexHolderByEmailAsync(email);
 
             var pp = await _db.Person
+                            .Include(p => p.RecordCollector)
+                .Include(p => p.ContactInfo)
+                .Include(p => p.FullName)
+                .Include(p => p.PersonParents)
+                .Include(p => p.PersonChildren)
+                .Include(p => p.DexHolder)
                 .Where(p => p.DexHolderId == dex.Id)
                 .Where(p => p.Nickname == nickName).FirstOrDefaultAsync();
             return pp;
@@ -141,6 +168,12 @@ namespace NetDexTest_01.Services
             var dex = await _userRepo.GetDexHolderByUserIdAsync(userId);
 
             var pp = await _db.Person
+                            .Include(p => p.RecordCollector)
+                .Include(p => p.ContactInfo)
+                .Include(p => p.FullName)
+                .Include(p => p.PersonParents)
+                .Include(p => p.PersonChildren)
+                .Include(p => p.DexHolder)
                 .Where(p => p.DexHolderId == dex.Id)
                 .Where(p => p.Nickname == nickName).FirstOrDefaultAsync();
             return pp;
@@ -149,16 +182,101 @@ namespace NetDexTest_01.Services
         public async Task<Person?> ReadPersonByNickNameAsync(int dexHolderId, string personNickname)
         {
             var pp = await _db.Person
+                            .Include(p => p.RecordCollector)
+                .Include(p => p.ContactInfo)
+                .Include(p => p.FullName)
+                .Include(p => p.PersonParents)
+                .Include(p => p.PersonChildren)
+                .Include(p => p.DexHolder)
                 .Where(p => p.DexHolderId == dexHolderId)
                 .Where(p => p.Nickname == personNickname).FirstOrDefaultAsync();
             return pp;
 
+
+
         }
+
+
+
 
         public async Task<Person?> ReadPersonByIdAsync(int personId)
         {
-            var person = await _db.Person.FirstOrDefaultAsync(p => p.Id == personId);
+            var person = await _db.Person
+                .Include(p => p.RecordCollector)
+                .Include(p => p.ContactInfo)
+                .Include(p => p.FullName)
+                .Include(p => p.PersonParents)
+                .Include(p => p.PersonChildren)
+                .Include(p => p.DexHolder)
+                .FirstOrDefaultAsync(p => p.Id == personId);
             return person;
         }
+
+
+        public async Task<Person?> GetOneByUserInputAsync(string input, string criteria){
+            Person? person = null;
+            if (int.TryParse(input, out int idout))
+            {
+                await Console.Out.WriteLineAsync($"\n\tGetOneByUserInputAsync:\n\t\t Input, {input}, is an int.\n\t\t\tChecking DexId!!!\n");
+                person = await GetPersonByNickNameWithUserNameAsync(input, criteria);
+                if (person == null) await Console.Out.WriteLineAsync($"\n\t\t Criteria, {criteria}, did not match a Person's Nickname for DexHolder, {input}!\n\t\t\tReturning null...");
+                else { await Console.Out.WriteLineAsync($"\n\t\tPerson, {criteria}, found for user, {input}!:\n\t\t\tReturning Person, {criteria}!!!\n"); }
+                await Console.Out.WriteLineAsync($"\n\tGetOneByUserInputAsync:\n\t\t Input, {input}, did not match a DexHolder.\n\t\t\tBecause {input} is an int and not a string, returning null!!\n"); 
+            }
+            else{
+                await Console.Out.WriteLineAsync($"\n\tGetOneByUserInputAsync:\n\t\t Input, {input}, is NOT an int.\n\t\t\tChecking email!!!\n");
+                
+                // if input finds a match, try setting person
+                if (await _userRepo.GetDexHolderByEmailAsync(input) != null)
+                {
+                    person = await GetPersonByNickNameWithEmailAsync(input,criteria);
+                    if (person == null) await Console.Out.WriteLineAsync($"\n\t\t Criteria, {criteria}, did not match a Person's Nickname for User, {input}!\n\t\t\tReturning null...");
+                    else{ await Console.Out.WriteLineAsync($"\n\t\tPerson, {criteria}, found for user, {input}!:\n\t\t\tReturning Person, {criteria}!!!\n"); }
+                }
+                else{ await Console.Out.WriteLineAsync($"\n\tGetOneByUserInputAsync:\n\t\t Input, {input}, did not match an email.\n\t\t\tChecking username!!!\n"); }
+
+                // if person is not already set, and if input finds a match, try setting person
+                if (person == null && await _userRepo.GetDexHolderByUserNameAsync(input) != null)
+                {
+                    person = await GetPersonByNickNameWithUserNameAsync(input,criteria);
+                    if (person == null) await Console.Out.WriteLineAsync($"\n\t\t Criteria, {criteria}, did not match a Person's Nickname for User, {input}!\n\t\t\tReturning null...");
+                    else{ await Console.Out.WriteLineAsync($"\n\t\tPerson, {criteria}, found for user, {input}!:\n\t\t\tReturning Person, {criteria}!!!\n"); }
+                }
+                else{ await Console.Out.WriteLineAsync($"\n\tGetOneByUserInputAsync:\n\t\t Input, {input}, did not match an UserName.\n\t\t\tChecking User Id!!!\n"); }
+
+                // if person is not already set, and if input finds a match, try setting person
+                if (person == null && await _userRepo.GetDexHolderByUserIdAsync(input) != null)
+                {
+                    person = await GetPersonByNickNameWithUserIdAsync(input,criteria);
+                    if (person == null) await Console.Out.WriteLineAsync($"\n\t\t Criteria, {criteria}, did not match a Person's Nickname for User, {input}!\n\t\t\tReturning null...");
+                    else{ await Console.Out.WriteLineAsync($"\n\t\tPerson, {criteria}, found for user, {input}!:\n\t\t\tReturning Person, {criteria}!!!"); }
+                }
+                else{ await Console.Out.WriteLineAsync($"\n\tGetOneByUserInputAsync:\n\t\t Input, {input}, did not match an userId.\n\t\t\tInput, {input}, did not match any user an any criteria.\n\t\tReturning null...\n"); }
+
+
+            }
+            await Console.Out.WriteLineAsync($"\n\tGetOneByUserInputAsync:\tEXITING...\n\n");
+            return person;
+        }
+
+
+        public async Task<ContactInfo?> ReadContactInfoByIdAsync(Int64 ContactInfoId)
+        {
+            var contact = await _db.ContactInfo
+                .Include(c => c.Person)
+                .Include(c => c.SocialMedias)
+                .FirstOrDefaultAsync(c => c.Id == ContactInfoId);
+            return contact;
+        }
+        public async Task<RecordCollector?> ReadRecordByIdAsync(Int64 RecordCollectorId)
+        {
+            var contact = await _db.RecordCollector
+                .Include(r => r.Person)
+                .Include(r => r.EntryItems)
+                .FirstOrDefaultAsync(r => r.Id == RecordCollectorId);
+            return contact;
+        }
+
+
     }
 }

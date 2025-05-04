@@ -57,7 +57,7 @@ namespace NetDexTest_01.Services
         /// in the order of UserName -> UserId -> UserEmail
         /// </remarks>
         /// <inheritdoc cref="ReadAllPeopleAsync()"/>
-        Task<ICollection<Person>> ReadAllPeopleAsync(string inputString);
+        Task<ICollection<Person>?> ReadAllPeopleAsync(string inputString);
         /// <remarks>
         /// Directly uses DexHolderId to find a DexHolder to search using
         /// </remarks>
@@ -150,25 +150,26 @@ namespace NetDexTest_01.Services
         Task<RelationshipVM?> GetOneRelationshipWithRequestAsync(RelationshipRequest relation);
         Task<ICollection<RelationshipVM>?> GetAllRelationshipsWithPeopleRequestAsync(RelationshipRequest relation);
 
+        Task<Person?> GetOneByUserInputAsync(string input, string criteria);
+        
 
 
 
 
 
 
+            // read just a person // --> ReadOne
 
-        // read just a person // --> ReadOne
+            // read all persons
 
-        // read all persons
+            // read all persons by username
 
-        // read all persons by username
-
-        // read all persons by userid
-
-
-        // update/edit
+            // read all persons by userid
 
 
-        // delete a person
-    }
+            // update/edit
+
+
+            // delete a person
+        }
 }

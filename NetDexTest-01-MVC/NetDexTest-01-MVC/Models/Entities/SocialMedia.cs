@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-
+using NetDexTest_01_MVC.Models.ViewModels;
 namespace NetDexTest_01_MVC.Models.Entities
 {
     public class SocialMedia
@@ -21,6 +21,22 @@ namespace NetDexTest_01_MVC.Models.Entities
         /// Navigation property from SocialMedia to ContactInfo
         ///</summary>
         public virtual ContactInfo ContactInfo { get; set; }
+
+
+        public SocialMediaVM getSocialMediaVM()
+        {
+            return new SocialMediaVM
+            {
+                Id = this.Id,
+                CategoryField = this.CategoryField,
+                SocialHandle = this.SocialHandle,
+                LogTimestamp = this.LogTimestamp,
+                ContactInfoId = this.ContactInfoId
+            };
+
+
+
+        }
 
     }
 }

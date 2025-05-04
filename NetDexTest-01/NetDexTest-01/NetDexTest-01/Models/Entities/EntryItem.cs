@@ -1,6 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using NetDexTest_01.Models.ViewModels;
+
 
 namespace NetDexTest_01.Models.Entities
 {
@@ -31,5 +33,18 @@ namespace NetDexTest_01.Models.Entities
         ///</summary>
         public virtual RecordCollector RecordCollector { get; set; }
 
+
+        public EntryItemVM getEntryItemVM()
+        {
+            return new EntryItemVM
+            {
+                Id = this.Id,
+                ShortTitle = this.ShortTitle,
+                FlavorText = this.FlavorText,
+                LogTimestamp = this.LogTimestamp,
+                RecordCollectorId = this.RecordCollectorId
+            };
+
+        }
     }
 }

@@ -59,6 +59,9 @@
 
 
 
+
+- at some point add local counter to the DTOs for social media and contact info before they get sent to the frontend
+
 /*------------ drafted statement for roles -+++++-*/
 var result = from usr in db.users 
              join usrSub in (

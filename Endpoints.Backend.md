@@ -26,15 +26,15 @@ UserAccounts
 |  ?     | Description                      | HTML   | Definition               | Request Body | Response Body        |
 | ---    | ----------------------           | ----   | ------------------------ | ------------ | -------------------- |
 |  y     | RA - Get All Users List          | GET    | `api/user/admin/all`     |   None       |  UserListVM Array |
-|        | R1 - Get One User Info           | GET    | `/auth/logindouble`      |              | User object      |
+|   y    | R1 - Get One User Info           | GET    | `/auth/logindouble`      |              | User object      |
 |   y    | R1 - Get One User Dex            | GET    | `api/user/dex/{id}`      |    None      |                  |
-|        | R1 - Get Token/Login             | POST   | `auth/login2`            |              |                  |
-|        | R1 - Get Token/Login (user auth) | POST   | `auth/logindouble`       |              |                  |
+|   y    | R1 - Get Token/Login             | POST   | `auth/login2`            |              |                  |
+|   y?   | R1 - Get Token/Login (user auth) | POST   | `auth/logindouble`       |              |                  |
 |  y     | C  - Register User               | POST   | `api/user/register`      |  form-data | UserDexHolder Object |
 |        |    - Add Role to User            | POST   | `api/user/addrole`       |   form-data | added role message   |
-| [TODO] | U - Update user info             | PUT    | ``                       |  form-data |               |
-| [TODO] | U - Update DexHolder             | PUT    | ``                       | form-data | None |
-| [TODO] | D - Delete User                  | DELETE | `api/user/delete/{id}`      | None         | None |
+|    y   | U - Update user info             | PUT    | ``                       |  form-data |               |
+|    y   | U - Update DexHolder             | PUT    | ``                       | form-data | None |
+|    y   | D - Delete User                  | DELETE | `api/user/delete/{id}`      | None         | None |
 
 
 
@@ -44,11 +44,11 @@ UserAccounts
 -------
 |  ?     | Description                      | HTML   | Definition                                                     | Request Body           | Response Body      |
 | -------| -------------------------------- | ------ | -----------------------------------------------------------    | -------                | ----------------   |
-| [HACK] | ~~RA - Read People List~~ [^1]   | ~~GET~~ |    (See: Get User Dex)                                        |   --                   |    --              |
-|        | R1 - Read Person Details         | GET    | `/retrieveViewModel` `/retrieveRequestpath/{input}/{criteria}` | PersonRequest bodyData | PersonDetail       |
+| [HACK]  y | ~~RA - Read People List~~ [^1]   | ~~GET~~ |    (See: Get User Dex)                                        |   --                   |    --              |
+|   y    | R1 - Read Person Details         | GET    | `/retrieveViewModel` `/retrieveRequestpath/{input}/{criteria}` | PersonRequest bodyData | PersonDetail       |
 |    y   | C  - Create Person w Email       | POST   | `/forms/Create`                                                | NewPersonVM formData   | Person Object      |
-|        | U - Update Person                | PUT    | `/forms/update/{personId}`                                     | EditPersonFullVM form-data | None           |
-|        | D - Delete Person                | DELETE | `/delete/{input}/{criteria}`                                   |    None               | None                |
+|   y    | U - Update Person                | PUT    | `/forms/update/{personId}`                                     | EditPersonFullVM form-data | None           |
+|    y   | D - Delete Person                | DELETE | `/delete/{input}/{criteria}`                                   |    None               | None                |
 
 
 [^1]: workaround by reading array from DexHolder
@@ -71,28 +71,53 @@ UserAccounts
 --------
 
 
-[ ] Entry Items
+[ ] Entry Items `api/entry`
 -------
-|  ?     | Description                      | HTML   | Definition               | Request Body | Response Body        |
-| ------ | -------------------------------- | ------ | ----------------------------- | -------------  |  ------------- |
-| [TODO] | RA - Read EntryItem List         | GET    | ``                            |                 | Array of EntryItem |
-| [TODO] | R1 - Read EntryItem Details      | GET    | ``                            |                 | EntryItem Object      |
-| [TODO] | C  - Create EntryItem            | POST   | ``                            |  EntryItem form-data |  EntryItem Object |
-| [TODO] | U  - Update EntryItem            | PUT    | ``                            |  EntryItem form-data | None |
-| [TODO] | D  - Delete EntryItem            | DELETE | ``                            |                 | None |
+|  ?     | Description                      | HTML   | Definition                           | Request Body | Response Body        |
+| ------ | -------------------------------- | ------ | -----------------------------        | -------------  |  ------------- |
+| [XXX]  | R1 - Read Entry Details  Id      | GET    |        [XXX] Works but wont use      | EntryItem Object      |
+| [XXX]  | RA - Read Entries by User        | GET    | ``      [XXX] Works but wont use     |       [XXX]     | Array of EntryItem |
+| [XXX]  | RA - Read EntryItem List         | GET    | ``      [XXX]  Works but wont use    |     [XXX]       | Array of EntryItem |
+|        | R1 - Read DTO Entry Details  Id  | GET    | ` /transfer/one/{Int64 id}          ` |                 | EntryItem Object      |
+|        | RA - Read DTO Entry User Person  | GET    | `/transfer/person/{input}/{criteria}` |                 | EntryItem Object      |
+|        | RA - Read DTO Entries by User    | GET    | `/transfer/user/{input}`              |                 | Array of EntryItem |
+|        | RA - Read DTO EntryItem List     | GET    | ` /transfer/all                     ` |                 | Array of EntryItem |
+|        | C  - Create EntryItem            | POST   | `/create`                                   |  EntryItemVM form-data |  EntryItem Object |
+|        | U  - Update EntryItem            | PUT    | `/put`                                |  EntryItemVM form-data | None |
+|        | D  - Delete EntryItem            | DELETE | ``                                   |                 | None |
 
 --------
 
 
-[ ] Social Medias
+[ ] Social Medias `api/SocialMedia`
 -------
-|  ?     | Description                      | HTML   | Definition               | Request Body | Response Body        |
-| ------ | -------------------------------- | ------ | ------------------------------ | -------------  |  ------------- |
-| [TODO] | RA - Read SocialMedia List       | GET    | ``                             |                 |  Array of SocialMedia |
-| [TODO] | R1 - Read SocialMedia Details    | GET    | ``                             |                 |  SocialMedia Object |
-| [TODO] | C  - Create SocialMedia          | POST   | ``                             |  SocialMedia form-data |  SocialMedia Object |
-| [TODO] | U  - Update SocialMedia          | PUT    | ``                             |  SocialMedia form-data | None |
-| [TODO] | D  - Delete SocialMedia          | DELETE | ``                             |                | None |
+|  ?     | Description                        | HTML   | Definition                            | Request Body | Response Body        |
+| ------ | --------------------------------   | ------ | ------------------------------        | -------------  |  ------------- |
+|        | R1 - Read SocialMedia Details      | GET    | `/transfer/one/{Int64 id}          `  |                 |  SocialMedia Object |
+|        | RA - Read DTO S.M List User person | GET    | `/transfer/person/{input}/{criteria}` |                 |  Array of SocialMedia |
+|        | RA - Read DTO S.M List User        | GET    | `/transfer/user/{input}`              |                 |  Array of SocialMedia |
+|        | RA - Read DTO S.M List All         | GET    | `/transfer/all                     `  |                 |  Array of SocialMedia |
+|        | C  - Create SocialMedia            | POST   | `/create`                             |  SocialMediaVM form-data |  SocialMedia Object |
+|        | U  - Update SocialMedia            | PUT    | `/put`                                |  SocialMediaVM form-data | None |
+|        | D  - Delete SocialMedia            | DELETE | `/delete/{Int64 id}                `  |                | None |
+
+
+--------
+
+
+### <sub>(`api/SocialMedia/ContactInfo`)</sub>
+## [ ] ContactInfo `..SocialMedia/ContactInfo`
+
+| ?      | Description                        | HTML   | Definition                            | Request Body            | Response Body        |
+| ------ | ---------------------------------- | ------ | ------------------------------------- | ----------------------- | -------------------- |
+|        | R1 - Read ContactInfo NoteText     | GET    | `/note/Get/{input}/{criteria}     `  |                         | SocialMedia Object   |
+|        | U  - Update SocialMedia            | PUT    | `note/Put/{input}/{criteria} `       | string newText form-data | None                 |
 
 
 
+
+
+
+
+
+https://gist.github.com/Myndex/5140d6fe98519bb15c503c490e713233

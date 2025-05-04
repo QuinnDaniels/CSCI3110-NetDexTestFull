@@ -32,6 +32,9 @@ namespace NetDexTest_01_MVC
             builder.Services.AddScoped<IAuthService, AuthService>();
             builder.Services.AddScoped<IPersonService, PersonService>();
             builder.Services.AddScoped<IUserService, UserService>();
+            // TODO
+            //builder.Services.AddScoped<IEntryItemRepository, EntryItemService>();
+            //builder.Services.AddScoped<ISocialMediaRepository, SocialMediaService>();
 
             builder.Services.AddDistributedMemoryCache(); // Required
             builder.Services.AddSession(options =>

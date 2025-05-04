@@ -87,5 +87,11 @@ namespace NetDexTest_01.Services
         Task<Person?> ReadPersonByIdAsync(int personId);
 
 
+
+
+        Task<ContactInfo?> ReadContactInfoByIdAsync(Int64 ContactInfoId);
+        Task<RecordCollector?> ReadRecordByIdAsync(Int64 RecordCollectorId);
+
+
     }
 }
