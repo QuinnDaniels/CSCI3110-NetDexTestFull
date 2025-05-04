@@ -62,11 +62,11 @@ UserAccounts
 | ------ | -------------------------------- | ------ |  ---------------------------- | ------------- | ------------- |
 |        | RA - Get All Relations (People)  | GET    | `/api/people/retrieveRelations/specific` | RelationRequest  | RelationVM Array   |
 |        | RA - Get All Relations (User)    | GET    | `api/people/retrieveRelations/User/{id}` | None               |  RelationVM Array |
-|        | RA - Get All Relations           | GET    | `api/people/retrieveRelations/all`       | None               |  RelationVM Array |
-|        | R1 - Get Single Relation         | GET    | `api/people/retrieveRelations/one`       | RelationRequest    |  RelationVM |
-| [TODO] | C - Create Relation              | POST   | ``                                       | Relation formdata    |  RelationVM | 
-| [TODO] | U - Update Relation              | PUT    | ``                                       | form-data | None |
-| [TODO] | D - Delete Relation              | DELETE | `api/people/retrieveRelations/one`       |      | None |
+|        | RA - Get All Relations           | GET    | `api/people/retrieveRelations/all`       | None                |  RelationVM Array |
+|        | R1 - Get Single Relation         | GET    | `api/people/retrieveRelations/one`       | RelationRequest     |  RelationVM |
+|        | C - Create Relation              | POST   | `relations/create`                       | RelationReq formdata |  RelationVM | 
+|        | U - Update Relation              | PUT    | `/relations/update`                      | Relationship-RequestUpdate form-data | None |
+|        | D - Delete Relation              | DELETE | `api/people/relations/delete`            |      | None |
 
 --------
 
@@ -75,9 +75,9 @@ UserAccounts
 -------
 |  ?     | Description                      | HTML   | Definition                           | Request Body | Response Body        |
 | ------ | -------------------------------- | ------ | -----------------------------        | -------------  |  ------------- |
-| [XXX]  | R1 - Read Entry Details  Id      | GET    |        [XXX] Works but wont use      | EntryItem Object      |
-| [XXX]  | RA - Read Entries by User        | GET    | ``      [XXX] Works but wont use     |       [XXX]     | Array of EntryItem |
-| [XXX]  | RA - Read EntryItem List         | GET    | ``      [XXX]  Works but wont use    |     [XXX]       | Array of EntryItem |
+|  NO    | R1 - Read Entry Details  Id      | GET    |        [XXX] Works but wont use   for frontent    | EntryItem Object      |
+|  NO    | RA - Read Entries by User        | GET    | ``      [XXX] Works but wont use  for frontent    |       [XXX]     | Array of EntryItem |
+|  NO    | RA - Read EntryItem List         | GET    | ``      [XXX]  Works but wont use  for frontent   |     [XXX]       | Array of EntryItem |
 |        | R1 - Read DTO Entry Details  Id  | GET    | ` /transfer/one/{Int64 id}          ` |                 | EntryItem Object      |
 |        | RA - Read DTO Entry User Person  | GET    | `/transfer/person/{input}/{criteria}` |                 | EntryItem Object      |
 |        | RA - Read DTO Entries by User    | GET    | `/transfer/user/{input}`              |                 | Array of EntryItem |
