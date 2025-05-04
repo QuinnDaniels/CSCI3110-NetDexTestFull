@@ -93,10 +93,10 @@ UserAccounts
 -------
 |  ?     | Description                        | HTML   | Definition                            | Request Body | Response Body        |
 | ------ | --------------------------------   | ------ | ------------------------------        | -------------  |  ------------- |
-|        | R1 - Read SocialMedia Details      | GET    | `/transfer/one/{Int64 id}          `  |                 |  SocialMedia Object |
-|        | RA - Read DTO S.M List User person | GET    | `/transfer/person/{input}/{criteria}` |                 |  Array of SocialMedia |
-|        | RA - Read DTO S.M List User        | GET    | `/transfer/user/{input}`              |                 |  Array of SocialMedia |
-|        | RA - Read DTO S.M List All         | GET    | `/transfer/all                     `  |                 |  Array of SocialMedia |
+|        | R1 - Read SocialMedia Details      | GET    | `/transfer/one/{Int64 id}          `  |                 |  SocialMediaDTO Object |
+|        | RA - Read DTO S.M List User person | GET    | `/transfer/person/{input}/{criteria}` |                 |  Array of SocialMediaDTO |
+|        | RA - Read DTO S.M List User        | GET    | `/transfer/user/{input}`              |                 |  Array of SocialMediaDTO |
+|        | RA - Read DTO S.M List All         | GET    | `/transfer/all                     `  |                 |  Array of SocialMediaDTO |
 |        | C  - Create SocialMedia            | POST   | `/create`                             |  SocialMediaVM form-data |  SocialMedia Object |
 |        | U  - Update SocialMedia            | PUT    | `/put`                                |  SocialMediaVM form-data | None |
 |        | D  - Delete SocialMedia            | DELETE | `/delete/{Int64 id}                `  |                | None |
@@ -121,3 +121,8 @@ UserAccounts
 
 
 https://gist.github.com/Myndex/5140d6fe98519bb15c503c490e713233
+
+
+
+
+
