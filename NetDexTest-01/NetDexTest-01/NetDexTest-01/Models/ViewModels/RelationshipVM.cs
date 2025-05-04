@@ -15,11 +15,23 @@ namespace NetDexTest_01.Models.ViewModels
 
     public class RelationshipRequest
     {
+        public int? Id { get; set; }
         public string input { get; set; }
         public string nicknameOne { get; set; }
         public string nicknameTwo { get; set; }
         public string? description { get; set; }
     }
+
+
+    public class RelationshipRequestExtend : RelationshipRequest
+    {
+        public int? ParentId { get; set; } = 0;
+        public int? ChildId { get; set; } = 0;
+
+    }
+
+
+
 
 
     public class RelationshipVM

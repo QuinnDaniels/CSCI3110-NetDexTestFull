@@ -151,25 +151,31 @@ namespace NetDexTest_01.Services
         Task<ICollection<RelationshipVM>?> GetAllRelationshipsWithPeopleRequestAsync(RelationshipRequest relation);
 
         Task<Person?> GetOneByUserInputAsync(string input, string criteria);
+
+
+
+
         
+        Task<bool> UpdateRelationshipBoolAsync(RelationshipRequest request);
+        Task<bool> DeleteRelationshipBoolAsync(RelationshipRequest request);
+        // Task<RelationshipVM> UpdateRelationshipVmAsync(RelationshipRequest request);
+        // Task<RelationshipVM> DeleteRelationshipVmAsync(RelationshipRequest request);
+
+        // Task<bool> UpdateRelationshipBoolAsync(RelationshipRequestExtend request);
 
 
+        // read just a person // --> ReadOne
+
+        // read all persons
+
+        // read all persons by username
+
+        // read all persons by userid
 
 
+        // update/edit
 
 
-            // read just a person // --> ReadOne
-
-            // read all persons
-
-            // read all persons by username
-
-            // read all persons by userid
-
-
-            // update/edit
-
-
-            // delete a person
-        }
+        // delete a person
+    }
 }

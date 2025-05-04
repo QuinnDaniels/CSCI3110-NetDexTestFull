@@ -628,5 +628,34 @@ namespace NetDexTest_01.Controllers
             
             return _context.Person.Any(e => e.Id == id);
         }
+
+
+
+
+        [HttpPut("relations/update")]
+        public async Task<IActionResult> UpdateRelationship([FromBody] RelationshipRequest request)
+        {
+            if (!ModelState.IsValid) return BadRequest(ModelState);
+            var success = await _personRepo.UpdateRelationshipAsync(request);
+            if (!success) return NotFound("Relationship not found.");
+            return Ok("Relationship updated.");
+        }
+
+        [HttpDelete("relations/delete")]
+        public async Task<IActionResult> DeleteRelationship([FromBody] RelationshipRequest request)
+        {
+            var success = await _personRepo.DeleteRelationshipAsync(request);
+            if (!success) return NotFound("Relationship not found.");
+            return Ok("Relationship deleted.");
+        }
+
+
+
+
+
+
+
+
+
     }
 }

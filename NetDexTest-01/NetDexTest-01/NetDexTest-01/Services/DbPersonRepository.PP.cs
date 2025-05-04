@@ -408,5 +408,127 @@ namespace NetDexTest_01.Services
             return outTf;
         }
 
+
+
+
+
+
+        public async Task<bool> UpdateRelationshipBoolAsync(RelationshipRequestExtend request)
+        {
+            var relation = await _db.PersonPerson
+                .Include(pp => pp.PersonParent)
+                .Include(pp => pp.PersonChild)
+                
+                .FirstOrDefaultAsync(pp => pp.PersonParentId == request.ParentId && pp.PersonChildId == request.ChildId && pp.RelationshipDescription == request.description);
+
+            if (relation == null) return false;
+
+            relation.RelationshipDescription = request.description;
+            // relation.RelationshipType = request.RelationshipType;
+            // relation.RelationshipNote = request.RelationshipNote;
+
+            await _db.SaveChangesAsync();
+            return true;
+        }
+
+        public async Task<bool> UpdateRelationshipBoolAsync(RelationshipRequest request)
+        {
+            var relation = await _db.PersonPerson
+                .Include(pp => pp.PersonParent)
+                .Include(pp => pp.PersonChild)
+                
+                .FirstOrDefaultAsync(pp => pp.PersonParent.Nickname == request.nicknameOne
+                    && pp.PersonChild.Nickname == request.nicknameTwo
+                    //&& pp.RelationshipDescription == request.description
+                    );
+
+            if (relation == null) return false;
+
+            relation.RelationshipDescription = request.description;
+            //relation.RelationshipType = request.RelationshipType;
+            //relation.RelationshipNote = request.RelationshipNote;
+
+            await _db.SaveChangesAsync();
+            return true;
+        }
+
+        public async Task<bool> DeleteRelationshipBoolAsync(RelationshipRequest request)
+        {
+            var relation = await _db.PersonPerson
+                .Include(pp => pp.PersonParent)
+                .Include(pp => pp.PersonChild)
+
+                .FirstOrDefaultAsync(pp => pp.PersonParent.Nickname == request.nicknameOne
+                    && pp.PersonChild.Nickname == request.nicknameTwo
+                    //&& pp.RelationshipDescription == request.description
+                    );
+
+            if (relation == null) return false;
+
+            _db.PersonPerson.Remove(relation);
+            await _db.SaveChangesAsync();
+            return true;
+        }
+
+
+
+        // public async Task<RelationshipVM?> UpdateRelationshipVmAsync(RelationshipRequest request)
+        // {
+        //     var relation = await _db.PersonPerson
+        //         .Include(pp => pp.PersonParent)
+        //         .Include(pp => pp.PersonChild)
+
+        //         .FirstOrDefaultAsync(pp => pp.PersonParent.Nickname == request.nicknameOne
+        //             && pp.PersonChild.Nickname == request.nicknameTwo
+        //             //&& pp.RelationshipDescription == request.description
+        //             );
+
+        //     if (relation == null) return null;
+
+        //     relation.RelationshipDescription = request.description;
+        //     //relation.RelationshipType = request.RelationshipType;
+        //     //relation.RelationshipNote = request.RelationshipNote;
+
+        //     await _db.SaveChangesAsync();
+
+        //     var output = await _db.PersonPerson
+        //         .Include(pp => pp.PersonParent)
+        //         .Include(pp => pp.PersonChild)
+        //         .FirstOrDefaultAsync(pp => pp.PersonParent.Nickname == request.nicknameOne
+        //             && pp.PersonChild.Nickname == request.nicknameTwo
+        //         //&& pp.RelationshipDescription == request.description
+        //         );
+
+
+
+
+        //     return true;
+        // }
+
+        // public async Task<RelationshipVM?> DeleteRelationshipVmAsync(RelationshipRequest request)
+        // {
+        //     var relation = await _db.PersonPerson
+        //         .Include(pp => pp.PersonParent)
+        //         .Include(pp => pp.PersonChild)
+
+        //         .FirstOrDefaultAsync(pp => pp.PersonParent.Nickname == request.nicknameOne
+        //             && pp.PersonChild.Nickname == request.nicknameTwo
+        //             //&& pp.RelationshipDescription == request.description
+        //             );
+
+        //     if (relation == null) return null;
+
+        //     _db.PersonPerson.Remove(relation);
+        //     await _db.SaveChangesAsync();
+        //     return true;
+        // }
+
+
+
+
+
+
+
+
     }
 }
