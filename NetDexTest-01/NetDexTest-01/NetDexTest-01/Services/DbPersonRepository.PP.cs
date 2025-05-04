@@ -15,7 +15,7 @@ namespace NetDexTest_01.Services
     /// </summary>
     public partial class DbPersonRepository
     {
-        public async Task AddPersonPersonAsync(PersonPerson ppIn)
+        public async Task<int> AddPersonPersonAsync(PersonPerson ppIn)
         {
             await Console.Out.WriteLineAsync("\n\n\n--------- AddPersonAsync -----------\n\n");
             await Console.Out.WriteLineAsync($"\n parent\t{ppIn.PersonParent.Nickname} \n");
@@ -23,16 +23,16 @@ namespace NetDexTest_01.Services
             await Console.Out.WriteLineAsync($"\n PersonPerson:\t{ppIn.RelationshipDescription}");
             await Console.Out.WriteLineAsync($"\n PersonPerson:\t{ppIn.PersonParent.Nickname} -> {ppIn.PersonChild.Nickname}");
 
-
+            int returner = -1;
             //TODO double check this
             ppIn.PersonParent.PersonParents.Add(ppIn);
             ppIn.PersonChild.PersonChildren.Add(ppIn);
             await Console.Out.WriteLineAsync("\n\n\n--------------------\n\n");
-            await SaveChangesAsync();
+            returner = await SaveChangesAsync();
             await Console.Out.WriteLineAsync("\n\n\n---attempted to add. check results-------\n\n");
 
             await Console.Out.WriteLineAsync("\n\n\n--------------------\n\n");
-
+            return returner;
         }
 
 
@@ -148,8 +148,9 @@ namespace NetDexTest_01.Services
 
 
 
+#region CREATE METHOD
 
-        public async Task AddPersonPersonForViewModel(string input, string nickname1, string nickname2, string desc)
+        public async Task<int> AddPersonPersonForViewModel(string input, string nickname1, string nickname2, string? desc)
         {
             Person? p1 = null;
             Person? p2 = null;
@@ -181,13 +182,26 @@ namespace NetDexTest_01.Services
                     if (noMatch2)
                     {
                         PersonPerson ppInNew = new PersonPerson(p1, p2, desc);
-                        await AddPersonPersonAsync(ppInNew);
+                        try
+                        {
+                            return await AddPersonPersonAsync(ppInNew);
+
+                        }
+                        catch (Exception ex)
+                        {
+
+                            await Console.Out.WriteLineAsync($"\n\n--------------\nCould not add relation to database\n-----------\n{ex.Message}\n\n---------------");
+                            return -1;    
+                        }
+                        
                         //return true;
                     }
                     //else return false;
             }
+            return -1;
         }
 
+#endregion
 
 
         public async Task<ICollection<RelationshipVM>> GetAllRelationshipsAsync()
@@ -312,18 +326,35 @@ namespace NetDexTest_01.Services
             if (relationshipVMs != null)
             {
                 RelationshipVM? relationshipOut = null;
+                IEnumerable<RelationshipVM>? relList = null;
+                //relationshipOut = relationshipVMs
+                //    .FirstOrDefault(rvm => rvm.ParentNickname == relation.nicknameOne
+                //            && rvm.ChildNickname == relation.nicknameTwo
+                //            && rvm.RelationshipDescription == relation.description);
+                bool failure = false;
 
-                relationshipOut = relationshipVMs.ToList()
-                    .FirstOrDefault(rvm => rvm.ParentNickname == relation.nicknameOne
-                            && rvm.ChildNickname == relation.nicknameTwo
-                            && rvm.RelationshipDescription == relation.description);
-                if(relationshipOut != null)
+
+
+
+
+                relList = relationshipVMs.Where(rvm => rvm.ParentNickname == relation.nicknameOne);
+
+                if (relList == null || !relList.Any()) failure = true;
+
+                if (failure != true) relList = relList.Where(rvm => rvm.ChildNickname == relation.nicknameTwo);
+
+                if (failure != true && relList == null || !relList.Any()) failure = true;
+
+                if(failure != true) relationshipOut = relList.FirstOrDefault(rvm => rvm.RelationshipDescription == relation.description);
+
+
+                if (relationshipOut != null)
                 {
                     return relationshipOut;
                 }
                 else
                 {
-                    await Console.Out.WriteLineAsync("\n\n\nERROR: relationship not found!!!\n\n");
+                    await Console.Out.WriteLineAsync("\n\n\nERROR: relationship not found, double check criteria!!!\n\n");
                     return null;
                 }
             }
@@ -399,7 +430,7 @@ namespace NetDexTest_01.Services
             return outTf;
 
         }
-        public bool FindMatch(Person p1, Person p2, string desc)
+        public bool FindMatch(Person p1, Person p2, string? desc)
         {
             bool outTf = _db.PersonPerson
                             .Any(pp => pp.PersonParent == p1
@@ -413,21 +444,74 @@ namespace NetDexTest_01.Services
 
 
 
-        public async Task<bool> UpdateRelationshipBoolAsync(RelationshipRequestExtend request)
+        public async Task<bool> UpdateRelationshipBoolAsync(RelationshipRequestUpdate request)
         {
+            var finder = request.getExistingRequestInstance();
+            var relationVM = await GetOneRelationshipWithRequestAsync(finder);
+
+            if (relationVM == null) return false;
+
             var relation = await _db.PersonPerson
-                .Include(pp => pp.PersonParent)
-                .Include(pp => pp.PersonChild)
-                
-                .FirstOrDefaultAsync(pp => pp.PersonParentId == request.ParentId && pp.PersonChildId == request.ChildId && pp.RelationshipDescription == request.description);
+            .Include(pp => pp.PersonParent)
+            .Include(pp => pp.PersonChild)
+            .ThenInclude(pc => pc.DexHolder)
+            .FirstOrDefaultAsync(pp => pp.PersonParent.Nickname == relationVM.ParentNickname
+                && pp.PersonChild.Nickname == relationVM.ChildNickname
+                && pp.RelationshipDescription == relationVM.RelationshipDescription
+                && pp.PersonParent.DexHolder.ApplicationUserName == relationVM.AppUsername
+                );
 
             if (relation == null) return false;
 
-            relation.RelationshipDescription = request.description;
+            string input = request.input;
+            string nickname1 = request.nicknameOne;
+            string newNickname2 = request.nickname2;
+            string? desc = request.newDescription;
+            bool wasDeleted = false;
+            try
+            {
+                if (!(await DeleteRelationshipBoolAsync(relation)))
+                {
+                    await Console.Out.WriteLineAsync($"\n\nAn error occurred while trying to modify the database\n\tERROR: Could not remove the relation from the database!");
+                    return false;
+                }
+                else 
+                {
+                    await Console.Out.WriteLineAsync($"\n\nModified the database. Removed Relation from database.\n\tSetting flag to true");
+                    wasDeleted = true;
+                }
+                
+                if ((await AddPersonPersonForViewModel(input, nickname1, newNickname2, desc)) < 0)
+                { 
+                    if (wasDeleted)
+                    {
+                        await Console.Out.WriteLineAsync($"\n\nSecond add failed. Attempting to re-add the relation to the database.");
+                        if(!(await AddPersonPersonCheckAsync(relation, relation.RelationshipDescription))) throw new NotImplementedException("Could not re-add the relation to the database.");
+                        await Console.Out.WriteLineAsync($"\n\tAttempt to re-add the relation to the database succeeded!");
+                    }
+                    return false;
+                }
+
+
+                var newRelationship = await _db.PersonPerson
+                    .Include(pp => pp.PersonParent)
+                    .Include(pp => pp.PersonChild)
+                    .FirstOrDefaultAsync(pp => pp.PersonParent.Nickname == nickname1
+                        && pp.PersonChild.Nickname == newNickname2
+                        && pp.RelationshipDescription == desc
+                        );
+                if (newRelationship == null) return false;
+            }
+            catch (Exception ex)
+            {
+                await Console.Out.WriteLineAsync($"\n\nAn error occurred while trying to modify the database\n");
+                await Console.Out.WriteLineAsync($"\n\n{ex.Message}\n");
+            }
+
+            //relation.RelationshipDescription = request.description;
             // relation.RelationshipType = request.RelationshipType;
             // relation.RelationshipNote = request.RelationshipNote;
 
-            await _db.SaveChangesAsync();
             return true;
         }
 
@@ -469,7 +553,23 @@ namespace NetDexTest_01.Services
             await _db.SaveChangesAsync();
             return true;
         }
+        public async Task<bool> DeleteRelationshipBoolAsync(PersonPerson request)
+        {
+            var relation = await _db.PersonPerson
+                .Include(pp => pp.PersonParent)
+                .Include(pp => pp.PersonChild)
 
+                .FirstOrDefaultAsync(pp => pp.PersonChildId == request.PersonChildId
+                    && pp.PersonParentId == request.PersonParentId
+                    && pp.RelationshipDescription == request.RelationshipDescription
+                    );
+
+            if (relation == null) return false;
+
+            _db.PersonPerson.Remove(relation);
+            await _db.SaveChangesAsync();
+            return true;
+        }
 
 
         // public async Task<RelationshipVM?> UpdateRelationshipVmAsync(RelationshipRequest request)

@@ -181,10 +181,16 @@ namespace NetDexTest_01.Controllers
         [HttpGet()]
         public async Task<ActionResult<ICollection<RelationshipVM>>> retrieveAllRelations()
         {
-            var relationshipList = await _personRepo.GetAllRelationshipsAsync();
-            
-            if (relationshipList != null)
+            var relationshipIn = await _personRepo.GetAllRelationshipsAsync();
+
+            if (relationshipIn != null)
             {
+                var relationshipList = relationshipIn.ToList();
+                
+                relationshipList
+                .OrderBy(r => r.ParentNickname)
+                    .OrderBy(r => r.ChildNickname)
+                    .OrderBy(r => r.RelationshipDescription);
                 JsonSerializerOptions options = new()
                 {
                     ReferenceHandler = ReferenceHandler.IgnoreCycles, //IgnoreCycles, //Preserve
@@ -207,10 +213,16 @@ namespace NetDexTest_01.Controllers
         [HttpGet()]
         public async Task<ActionResult<ICollection<RelationshipVM>>> retrieveAllRelationsByUser(string id)
         {
-            var relationshipList = await _personRepo.GetAllRelationshipsByUserAsync(id);
-
-            if (relationshipList != null)
+            var relationshipIn = await _personRepo.GetAllRelationshipsByUserAsync(id);
+            if (relationshipIn != null)
             {
+                var relationshipList = relationshipIn.ToList();
+
+                relationshipList
+                .OrderBy(r => r.ParentNickname)
+                    .OrderBy(r => r.ChildNickname)
+                    .OrderBy(r => r.RelationshipDescription);
+
                 JsonSerializerOptions options = new()
                 {
                     ReferenceHandler = ReferenceHandler.IgnoreCycles, //IgnoreCycles, //Preserve
@@ -234,10 +246,17 @@ namespace NetDexTest_01.Controllers
         [HttpGet()]
         public async Task<ActionResult<ICollection<RelationshipVM>>> retrieveAllRelationsSpecific([FromBody] RelationshipRequest relation)
         {
-            var relationshipList = await _personRepo.GetAllRelationshipsWithPeopleRequestAsync(relation);
-
-            if (relationshipList != null)
+            var relationshipIn = await _personRepo.GetAllRelationshipsWithPeopleRequestAsync(relation);
+            if (relationshipIn != null)
             {
+                var relationshipList = relationshipIn.ToList();
+
+                relationshipList
+                .OrderBy(r => r.ParentNickname)
+                    .OrderBy(r => r.ChildNickname)
+                    .OrderBy(r => r.RelationshipDescription);
+
+
                 JsonSerializerOptions options = new()
                 {
                     ReferenceHandler = ReferenceHandler.IgnoreCycles, //IgnoreCycles, //Preserve
@@ -631,26 +650,62 @@ namespace NetDexTest_01.Controllers
 
 
 
-
+        /// <summary>
+        /// FUCK!!!! I forgot that creating a unique index including relationship description would make it not possible to update the column... no time to fix....
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
         [HttpPut("relations/update")]
-        public async Task<IActionResult> UpdateRelationship([FromBody] RelationshipRequest request)
+        public async Task<IActionResult> UpdateRelationship([FromForm] RelationshipRequestUpdate request)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
-            var success = await _personRepo.UpdateRelationshipAsync(request);
+            var success = await _personRepo.UpdateRelationshipBoolAsync(request);
             if (!success) return NotFound("Relationship not found.");
             return Ok("Relationship updated.");
         }
 
         [HttpDelete("relations/delete")]
-        public async Task<IActionResult> DeleteRelationship([FromBody] RelationshipRequest request)
+        public async Task<IActionResult> DeleteRelationship([FromForm] RelationshipRequest request)
         {
-            var success = await _personRepo.DeleteRelationshipAsync(request);
+            var success = await _personRepo.DeleteRelationshipBoolAsync(request);
             if (!success) return NotFound("Relationship not found.");
             return Ok("Relationship deleted.");
         }
 
 
 
+        [HttpPost("relations/create")]
+        public async Task<IActionResult> CreateRelationship([FromForm] RelationshipRequest request)
+        {
+            try
+            { 
+                if (!ModelState.IsValid) return BadRequest(ModelState);
+
+                if (string.IsNullOrWhiteSpace(request.input) ||
+                    string.IsNullOrWhiteSpace(request.nicknameOne) ||
+                    string.IsNullOrWhiteSpace(request.nicknameTwo))
+                {
+                    return BadRequest("Required fields are missing.");
+                }
+                await _personRepo.AddPersonPersonForViewModel(
+                                request.input,
+                                request.nicknameOne,
+                                request.nicknameTwo,
+                                request.description // or .RelationshipNote, depending on your logic
+                            );
+
+
+
+                if ((await _personRepo.SaveChangesAsync()) < 1)
+                    return BadRequest("Failed to create relationship. Ensure people exist and nicknames are valid.");
+            }
+            catch (Exception ex)
+            {
+                await Console.Out.WriteLineAsync($"\n\n-----------\n{ex.Message}\n\n---------------");
+                return BadRequest($"Failed to create relationship. Ensure people exist and nicknames are valid.\n----------\n\t{ex.Message}\n\n-----------");     
+            }
+            return Ok("Relationship created.");
+        }
 
 
 

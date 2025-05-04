@@ -29,6 +29,38 @@ namespace NetDexTest_01.Models.ViewModels
         public int? ChildId { get; set; } = 0;
 
     }
+    public class RelationshipRequestUpdate : RelationshipRequest
+    {
+        public string? newDescription { get; set; }
+        public string nickname2 { get; set; }
+
+        public RelationshipRequest getExistingRequestInstance()
+        { 
+            return new RelationshipRequest()
+            {
+                input       = this.input,
+                nicknameOne = this.nicknameOne,
+                nicknameTwo = this.nicknameTwo,
+                description = this.description
+
+            }; 
+        }
+
+        public RelationshipRequest getNewRequestInstance()
+        {
+            return new RelationshipRequest()
+            {
+                input = this.input,
+                nicknameOne = this.nicknameOne,
+                nicknameTwo = this.nickname2,
+                description = this.newDescription
+
+            };
+        }
+
+
+
+    }
 
 
 

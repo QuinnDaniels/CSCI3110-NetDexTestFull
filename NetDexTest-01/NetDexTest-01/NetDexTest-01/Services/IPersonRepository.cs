@@ -70,7 +70,7 @@ namespace NetDexTest_01.Services
 
 
 
-        Task SaveChangesAsync();
+        Task<int> SaveChangesAsync();
 
         /// <inheritdoc cref="FindMatch(Person, Person, string)"/>
         bool FindMatch(PersonPerson ppIn);
@@ -86,7 +86,7 @@ namespace NetDexTest_01.Services
         /// <param name="p2">PersonChild</param>
         /// <param name="desc">String that describes the relationship between Parent and Child</param>
         /// <returns>returns true if a match is found, false if not</returns>
-        bool FindMatch(Person p1, Person p2, string desc);
+        bool FindMatch(Person p1, Person p2, string? desc);
 
 
         /// <summary>
@@ -131,7 +131,7 @@ namespace NetDexTest_01.Services
         /// <inheritdoc cref="AddPersonPerson(Person, Person, PersonPerson)"></inheritdoc>
         Task AddPersonPersonAsync(Person parent, Person child, PersonPerson ppIn);
         /// <inheritdoc cref="AddPersonPerson(Person, Person, PersonPerson)"></inheritdoc>
-        Task AddPersonPersonAsync(PersonPerson ppIn);
+        Task<int> AddPersonPersonAsync(PersonPerson ppIn);
         /// <inheritdoc cref="AddPersonPersonCheck(Person, Person, PersonPerson)"></inheritdoc>
         Task<bool> AddPersonPersonCheckAsync(Person parent, Person child, PersonPerson ppIn);
         /// <inheritdoc cref="AddPersonPersonCheck(Person, Person, PersonPerson, string)"></inheritdoc>
@@ -140,7 +140,7 @@ namespace NetDexTest_01.Services
         Task<bool> AddPersonPersonCheckAsync(PersonPerson ppIn, string desc);
 
 
-        Task AddPersonPersonForViewModel(string input, string nickname1, string nickname2, string desc);
+        Task<int> AddPersonPersonForViewModel(string input, string nickname1, string nickname2, string? desc);
         /*--------------------------------*/
 
 
@@ -157,7 +157,10 @@ namespace NetDexTest_01.Services
 
         
         Task<bool> UpdateRelationshipBoolAsync(RelationshipRequest request);
+        Task<bool> UpdateRelationshipBoolAsync(RelationshipRequestUpdate request);
         Task<bool> DeleteRelationshipBoolAsync(RelationshipRequest request);
+        Task<bool> DeleteRelationshipBoolAsync(PersonPerson request);
+
         // Task<RelationshipVM> UpdateRelationshipVmAsync(RelationshipRequest request);
         // Task<RelationshipVM> DeleteRelationshipVmAsync(RelationshipRequest request);
 

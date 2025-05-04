@@ -235,9 +235,9 @@ namespace NetDexTest_01.Services
 
 
 
-        public async Task SaveChangesAsync()
+        public async Task<int> SaveChangesAsync()
         {
-            await _db.SaveChangesAsync();
+            return await _db.SaveChangesAsync();
         }
 
     }
