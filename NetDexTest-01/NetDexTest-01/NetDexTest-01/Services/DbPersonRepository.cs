@@ -151,7 +151,7 @@ namespace NetDexTest_01.Services
         }
 
         /// <inheritdoc cref="ReadAllPeopleAsync()"/>
-        public async Task<ICollection<Person>> ReadAllPeopleAsync(string inputString)
+        public async Task<ICollection<Person>?> ReadAllPeopleAsync(string inputString)
         {
             DexHolder? dex = new();
 
@@ -174,7 +174,7 @@ namespace NetDexTest_01.Services
             }
             else
             {
-                throw new NullReferenceException(nameof(dex));
+                return null;//throw new NullReferenceException(nameof(dex));
             }
 
         }

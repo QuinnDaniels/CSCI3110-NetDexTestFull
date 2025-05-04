@@ -83,8 +83,9 @@ namespace toolExtensions
         }
 
 
-        public static bool IsNullOrEmpty(this string value)
+        public static bool IsNullOrEmpty(this string? value)
         {
+            if (value == null) return true;
             return string.IsNullOrEmpty(value);
         }
     }

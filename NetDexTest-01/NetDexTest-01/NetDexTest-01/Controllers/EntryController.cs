@@ -62,12 +62,19 @@ namespace NetDexTest_01.Controllers
             return Ok(await _repo.GetAllEntryItemsAsync());
         }
 
+
+
         [Route("user/{input}")]
         [HttpGet]
         public async Task<ActionResult<List<EntryItem>>> GetAllByUser(string input)
         {
+            if (await _userRepo.GetDexHolderMiddleVMAsync(input) == null) return NotFound($"User could not be found using input, {input}");
+
             return Ok(await _repo.GetAllEntryItemsByUserAsync(input));
         }
+
+
+
 
 
         [Route("create")]
@@ -100,6 +107,7 @@ namespace NetDexTest_01.Controllers
         }
 
 
+
         [Route("put")]
         [HttpPut]
         public async Task<IActionResult> PutUpdate([FromForm] EntryItemVM item)
@@ -108,7 +116,6 @@ namespace NetDexTest_01.Controllers
                 return Ok("EntryItem updated.");
             return BadRequest("Invalid Entry or Person.");
         }
-
 
 
         [Route("delete/{id}")]
@@ -133,8 +140,19 @@ namespace NetDexTest_01.Controllers
         {
             var entry = await _repo.GetEntryItemAsync(id);
             if (entry == null) return NotFound();
+            string? preview = null;
+            string tag = "[PREVIEW]: ";
+            if (entry.ShortTitle?.Trim().IsNullOrEmpty() ?? true)
+            {
+               preview = $"{tag}{entry.FlavorText.Truncate(120)}";
+            }
+            else
+            {
+                if (entry.ShortTitle.Trim().Length > 123) { preview = entry.ShortTitle.Trim(); }
+                else { preview = entry.ShortTitle.Truncate(120); }
 
-
+                preview = entry.ShortTitle.Truncate(120 - tag.Length);
+            }
 
             var dto = new EntryItemDTO
             {
@@ -158,16 +176,6 @@ namespace NetDexTest_01.Controllers
         {
             var entries = await _repo.GetAllEntryItemsAsync();
 
-            //string? preview = null;
-            //string tag = "[PREVIEW]: ";
-            //if (entry.ShortTitle.Trim().IsNullOrEmpty())
-            //{
-            //    preview = $"{tag}{entry.FlavorText.Truncate(120)}";
-            //}
-            //else
-            //{
-            //    preview = entry.ShortTitle.Truncate((120 - tag.Length));
-            //}
             var result = entries.Select(entry => new EntryItemDTO
             {
                 EntryItemId = entry.Id,
@@ -177,30 +185,39 @@ namespace NetDexTest_01.Controllers
                 PersonNickname = entry.RecordCollector.Person.Nickname,
                 ApplicationUserEmail = entry.RecordCollector.Person.DexHolder.ApplicationUser.Email,
                 ApplicationUserName = entry.RecordCollector.Person.DexHolder.ApplicationUser.UserName,
-                ShortTitle = preview,
+                //ShortTitle = preview,
                 FlavorText = entry.FlavorText,
                 LogTimestamp = entry.LogTimestamp
             }).OrderBy(e => e.EntryItemId).ToList();
+            List<EntryItemDTO> outList = new();
 
-            return Ok(result);
+            foreach(EntryItemDTO e in result){
+                string? preview = null;
+                string tag = "[PREVIEW]: ";
+                if (e.ShortTitle?.Trim().IsNullOrEmpty() ?? true)
+                {
+                   preview = $"{tag}{e.FlavorText.Truncate(120 - tag.Length)}";
+                }
+                else
+                {
+                    if(e.ShortTitle.Trim().Length > 123){ preview = e.ShortTitle.Trim(); }
+                   else { preview = e.ShortTitle.Truncate(120); }
+                }
+                e.ShortTitle = preview;
+                outList.Add(e);
+            }
+            outList = outList.OrderBy(e => e.EntryItemId).ToList();
+
+            return Ok(outList);
         }
 
         [HttpGet("transfer/user/{input}")]
         public async Task<ActionResult<List<EntryItemDTO>>> TransferByUser(string input)
         {
+            if (await _userRepo.GetDexHolderMiddleVMAsync(input) == null) return NotFound($"User could not be found using input, {input}");
+
             var entries = await _repo.GetAllEntryItemsByUserAsync(input);
             if (entries == null) return NotFound();
-
-            //string? preview = null;
-            //string tag = "[PREVIEW]: ";
-            //if (entry.ShortTitle.Trim().IsNullOrEmpty())
-            //{
-            //    preview = $"{tag}{entry.FlavorText.Truncate(120)}";
-            //}
-            //else
-            //{
-            //    preview = entry.ShortTitle.Truncate((120 - tag.Length));
-            //}
 
             var result = entries.Select(entry => new EntryItemDTO
             {
@@ -211,14 +228,84 @@ namespace NetDexTest_01.Controllers
                 PersonNickname = entry.RecordCollector.Person.Nickname,
                 ApplicationUserEmail = entry.RecordCollector.Person.DexHolder.ApplicationUser.Email,
                 ApplicationUserName = entry.RecordCollector.Person.DexHolder.ApplicationUser.UserName,
-                ShortTitle = preview,
+                //ShortTitle = preview,
                 FlavorText = entry.FlavorText,
                 LogTimestamp = entry.LogTimestamp
             }).OrderBy(e => e.EntryItemId).ToList();
+            List<EntryItemDTO> outList = new();
 
-            return Ok(result);
+            foreach (EntryItemDTO e in result)
+            {
+                string? preview = null;
+                string tag = "[PREVIEW]: ";
+                if (e.ShortTitle?.Trim().IsNullOrEmpty() ?? true)
+                {
+                    preview = $"{tag}{e.FlavorText.Truncate(120 - tag.Length)}";
+                }
+                else
+                {
+                    if (e.ShortTitle.Trim().Length > 123) { preview = e.ShortTitle.Trim(); }
+                    else { preview = e.ShortTitle.Truncate(120); }
+                }
+                e.ShortTitle = preview;
+                outList.Add(e);
+            }
+            outList = outList.OrderBy(e => e.EntryItemId).ToList();
+
+            return Ok(outList);
         }
-    
+
+
+        [HttpGet("transfer/person/{input}/{criteria}")]
+        public async Task<ActionResult<List<EntryItemDTO>>> TransferByUserPerson(string input, string criteria)
+        {
+            //if (await _userRepo.GetDexHolderMiddleVMAsync(input) == null) return NotFound($"User could not be found using input, {input}");
+
+            var entries = await _repo.GetAllEntryItemsByUserAsync(input);
+            if (entries == null) return NotFound();
+
+            var person = await _personRepo.GetOneByUserInputAsync(input, criteria);
+            if (person == null) return NotFound();
+
+            var result = entries.Where(e => e.RecordCollector.Person == person)
+                .Select(entry => new EntryItemDTO
+            {
+                EntryItemId = entry.Id,
+                RecordCollectorId = entry.RecordCollector.Id,
+                PersonId = entry.RecordCollector.Person.Id,
+                DexHolderId = entry.RecordCollector.Person.DexHolder.Id,
+                PersonNickname = entry.RecordCollector.Person.Nickname,
+                ApplicationUserEmail = entry.RecordCollector.Person.DexHolder.ApplicationUser.Email,
+                ApplicationUserName = entry.RecordCollector.Person.DexHolder.ApplicationUser.UserName,
+                //ShortTitle = preview,
+                FlavorText = entry.FlavorText,
+                LogTimestamp = entry.LogTimestamp
+            }).OrderBy(e => e.EntryItemId).ToList();
+            List<EntryItemDTO> outList = new();
+
+            foreach (EntryItemDTO e in result)
+            {
+                string? preview = null;
+                string tag = "[PREVIEW]: ";
+                if (e.ShortTitle?.Trim().IsNullOrEmpty() ?? true)
+                {
+                    preview = $"{tag}{e.FlavorText.Truncate(120 - tag.Length)}";
+                }
+                else
+                {
+                    if (e.ShortTitle.Trim().Length > 123) { preview = e.ShortTitle.Trim(); }
+                    else { preview = e.ShortTitle.Truncate(120); }
+                }
+                e.ShortTitle = preview;
+                outList.Add(e);
+            }
+            outList = outList.OrderBy(e => e.EntryItemId).ToList();
+
+            return Ok(outList);
+        }
+
+
+
         #endregion Transfer Routes
 
 
@@ -354,6 +441,6 @@ namespace NetDexTest_01.Controllers
         }
         */
         #endregion ScaffoldResults
-        
+
     } 
 }

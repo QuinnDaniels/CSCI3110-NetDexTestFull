@@ -275,12 +275,14 @@ namespace NetDexTest_01.Services
 
 
         // HACK - I should really put lastUpdated on the items, then have a calc column on the collector tables or smthg
-        entry.LogTimestamp = DateTime.UtcNow;
+        entry.LogTimestamp = DateTime.Now;
 
         entry.ShortTitle = item.ShortTitle ;
         entry.FlavorText = item.FlavorText;
         return await _context.SaveChangesAsync() > 0;
     }
+
+
 
 
 

@@ -69,4 +69,22 @@ namespace NetDexTest_01.Models.ViewModels
     }
 
 
+    public class SocialMediaDTO
+    {
+        public Int64 SocialMediaId { get; set; }
+        public Int64 ContactInfoId { get; set; }
+        public int PersonId { get; set; }
+        public int DexHolderId { get; set; }
+        public string PersonNickname { get; set; } = string.Empty;
+        public string ApplicationUserEmail { get; set; } = string.Empty;
+        public string ApplicationUserName { get; set; } = string.Empty;
+        public string ContactInfoNoteText { get; set; } = string.Empty;
+        public string CategoryField { get; set; } = string.Empty;
+        public string SocialHandle { get; set; } = string.Empty;
+        public DateTime LogTimestamp { get; set; }
+    }
+
+
+
+
 }
