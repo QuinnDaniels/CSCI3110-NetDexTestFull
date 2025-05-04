@@ -1,5 +1,4 @@
-﻿namespace NetDexTest_01.Services
-{
+﻿namespace NetDexTest_01_MVC.Services { 
     public interface IToolService
     {
 
