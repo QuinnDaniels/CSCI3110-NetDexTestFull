@@ -217,34 +217,8 @@ namespace NetDexTest_01_MVC.Models.ViewModels
 
 
 
-    public class RelationshipRequest
-    {
-        public string input { get; set; }
-        public string nicknameOne { get; set; }
-        public string nicknameTwo { get; set; }
-        public string? description { get; set; }
-    }
 
 
-    public class RelationshipVM
-    {
-        public RelationshipVM()
-        {
-
-        }
-
-        public string? AppEmail { get; set; }
-        public int? Id { get; set; } = 0;
-        public string AppUsername { get; set; }
-        public int? PersonParentId { get; set; }
-        public string? ParentNickname { get; set; }
-        public string RelationshipDescription { get; set; } = string.Empty;
-        public int? PersonChildId { get; set; }
-        public string? ChildNickname { get; set; }
-        public DateTime? LastUpdated { get; set; }
-
-
-    }
 
 
 

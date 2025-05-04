@@ -52,7 +52,7 @@ namespace NetDexTest_01.Models.ViewModels
 
 
 
-
+    // PORTME
     // NOTE - later: create a /Models/DTOs/EntryItemDTOs.cs file
     public class EntryItemDTO
     {
