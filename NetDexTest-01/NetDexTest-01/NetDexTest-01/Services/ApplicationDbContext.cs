@@ -155,6 +155,10 @@ namespace NetDexTest_01.Services
         public DbSet<ContactInfo> ContactInfo => Set<ContactInfo>();
         public DbSet<SocialMedia> SocialMedia => Set<SocialMedia>();
 
+
+
+        //public object PersonPeople { get; internal set; }
+
         //protected override void OnModelCreating(ModelBuilder modelBuilder)
         //{
         //    modelBuilder.Entity<ApplicationUser>()
