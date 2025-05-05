@@ -13,11 +13,11 @@ namespace NetDexTest_01_MVC.Controllers
     [Route("dex")]
     public class PeopleController : Controller
     {
+        private readonly IUserSessionService _userSessionService;
+        private readonly IPersonService _personService;
         private readonly ILogger<AuthController> _logger;
         private IAuthService _authService;
-        private readonly IUserSessionService _userSessionService;
         private readonly IUserService _userService;
-        private readonly IPersonService _personService;
         private readonly IApiCallerService _apiCallerService;
 
 
@@ -30,9 +30,9 @@ namespace NetDexTest_01_MVC.Controllers
         {
             _logger = logger;
             _authService = authService;
-            _userSessionService = userSessionService;
             _apiCallerService = apiCallerService;
             _userService = userService;
+            _userSessionService = userSessionService;
             _personService = personService;
 
         }
