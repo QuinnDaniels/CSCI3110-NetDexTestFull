@@ -1,0 +1,83 @@
+﻿@model IEnumerable<NetDexTest_01_MVC.Models.ViewModels.EntryItemDTO>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.EntryItemId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.RecordCollectorId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PersonId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DexHolderId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PersonNickname)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ApplicationUserEmail)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ApplicationUserName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ShortTitle)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FlavorText)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.LogTimestamp)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.EntryItemId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.RecordCollectorId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PersonId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DexHolderId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PersonNickname)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ApplicationUserEmail)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ApplicationUserName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ShortTitle)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FlavorText)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.LogTimestamp)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

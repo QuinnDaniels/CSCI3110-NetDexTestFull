@@ -122,7 +122,9 @@ namespace NetDexTest_01.Models.ViewModels
         public int Rating { get; set; } = 0;
         public bool Favorite { get; set; } = false;
         public int RcEntryItemsCount { get; set; } = -1;
+        public Int64 RecordCollectorId { get; set; } = -1;
         public int CiSocialMediasCount { get; set; } = -1;
+        public Int64 ContactInfoId { get; set; } = -1;
         public int PersonParentsCount { get; set; } = -1;
         public int PersonChildrenCount { get; set; } = -1;
 
