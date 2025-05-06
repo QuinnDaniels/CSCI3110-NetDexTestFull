@@ -126,6 +126,10 @@ namespace NetDexTest_01.Services
                             Pronouns =              p?.Pronouns ?? "---",
                             Rating =                p?.Rating ?? 0,
                             Favorite =              p?.Favorite ?? false,
+                            RecordCollectorId = p?.RecordCollector.Id ?? 0,
+                            ContactInfoId = p?.ContactInfo.Id ?? 0,
+
+
                             RcEntryItemsCount =     p?.RecordCollector?.EntryItemsCount ?? errorCounter2 --,
                             CiSocialMediasCount =   p?.ContactInfo?.SocialMediasCount ?? errorCounter2 --,
                             PersonParentsCount =    p?.PersonParentsCount ?? errorCounter2 --,
@@ -300,6 +304,8 @@ namespace NetDexTest_01.Services
                             Gender = p?.Gender ?? "---",
                             Pronouns = p?.Pronouns ?? "---",
                             Rating = p?.Rating ?? 0,
+                            RecordCollectorId = p?.RecordCollector.Id ?? 0,
+                            ContactInfoId = p?.ContactInfo.Id?? 0,
                             Favorite = p?.Favorite ?? false,
                             RcEntryItemsCount = p?.RecordCollector?.EntryItemsCount ?? errorCounter2--,
                             CiSocialMediasCount = p?.ContactInfo?.SocialMediasCount ?? errorCounter2--,

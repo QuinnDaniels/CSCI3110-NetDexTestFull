@@ -277,6 +277,10 @@ namespace NetDexTest_01_MVC.Services
         public string GetEmail() => _httpContextAccessor.HttpContext.Session.GetString("Email");
         public string GetTempEmail() => _httpContextAccessor.HttpContext.Session.GetString("TempEmail");
         public string GetTempPerson() => _httpContextAccessor.HttpContext.Session.GetString("TempPerson");
+        public string GetTempRecordCollector() => _httpContextAccessor.HttpContext.Session.GetString("TempRecordCollector");
+        public string GetTempContactInfo() => _httpContextAccessor.HttpContext.Session.GetString("TempContactInfo");
+        public Int64 GetTempRecordCollectorId() => Int64.Parse(GetTempRecordCollector());// ?? "-1");
+        public Int64 GetTempContactInfoId() => Int64.Parse(GetTempContactInfo());// ?? "-1");
         public string GetUsername() => _httpContextAccessor.HttpContext.Session.GetString("Username");
         public string GetStringRoles() => _httpContextAccessor.HttpContext.Session.GetString("StringRoles");
         
@@ -361,6 +365,34 @@ namespace NetDexTest_01_MVC.Services
         }
 
 
+
+        /// <summary>
+        /// Store person's recordcollectorid and ContactInfoid (person nickname and id)
+        /// </summary>
+        /// <param name="email"></param>
+        /// <param name="criteria"></param>
+        /// <returns></returns>
+        public async Task SetTempPersonAsync(Int64 recordCollectorId, Int64 entryItemId)
+        {
+            var session = _httpContextAccessor.HttpContext.Session;
+            await ConOut("Setting Temp User Session....");
+
+            session.SetString("TempRecordCollector", recordCollectorId.ToString());
+            await Console.Out.WriteLineAsync($"\n\nTempRecordCollector:\t{session.GetString("TempRecordCollector")}");
+            session.SetString("TempContactInfo", entryItemId.ToString());
+            await Console.Out.WriteLineAsync($"\n\nTempContactInfo:\t{session.GetString("TempContactInfo")}");
+        }
+
+
+
+
+        //TODO - temp entry or Ientry service
+
+
+
+
+
+
         public async Task CloseTempSessionData()
         {
             var session = _httpContextAccessor.HttpContext.Session;
@@ -368,13 +400,22 @@ namespace NetDexTest_01_MVC.Services
             await Console.Out.WriteLineAsync($"\n\nSetting Session Strings to empty...");
             session.SetString("TempEmail", "");
             session.SetString("TempPerson", "");
+            session.SetString("TempRecordCollector", "");
+            session.SetString("TempContactInfo", "");
+
 
             await Console.Out.WriteLineAsync($"\n\nClearing Temp Session...");
             session.Remove("TempEmail");
             session.Remove("TempPerson");
+            session.Remove("TempRecordCollector");
+            session.Remove("TempContactInfo");
+
+
 
             await Console.Out.WriteLineAsync($"\n\nTempEmail:\t{session.GetString("TempEmail")}");
             await Console.Out.WriteLineAsync($"\n\nTempPerson:\t{session.GetString("TempPerson")}");
+            await Console.Out.WriteLineAsync($"\n\nTempRecordCollector:\t{session.GetString("TempRecordCollector")}");
+            await Console.Out.WriteLineAsync($"\n\nTempContactInfo:\t{session.GetString("TempContactInfo")}");
 
         }
 

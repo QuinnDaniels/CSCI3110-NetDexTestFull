@@ -240,9 +240,15 @@ async function runner(userRepo, DexHolderMiddleVM, dexEmail, links) {
 
 
     console.log(links);
-    dexHeading.appendChild(document.createTextNode(`#<b>${DexHolderMiddleVM.DexId}</b> - ${DexHolderMiddleVM.ApplicationUserName}`));
+    dexHeading.appendChild(document.createTextNode(`#${DexHolderMiddleVM.DexId} - ${DexHolderMiddleVM.ApplicationUserName}`));
 
 }
+
+
+
+
+
+
 
 try {
     await runner(userRepo, dexResponse, dexEmail, links);

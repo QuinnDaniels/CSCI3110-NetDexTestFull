@@ -17,8 +17,8 @@ namespace NetDexTest_01.Models.ViewModels
     {
         public int? Id { get; set; }
         public string input { get; set; }
-        public string nicknameOne { get; set; }
-        public string nicknameTwo { get; set; }
+        public string? nicknameOne { get; set; }
+        public string? nicknameTwo { get; set; }
         public string? description { get; set; }
     }
 

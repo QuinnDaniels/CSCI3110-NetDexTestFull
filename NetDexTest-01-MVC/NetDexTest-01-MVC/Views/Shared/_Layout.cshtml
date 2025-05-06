@@ -45,8 +45,8 @@
 
                     @if (User.Identity.IsAuthenticated || _userSessionService.IsLoggedIn())
                     {
-                        <div id="infoLeft" class="d-inline-block">
-                            <p>Hello @(_userSessionService.GetEmail())</p>
+                        <div id="infoLeft" class="d-inline-block nav-item">
+                            <p>Hello @(_userSessionService.GetUsername())</p>
                             @{
                                 var listRoles = await _userSessionService.GetRolesAsync();
                                 var data = new StringBuilder();
@@ -67,10 +67,27 @@
                                 <p>Roles: @dataout</p>
                             }
                         </div>
+                        
+                        //var listRoles = await _userSessionService.GetRolesAsync();
+                            //var authAccess = ["Admin", "Administrator", "Mod", "Moderator"];
+                        if (listRoles.Where(s => s == "Admin" || s == "Administrator" || s == "Mod" || s == "Moderator").Any())
+                        {
+                            <div class="d-inline-block nav-item">
+                                <a class="btn btn-dark" asp-controller="user" asp-action="ListUsers">View All Users</a>   
+                            </div>
+
+                        }
+
+                        <div class="d-inline-block nav-item" >
+                            <a class="btn btn-primary" asp-controller="people" asp-action="ListDexIndex">View Dex</a>
+                        </div>
                         <div class="infoRightable-info d-inline-block">
                             <a class="btn btn-danger" asp-controller="auth" asp-action="logout">Logout</a>
 
                         </div>
+
+
+
                     }
                     else
                     {
@@ -86,7 +103,17 @@
     </header>
     <div class="container">
         <main role="main" class="pb-3">
+            @{
+            // TODO
+            
+            
+            }
             @RenderBody()
+            @await RenderSectionAsync("Scripts", required: false)
+
+
+
+
         </main>
     </div>
 
@@ -130,6 +157,6 @@
     
     
     
-    @await RenderSectionAsync("Scripts", required: false)
+@*     @await RenderSectionAsync("Scripts", required: false)*@
 </body>
 </html>

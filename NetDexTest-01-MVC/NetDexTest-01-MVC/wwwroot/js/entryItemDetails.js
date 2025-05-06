@@ -13,9 +13,32 @@ async function fetchEntryItem(entryItemId) {
         const container = document.getElementById("entryItemContainer");
         if (!container) return;
 
-        DOM.setElementText("#title", item.shortTitle);
-        DOM.setElementText("#flavor", item.flavorText);
-        DOM.setElementText("#dateLogged", item.logTimestamp);
+
+         
+
+        const shorttitle = document.getElementById("_ShortTitle");
+        const flavortext = document.getElementById("_FlavorText");
+        const logtimestamp = document.getElementById("_LogTimestamp");
+        const entryitemid = document.getElementById("_EntryItemId");
+        const recordcollectorid = document.getElementById("_RecordCollectorId");
+
+        DOM.removeChildren(entryitemid);
+        DOM.removeChildren(shorttitle);
+        DOM.removeChildren(flavortext);
+        DOM.removeChildren(logtimestamp);
+        DOM.removeChildren(recordcollectorid);
+
+        DOM.setElementText("#_ShortTitle", item.shortTitle);
+        DOM.setElementText("#_FlavorText", item.flavorText);
+        DOM.setElementValue("#_LogTimestamp", item.logTimestamp);
+        DOM.setElementValue("#_EntryItemId", item.entryItemId);
+        DOM.setElementValue("#_RecordCollectorId", item.recordCollectorId);
+
+        DOM.removeChildren(entryRedirectHolder);
+        const linker = document.getElementById("entryRedirectHolder");
+        linker.appendChild(DOM.entryItemDetailsButtons(email, lastperson, item.entryItemId)); //, records, contacts));
+
+
 
     } catch (err) {
         console.error("Error loading EntryItem:", err);

@@ -190,10 +190,10 @@ await populateUsers(userRepo);
 // CHECKPOINT 8:
 function createTDWithLinks(id) {
     const td = document.createElement("td");
-    td.appendChild(DOM.createButtonLink("Edit", `/dex/u/${id}`, 'warning'));
+    td.appendChild(DOM.createButtonLink("View", `/dex/u/${id}`, 'warning'));
     //td.appendChild(DOM.createButtonLink("Edit", `/user/edit/${id}`, 'warning'));
     td.appendChild(document.createTextNode(" | "));
-    td.appendChild(DOM.createButtonLink("Details", `/dex/edit/${id}`, 'info'));
+    td.appendChild(DOM.createButtonLink("Edit", `/dex/edit/${id}`, 'info'));
     //td.appendChild(DOM.createButtonLink("Details", `/user/details/${id}`, 'info'));
     td.appendChild(document.createTextNode(" | "));
     td.appendChild(DOM.createButtonLink("Delete", `/dex/delete/${id}`, 'danger'));

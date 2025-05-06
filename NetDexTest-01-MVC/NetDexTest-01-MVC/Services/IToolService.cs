@@ -87,6 +87,58 @@ namespace toolExtensions
             if (value == null) return true;
             return string.IsNullOrEmpty(value);
         }
+
+
+
+        /// <summary>
+        /// <para>
+        /// An easy way to check if an array or list contains any of a number of provided strings. 
+        /// </para>
+        /// <para>
+        /// An alternative to .Contains().
+        /// </para>
+        /// <code>
+        /// if (title.EqualsAny("User greeting", "User name"))
+        ///{
+        ///    //do stuff
+        ///}
+        /// </code>
+        /// </summary>
+        /// <remarks>
+        /// Source: 
+        /// <see href="https://stackoverflow.com/a/41098725">Deilan - How to check if something equals any of a list of values in C#</see>
+        /// </remarks>
+        /// <param name="target"></param>
+        /// <param name="comparer"></param>
+        /// <param name="values"></param>
+        /// <returns></returns>
+        public static bool EqualsAny(this string target, StringComparer comparer, params string[] values)
+        {
+            return target.EqualsAny(comparer, (IEnumerable<string>)values);
+        }
+
+        /// <summary>
+        /// <inheritdoc cref="EqualsAny(string, StringComparer, string[])"/>
+        /// </summary>
+        /// <param name="target"></param>
+        /// <param name="values"></param>
+        /// <returns></returns>
+        public static bool EqualsAny(this string target, params string[] values)
+        {
+            return target.EqualsAny((IEnumerable<string>)values);
+        }
+
+        /// <inheritdoc cref="EqualsAny(string, StringComparer, string[])"/>
+        public static bool EqualsAny(this string target, StringComparer comparer, IEnumerable<string> values)
+        {
+            return values.Contains(target, comparer);
+        }
+
+        /// <inheritdoc cref="EqualsAny(string, StringComparer, string[])"/>
+        public static bool EqualsAny(this string target, IEnumerable<string> values)
+        {
+            return values.Contains(target, StringComparer.OrdinalIgnoreCase);
+        }
     }
 
 }

@@ -368,7 +368,7 @@ namespace NetDexTest_01.Services
 
 
 
-
+        //TODO - add if nickname1 == null branches
         public async Task<ICollection<RelationshipVM>?> GetAllRelationshipsWithPeopleRequestAsync(RelationshipRequest relation)
         {
             var relationshipVMs = await GetAllRelationshipsByUserAsync(relation.input);
@@ -377,10 +377,85 @@ namespace NetDexTest_01.Services
             {
                 List<RelationshipVM>? relationshipsOut = null;
 
-                relationshipsOut = relationshipVMs
-                    .Where(rvm => rvm.ParentNickname == relation.nicknameOne
+
+                // NOTE - Thank you Tarnoff for teaching truth tables
+                if (relation.nicknameOne != null && relation.nicknameTwo == null && relation.description == null)
+                {
+                    relationshipsOut = relationshipVMs
+                        .Where(rvm => rvm.ParentNickname == relation.nicknameOne
                             //&& rvm.RelationshipDescription == relation.description
-                            && rvm.ChildNickname == relation.nicknameTwo).ToList();
+                            //&& rvm.ChildNickname == relation.nicknameTwo
+                            ).ToList();
+
+
+                }
+                else if (relation.nicknameOne != null && relation.nicknameTwo != null && relation.description == null)
+                {
+                    relationshipsOut = relationshipVMs
+                        .Where(rvm => rvm.ParentNickname == relation.nicknameOne
+                                //&& rvm.RelationshipDescription == relation.description
+                                && rvm.ChildNickname == relation.nicknameTwo).ToList();
+                }
+                else if (relation.nicknameOne != null && relation.nicknameTwo == null && relation.description != null)
+                {
+                    relationshipsOut = relationshipVMs
+                        .Where(rvm => rvm.ParentNickname == relation.nicknameOne
+                            && rvm.RelationshipDescription == relation.description
+                            //&& rvm.ChildNickname == relation.nicknameTwo
+                            ).ToList();
+
+
+                }
+                else if (relation.nicknameOne != null && relation.nicknameTwo != null && relation.description != null)
+                {
+                    relationshipsOut = relationshipVMs
+                        .Where(rvm => rvm.ParentNickname == relation.nicknameOne
+                                && rvm.RelationshipDescription == relation.description
+                                && rvm.ChildNickname == relation.nicknameTwo).ToList();
+                }
+                else if (relation.nicknameOne == null && relation.nicknameTwo == null && relation.description == null)
+                {
+                    relationshipsOut = relationshipVMs
+                        //.Where(rvm => rvm.ParentNickname == relation.nicknameOne
+                        //    //&& rvm.RelationshipDescription == relation.description
+                        //    //&& rvm.ChildNickname == relation.nicknameTwo
+                        //    )
+                        .ToList();
+
+
+                }
+                else if (relation.nicknameOne == null && relation.nicknameTwo != null && relation.description == null)
+                {
+                    relationshipsOut = relationshipVMs
+                        .Where(rvm => //vm.ParentNickname == relation.nicknameOne
+                                //&& rvm.RelationshipDescription == relation.description
+                                //&&
+                                rvm.ChildNickname == relation.nicknameTwo).ToList();
+                }
+                else if (relation.nicknameOne == null && relation.nicknameTwo == null && relation.description != null)
+                {
+                    relationshipsOut = relationshipVMs
+                        .Where(rvm => //rvm.ParentNickname == relation.nicknameOne
+                            //&&
+                            rvm.RelationshipDescription == relation.description
+                            //&& rvm.ChildNickname == relation.nicknameTwo
+                            ).ToList();
+
+
+                }
+                else if (relation.nicknameOne == null && relation.nicknameTwo != null && relation.description != null)
+                {
+                    relationshipsOut = relationshipVMs
+                        .Where(rvm => //rvm.ParentNickname == relation.nicknameOne
+                                //&& 
+                                rvm.RelationshipDescription == relation.description
+                                && rvm.ChildNickname == relation.nicknameTwo).ToList();
+                }
+
+
+
+
+
                 if (relationshipsOut != null)
                 {
                     return relationshipsOut;

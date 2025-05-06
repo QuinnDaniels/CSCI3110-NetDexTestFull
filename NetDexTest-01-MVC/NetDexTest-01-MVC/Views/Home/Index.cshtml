@@ -75,13 +75,13 @@ else
 
     @if (await _userSessionService.HasAnyRoleAsync("Admin", "Administrator", "Moderator"))  @* (User.IsInRole("Administrator") || User.IsInRole("Moderator")) *@
     {
-        <a class="btn btn-primary" asp-controller="user" asp-action="ListUsers">View All Users</a>
+        <a class="btn btn-dark" asp-controller="user" asp-action="ListUsers">View All Users</a>
 
     }
     <!--TODO-->
     <a class="btn btn-primary" asp-controller="people" asp-action="ListDexIndex">View Dex</a>
-    <a class="btn btn-success" asp-controller="people" asp-action="createPerson">Create New Person</a>
-
+@*     <a class="btn btn-success" asp-controller="people" asp-action="createPerson">Create New Person</a>
+ *@
     <a class="btn btn-danger" asp-controller="auth" asp-action="logout">Logout</a>
 
 

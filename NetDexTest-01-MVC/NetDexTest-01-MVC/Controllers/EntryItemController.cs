@@ -359,6 +359,9 @@ namespace NetDexTest_01_MVC.Controllers
                     ViewData["LoggedInEmail"] = _userSessionService.GetEmail();
                     TempData["tEmail"] = _userSessionService.GetEmail();
                     //return RedirectToAction("GetEntryItemDetailedView", "People");
+                    TempData["tUsername"] = _userSessionService.GetUsername();
+                    ViewData["tUsername"] = _userSessionService.GetUsername();
+
                     return View();
                     //return ControllerContext.MyDisplayRouteInfo("", $" URL = {url}");
                 }
@@ -371,6 +374,8 @@ namespace NetDexTest_01_MVC.Controllers
                     TempData["tEmail"] = _userSessionService.GetTempEmail();
                     TempData["LastPerson"] = _userSessionService.GetTempPerson();
                     ViewData["LastPerson"] = _userSessionService.GetTempPerson();
+                    TempData["tUsername"] = _userSessionService.GetUsername();
+                    ViewData["tUsername"] = _userSessionService.GetUsername();
                     // TempData["entryId"] = entryItemId;
                     // ViewData["entryId"] = entryItemId;
 
@@ -395,6 +400,7 @@ namespace NetDexTest_01_MVC.Controllers
                 return BadRequest("That user does not exist!");
             }
         }
+
 
 
 

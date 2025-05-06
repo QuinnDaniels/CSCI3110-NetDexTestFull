@@ -212,46 +212,46 @@ namespace NetDexTest_01.Services
             return person;
         }
 
-
+        // TODO - FIX THIS METHOD TO ACCEPT AN INTEGER FOR CRITERIA
         public async Task<Person?> GetOneByUserInputAsync(string input, string criteria){
             Person? person = null;
             if (int.TryParse(input, out int idout))
             {
-                await Console.Out.WriteLineAsync($"\n\tGetOneByUserInputAsync:\n\t\t Input, {input}, is an int.\n\t\t\tChecking DexId!!!\n");
+                await Console.Out.WriteLineAsync($"\n\n\n------------\n\n\n\tGetOneByUserInputAsync:\n\t\t Input, {input}, is an int.\n\t\t\tChecking DexId!!!\n\n\n------------\n\n\n");
                 person = await GetPersonByNickNameWithUserNameAsync(input, criteria);
-                if (person == null) await Console.Out.WriteLineAsync($"\n\t\t Criteria, {criteria}, did not match a Person's Nickname for DexHolder, {input}!\n\t\t\tReturning null...");
-                else { await Console.Out.WriteLineAsync($"\n\t\tPerson, {criteria}, found for user, {input}!:\n\t\t\tReturning Person, {criteria}!!!\n"); }
-                await Console.Out.WriteLineAsync($"\n\tGetOneByUserInputAsync:\n\t\t Input, {input}, did not match a DexHolder.\n\t\t\tBecause {input} is an int and not a string, returning null!!\n"); 
+                if (person == null) await Console.Out.WriteLineAsync($"\n\n\n------------\n\n\n\t\t Criteria, {criteria}, did not match a Person's Nickname for DexHolder, {input}!\n\t\t\tReturning null...\n\n------------\n\n\n");
+                else { await Console.Out.WriteLineAsync($"\n\n\n------------\n\n\n\t\tPerson, {criteria}, found for user, {input}!:\n\t\t\tReturning Person, {criteria}!!!\n\n\n------------\n\n\n"); }
+                await Console.Out.WriteLineAsync($"\n\n\n------------\n\n\n\tGetOneByUserInputAsync:\n\t\t Input, {input}, did not match a DexHolder.\n\t\t\tBecause {input} is an int and not a string, returning null!!\n\n\n------------\n\n\n"); 
             }
             else{
-                await Console.Out.WriteLineAsync($"\n\tGetOneByUserInputAsync:\n\t\t Input, {input}, is NOT an int.\n\t\t\tChecking email!!!\n");
+                await Console.Out.WriteLineAsync($"\n\n\n------------\n\n\n\tGetOneByUserInputAsync:\n\t\t Input, {input}, is NOT an int.\n\t\t\tChecking email!!!\n");
                 
                 // if input finds a match, try setting person
                 if (await _userRepo.GetDexHolderByEmailAsync(input) != null)
                 {
                     person = await GetPersonByNickNameWithEmailAsync(input,criteria);
-                    if (person == null) await Console.Out.WriteLineAsync($"\n\t\t Criteria, {criteria}, did not match a Person's Nickname for User, {input}!\n\t\t\tReturning null...");
-                    else{ await Console.Out.WriteLineAsync($"\n\t\tPerson, {criteria}, found for user, {input}!:\n\t\t\tReturning Person, {criteria}!!!\n"); }
+                    if (person == null) await Console.Out.WriteLineAsync($"\n\n\n------------\n\n\n\t\t Criteria, {criteria}, did not match a Person's Nickname for User, {input}!\n\t\t\tReturning null...\n\n------------\n\n\n");
+                    else{ await Console.Out.WriteLineAsync($"\n\n\n------------\n\n\n\t\tPerson, {criteria}, found for user, {input}!:\n\t\t\tReturning Person, {criteria}!!!\n\n\n------------\n\n\n"); }
                 }
-                else{ await Console.Out.WriteLineAsync($"\n\tGetOneByUserInputAsync:\n\t\t Input, {input}, did not match an email.\n\t\t\tChecking username!!!\n"); }
+                else{ await Console.Out.WriteLineAsync($"\n\n\n------------\n\n\n\tGetOneByUserInputAsync:\n\t\t Input, {input}, did not match an email.\n\t\t\tChecking username!!!\n\n\n------------\n\n\n"); }
 
                 // if person is not already set, and if input finds a match, try setting person
                 if (person == null && await _userRepo.GetDexHolderByUserNameAsync(input) != null)
                 {
                     person = await GetPersonByNickNameWithUserNameAsync(input,criteria);
-                    if (person == null) await Console.Out.WriteLineAsync($"\n\t\t Criteria, {criteria}, did not match a Person's Nickname for User, {input}!\n\t\t\tReturning null...");
-                    else{ await Console.Out.WriteLineAsync($"\n\t\tPerson, {criteria}, found for user, {input}!:\n\t\t\tReturning Person, {criteria}!!!\n"); }
+                    if (person == null) await Console.Out.WriteLineAsync($"\n\n\n------------\n\n\n\t\t Criteria, {criteria}, did not match a Person's Nickname for User, {input}!\n\t\t\tReturning null...\n\n------------\n\n\n");
+                    else{ await Console.Out.WriteLineAsync($"\n\n\n------------\n\n\n\t\tPerson, {criteria}, found for user, {input}!:\n\t\t\tReturning Person, {criteria}!!!\n\n\n------------\n\n\n"); }
                 }
-                else{ await Console.Out.WriteLineAsync($"\n\tGetOneByUserInputAsync:\n\t\t Input, {input}, did not match an UserName.\n\t\t\tChecking User Id!!!\n"); }
+                else{ await Console.Out.WriteLineAsync($"\n\n\n------------\n\n\n\tGetOneByUserInputAsync:\n\t\t Input, {input}, did not match an UserName.\n\t\t\tChecking User Id!!!\n\n\n------------\n\n\n"); }
 
                 // if person is not already set, and if input finds a match, try setting person
                 if (person == null && await _userRepo.GetDexHolderByUserIdAsync(input) != null)
                 {
                     person = await GetPersonByNickNameWithUserIdAsync(input,criteria);
-                    if (person == null) await Console.Out.WriteLineAsync($"\n\t\t Criteria, {criteria}, did not match a Person's Nickname for User, {input}!\n\t\t\tReturning null...");
-                    else{ await Console.Out.WriteLineAsync($"\n\t\tPerson, {criteria}, found for user, {input}!:\n\t\t\tReturning Person, {criteria}!!!"); }
+                    if (person == null) await Console.Out.WriteLineAsync($"\n\n\n------------\n\n\n\t\t Criteria, {criteria}, did not match a Person's Nickname for User, {input}!\n\t\t\tReturning null...\n\n------------\n\n\n");
+                    else{ await Console.Out.WriteLineAsync($"\n\n\n------------\n\n\n\t\tPerson, {criteria}, found for user, {input}!:\n\t\t\tReturning Person, {criteria}!!!\n\n------------\n\n\n"); }
                 }
-                else{ await Console.Out.WriteLineAsync($"\n\tGetOneByUserInputAsync:\n\t\t Input, {input}, did not match an userId.\n\t\t\tInput, {input}, did not match any user an any criteria.\n\t\tReturning null...\n"); }
+                else{ await Console.Out.WriteLineAsync($"\n\n\n------------\n\n\n\tGetOneByUserInputAsync:\n\t\t Input, {input}, did not match an userId.\n\t\t\tInput, {input}, did not match any user an any criteria.\n\t\tReturning null...\n\n\n------------\n\n\n"); }
 
 
             }

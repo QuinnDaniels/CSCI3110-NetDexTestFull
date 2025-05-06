@@ -6,8 +6,10 @@
 
 <h1>PersonDetailsViewByRoute</h1>
 
-<input type="hidden" id="email" value="@ViewData["LoggedInEmail"]" />
 <input type="hidden" id="lastPerson" value="@ViewData["LastPerson"]" />
+<input type="hidden" id="email" value="@ViewData["LoggedInEmail"]" />
+<input type="hidden" id="RecordCollectorId" value="@ViewData["RecordCollectorId"]" />
+<input type="hidden" id="ContactInfoId" value="@ViewData["ContactInfoId"]" />
 
 <div>
     <h2 id="personHeading">PersonDetailsVM</h2>
@@ -146,6 +148,7 @@
         </dd>
     </dl>
 </div>
+<div id="entityLinkHolder"></div>
 <div id="redirectLinkHolder" >
    @*  @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) *@ 
    
@@ -163,5 +166,5 @@
 </div>
 
 @section Scripts{
-    <script src="~/js/personDetails.js" type="module" ></script>
+    <script src="~/js/personDetails.js" type="module" defer></script>
 }

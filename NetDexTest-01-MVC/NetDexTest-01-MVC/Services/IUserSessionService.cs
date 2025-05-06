@@ -47,5 +47,12 @@
         List<string> GetRoles();
         Task<List<string>> GetRolesAsync();
 
+
+
+        Int64 GetTempRecordCollectorId();
+        string GetTempRecordCollector();
+        Int64 GetTempContactInfoId();
+        string GetTempContactInfo();
+        Task SetTempPersonAsync(Int64 recordCollectorId, Int64 entryItemId);
     }
 }

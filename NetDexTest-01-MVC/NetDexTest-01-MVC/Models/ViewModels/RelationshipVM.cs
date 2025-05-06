@@ -25,8 +25,8 @@ namespace NetDexTest_01_MVC.Models.ViewModels
     {
         public int? Id { get; set; }
         public string input { get; set; }
-        public string nicknameOne { get; set; }
-        public string nicknameTwo { get; set; }
+        public string? nicknameOne { get; set; } // modified to be nullable. ensure it doesnt cause issues later
+        public string? nicknameTwo { get; set; }
         public string? description { get; set; }
     }
 

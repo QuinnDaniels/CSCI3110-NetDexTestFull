@@ -262,10 +262,13 @@ namespace NetDexTest_01.Controllers
             //if (await _userRepo.GetDexHolderMiddleVMAsync(input) == null) return NotFound($"User could not be found using input, {input}");
 
             var entries = await _repo.GetAllEntryItemsByUserAsync(input);
-            if (entries == null) return NotFound();
+            if (entries == null) return NotFound($"Entries could not be found for user, {input}");
 
+            // TODO - FIX THIS METHOD TO PARSE OUT CRITERIA AS AN INTEGER
+            // FIXME
             var person = await _personRepo.GetOneByUserInputAsync(input, criteria);
-            if (person == null) return NotFound();
+            //await _personRepo.GetPersonByNickName()
+            if (person == null) return NotFound($"Person could not be found for user, {input}, person, {criteria}");
 
             var result = entries.Where(e => e.RecordCollector.Person == person)
                 .Select(entry => new EntryItemDTO

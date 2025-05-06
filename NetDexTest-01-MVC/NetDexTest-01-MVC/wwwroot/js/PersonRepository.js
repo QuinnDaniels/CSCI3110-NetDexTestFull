@@ -72,9 +72,12 @@ export class PersonRepository { //create a class and export it (for use in UserI
 
 
         console.log("response: ", response, response.body);
+        //console.log("status code",response.status);
+        //console.log("status message",response.statusText);
+
         if (!response.ok) {
-            console.log(response.status);
-            console.log(response.statusText);
+            console.log("status code",response.status);
+            console.log("status message",response.statusText);
             console.log(address);
             throw new Error("There was an HTTP error creating the person data.");
         }

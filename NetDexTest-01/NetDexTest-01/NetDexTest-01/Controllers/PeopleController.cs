@@ -125,6 +125,8 @@ namespace NetDexTest_01.Controllers
 
             PersonPlusDexListVM? personVM = null;
 
+
+        // TODO - [[[[USE ME]]]] AS REFERENCE TO FIX THE GET ONE PERSON METHOD
             if (int.TryParse(id, out int idout)) // in case you want to try to use the local counter
             {
                 await Console.Out.WriteLineAsync($"\nCriteria, {id}, is an int!");
@@ -242,9 +244,13 @@ namespace NetDexTest_01.Controllers
 
         }
 
-        [Route("retrieveRelations/specific")] // search by nicknames, ignoring description
+
+        // search by nicknames, ignoring description
+        // UPDATE:
+        // Modified to allow for searching by nicknameOne and, either nicknameTwo or description, or both!
+        [Route("retrieveRelations/specific")] 
         [HttpGet()]
-        public async Task<ActionResult<ICollection<RelationshipVM>>> retrieveAllRelationsSpecific([FromBody] RelationshipRequest relation)
+        public async Task<ActionResult<ICollection<RelationshipVM>>> retrieveAllRelationsSpecific([FromForm] RelationshipRequest relation)
         {
             var relationshipIn = await _personRepo.GetAllRelationshipsWithPeopleRequestAsync(relation);
             if (relationshipIn != null)
@@ -278,8 +284,9 @@ namespace NetDexTest_01.Controllers
 
         [Route("retrieveRelations/one")] // use the request model to get the specific relation
         [HttpGet()]
-        public async Task<ActionResult<RelationshipVM>> retrieveRelations([FromBody] RelationshipRequest relation)
+        public async Task<ActionResult<RelationshipVM>> retrieveRelations([FromForm] RelationshipRequest relation)
         {
+            if (relation.nicknameTwo == null) return BadRequest("nicknameTwo cannot be left null for this particular request!");
             var relationshipList = await _personRepo.GetOneRelationshipWithRequestAsync(relation);
 
             if (relationshipList != null)

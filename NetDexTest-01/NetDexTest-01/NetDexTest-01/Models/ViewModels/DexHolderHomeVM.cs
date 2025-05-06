@@ -67,6 +67,8 @@ namespace NetDexTest_01.Models.ViewModels
         public int CiSocialMediasCount { get; set; } = -1;
         public int PersonParentsCount { get; set; } = -1;
         public int PersonChildrenCount { get; set; } = -1;
+        public Int64 RecordCollectorId { get; set; } = -1;
+        public Int64 ContactInfoId { get; set; } = -1;
 
 
 
@@ -153,6 +155,9 @@ namespace NetDexTest_01.Models.ViewModels
                 Pronouns = this.Pronouns,
                 Rating = this.Rating,
                 Favorite = this.Favorite,
+                RecordCollectorId = this.RecordCollectorId,
+                ContactInfoId = this.ContactInfoId,
+
                 RcEntryItemsCount = this.RcEntryItemsCount,
                 CiSocialMediasCount = this.CiSocialMediasCount,
                 PersonParentsCount = this.PersonParentsCount,

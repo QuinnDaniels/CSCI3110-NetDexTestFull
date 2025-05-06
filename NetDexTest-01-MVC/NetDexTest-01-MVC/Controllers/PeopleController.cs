@@ -471,6 +471,34 @@ namespace NetDexTest_01_MVC.Controllers
                     ViewData["LoggedInEmail"] = _userSessionService.GetEmail();
                     TempData["tEmail"] = _userSessionService.GetEmail();
                     //return RedirectToAction("DetailsViewByRoute", "People");
+                    
+                    
+                    
+                    try
+                    {
+                        var person = await _personService.GetPersonPlusDexListVMAsync(id, criteria);
+                        if (person == null)
+                        {
+                            return NotFound();
+                        }
+                        await _userSessionService.SetTempPersonAsync(person.RecordCollectorId, person.ContactInfoId);
+                        TempData["tRecordCollectorId"] = _userSessionService.GetTempRecordCollector();
+                        ViewData["RecordCollectorId"] = _userSessionService.GetTempRecordCollector();
+                        TempData["tContactInfoId"] = _userSessionService.GetTempContactInfo();
+                        ViewData["ContactInfoId"] = _userSessionService.GetTempContactInfo();
+                        
+                        return View(); // assumes you have Views/People/DeletePerson.cshtml
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine("Error in DetailsPerson view endpoint: " + ex.Message);
+                        return BadRequest("Error fetching person for viewing.");
+                    }
+
+
+                    
+                    
+                    
                     return View();
                     //return ControllerContext.MyDisplayRouteInfo("", $" URL = {url}");
                 }
@@ -487,6 +515,35 @@ namespace NetDexTest_01_MVC.Controllers
                     // HACK disbling for now for if an admin goes to another user to create a person
                     //await _userSessionService.CloseTempSessionData();
                     //return ControllerContext.MyDisplayRouteInfo("", $" URL = {url}");
+                    
+                    
+                    
+                    try
+                    {
+                        var person = await _personService.GetPersonPlusDexListVMAsync(id, criteria);
+                        if (person == null)
+                        {
+                            return NotFound();
+                        }
+                        await _userSessionService.SetTempPersonAsync(person.RecordCollectorId, person.ContactInfoId);
+                        TempData["tRecordCollectorId"] = _userSessionService.GetTempRecordCollector();
+                        ViewData["RecordCollectorId"] = _userSessionService.GetTempRecordCollector();
+                        TempData["tContactInfoId"] = _userSessionService.GetTempContactInfo();
+                        ViewData["ContactInfoId"] = _userSessionService.GetTempContactInfo();
+                        
+
+                        return View(); // assumes you have Views/People/DeletePerson.cshtml
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine("Error in DetailsPerson view endpoint: " + ex.Message);
+                        return BadRequest("Error fetching person for viewing.");
+                    }
+//TODO                                      
+
+                    
+                    
+                    
                     return View();
                     //return RedirectToAction("Index", "Home", new { id = 2 });
                     //return View();

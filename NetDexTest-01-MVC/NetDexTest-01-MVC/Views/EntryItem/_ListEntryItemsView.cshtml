@@ -1,9 +1,49 @@
 ﻿@model IEnumerable<NetDexTest_01_MVC.Models.ViewModels.EntryItemDTO>
+@{
+    // TODO - convert this into a proper partial view
+
+}
+
+@{
+    ViewData["Title"] = "Entry Items List";
+    var loggedInEmail = ViewData["LoggedInEmail"]?.ToString();
+    var lastPerson = ViewData["LastPerson"]?.ToString();
+}
+
+<h2>Entry Items</h2>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a class="btn btn-primary" href="/dex/u/@loggedInEmail/p/@lastPerson/create/rec/ie">Create New Entry</a>
 </p>
-<table class="table">
+
+<div>
+<table class="table" id="entryTable">
+    <thead>
+        <tr>
+            <th>Short Title</th>
+            <th>Flavor Text</th>
+            <th>Logged</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody id="entryTableBody">
+        <tr><td colspan="4">Loading...</td></tr>
+    </tbody>
+</table>
+</div>
+
+
+
+
+
+<input type="hidden" id="userId" value="@loggedInEmail" />
+<input type="hidden" id="personId" value="@lastPerson" />
+
+@section Scripts {
+    <script type="module" src="~/js/entryItemsList.js" defer></script>
+}
+
+@* <table class="table">
     <thead>
         <tr>
             <th>
@@ -80,4 +120,4 @@
         </tr>
 }
     </tbody>
-</table>
+</table> *@
