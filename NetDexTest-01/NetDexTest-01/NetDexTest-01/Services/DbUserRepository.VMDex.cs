@@ -193,16 +193,20 @@ namespace NetDexTest_01.Services
 
             if (user == null)
             {
+                await Console.Out.WriteLineAsync($"\n\n\t{input} is not a username!\n\n");
                 user = await GetDexHolderByUserIdAsync(input);
                 if (user == null)
                 {
+                    await Console.Out.WriteLineAsync($"\n\n\t{input} is not a user ID!\n\n");
                     user = await GetDexHolderByEmailAsync(input);
                     if (user == null)
                     {
+                        await Console.Out.WriteLineAsync($"\n\n\t{input} is not a user email!\n\n");
                         try
                         {
                             if (int.TryParse(input, out int idout))
                             {
+                                await Console.Out.WriteLineAsync($"\n\n\t{input} is an integer, {idout}! Is it a DexId...?\n\n");
                                 user = await GetDexHolderByIntIdAsync(idout);
                             }
                         }
@@ -328,9 +332,6 @@ namespace NetDexTest_01.Services
 
                             pdl.Entries.Add(eivm);
                         }));
-
-
-
                         //var taskContacts = Task.Run(() => p.ContactInfo.ToList().ForEach(c =>
                         //{
                         //    var texter = c.NoteText;
@@ -347,11 +348,6 @@ namespace NetDexTest_01.Services
                         //        pdl.SocialMedias.Add(smvm);
                         //    }));
                         //}));
-
-
-
-
-
                         var taskSocialMedias = Task.Run(() => p.ContactInfo.SocialMedias.ToList().ForEach(s =>
                         {
                             SocialMediaVM smvm = new()
@@ -426,7 +422,7 @@ namespace NetDexTest_01.Services
                         {
                             personSelect = peopleList.FirstOrDefault(p => p.LocalCounter == idout);
                         }
-                        else { await Console.Out.WriteLineAsync($"\n\n\nINFO: Person was not able to be found in DexHolder People list using criteria as LocalCounter, {criteria}!!!\n\n\n"); }
+                        else { await Console.Out.WriteLineAsync($"\n\n\n\tINFO: Person was not able to be found in DexHolder People list using criteria as LocalCounter, {criteria}!!!\n\n\n"); }
                         if (personSelect == null)
                         {
                             personSelect = peopleList.FirstOrDefault(p => p.Nickname == criteria);

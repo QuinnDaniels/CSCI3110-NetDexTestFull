@@ -118,7 +118,7 @@ namespace NetDexTest_01.Controllers
         public async Task<ActionResult<PersonPlusDexListVM>> GetPersonWithVM(string input, string criteria)
         {
             //var person = _context.Person.FirstOrDefault(a => a.Id.Equals(id));
-            //await Console.Out.WriteLineAsync($"\n\n\n\n serialized: {personRequest.ToJson()}\n \n\n\n\n");
+            await Console.Out.WriteLineAsync($"\n\n\n\n GetPersonWithVM START!! \n\n\n");
             var id = criteria;
             var userId = input;
 
@@ -154,7 +154,6 @@ namespace NetDexTest_01.Controllers
             {
                 ReferenceHandler = ReferenceHandler.IgnoreCycles, //Preserve
                 WriteIndented = true,
-                
 
                 //ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
                 //PreserveReferencesHandling = PreserveReferencesHandling.None

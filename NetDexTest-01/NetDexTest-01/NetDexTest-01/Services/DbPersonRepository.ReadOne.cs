@@ -213,8 +213,18 @@ namespace NetDexTest_01.Services
         }
 
         // TODO - FIX THIS METHOD TO ACCEPT AN INTEGER FOR CRITERIA
-        public async Task<Person?> GetOneByUserInputAsync(string input, string criteria){
+        public async Task<Person?> GetOneByUserInputAsync(string input, string inCriteria){
             Person? person = null;
+            
+            var testVM = await _userRepo.GetPersonPlusDexListVMAsync(input, inCriteria);
+            if (testVM == null) {
+                await Console.Out.WriteLineAsync($"\n\n\n------------\n\n\n\tGetOneByUserInputAsync:\n\t\t GetPersonPlusDexListVMAsync({input}, {inCriteria}).\n\t\t\tChecking DexId!!!\n\n\n------------\n\n\n");
+                return null;
+                }
+
+            var criteria = testVM.Nickname; // HACK - quick fix to get the nickname, just in case the inCriteria is another property.
+
+
             if (int.TryParse(input, out int idout))
             {
                 await Console.Out.WriteLineAsync($"\n\n\n------------\n\n\n\tGetOneByUserInputAsync:\n\t\t Input, {input}, is an int.\n\t\t\tChecking DexId!!!\n\n\n------------\n\n\n");
@@ -276,7 +286,38 @@ namespace NetDexTest_01.Services
                 .FirstOrDefaultAsync(r => r.Id == RecordCollectorId);
             return contact;
         }
-
+        public async Task<ContactInfo?> ReadContactInfoByPersonIdAsync(int personId)
+        {
+            var contact = await _db.ContactInfo
+                .Include(c => c.Person)
+                .Include(c => c.SocialMedias)
+                .FirstOrDefaultAsync(c => c.Person.Id == personId);
+            return contact;
+        }
+        public async Task<RecordCollector?> ReadRecordByPersonIdAsync(int personId)
+        {
+            var contact = await _db.RecordCollector
+                .Include(r => r.Person)
+                .Include(r => r.EntryItems)
+                .FirstOrDefaultAsync(r => r.Person.Id == personId);
+            return contact;
+        }
+        // public async Task<ContactInfo?> ReadContactInfoByIdAsync(int personId)
+        // {
+        //     var contact = await _db.ContactInfo
+        //         .Include(c => c.Person)
+        //         .Include(c => c.SocialMedias)
+        //         .FirstOrDefaultAsync(c => c.Person.Id == personId);
+        //     return contact;
+        // }
+        // public async Task<RecordCollector?> ReadRecordByIdAsync(int personId)
+        // {
+        //     var contact = await _db.RecordCollector
+        //         .Include(r => r.Person)
+        //         .Include(r => r.EntryItems)
+        //         .FirstOrDefaultAsync(r => r.Person.Id == personId);
+        //     return contact;
+        // }
 
     }
 }
