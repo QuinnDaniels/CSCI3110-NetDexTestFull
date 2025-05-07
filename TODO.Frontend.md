@@ -74,20 +74,25 @@ V
 
 - [ ] `/dex/{input!}/p/{nickname}/Edit` 
 
-- [ ] `/dex/{input!}/p/{nickname}/rec` (list)
-- [ ] `/dex/{input!}/p/{nickname}/rec/{id}`
+- [ ] `/dex/{input!}/p/{nickname}/rec/ie` (list)
+- [ ] `/dex/{input!}/p/{nickname}/rec/ie/{id}`
     - TODO: viewmodel
 
-- [ ]`/dex/{input!}/p/{nickname}/cinfo` (list)
-- [ ]`/dex/{input!}/p/{nickname}/cinfo/{id}`
+- [ ]`/dex/{input!}/p/{nickname}/cont/` // NOTE get contactInfo noteText
+- [ ]`/dex/{input!}/p/{nickname}/cont/soc` (list)
+- [ ]`/dex/{input!}/p/{nickname}/cont/soc/{id}`
      - TODO: viewmodel
+
+
+Relations:
 
 
 - `GET /dex/{input!}/pplist`
      - list
      - `[ppId][ppNickname][related to][pcNickname][pcId][email]`
 
-- `GET /dex/{input!}/pplist/?parent=<ppId>&child=<pcId>`
+- `GET /dex/{input!}/pplist/?parent=<ppId>&child=<pcId>&description="<related>"`
+
 
 - `POST /dex/{input!}/pplist (FromForm)`
      - include drop down menus
