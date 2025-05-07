@@ -168,6 +168,21 @@ namespace NetDexTest_01.Controllers
                 LogTimestamp = entry.LogTimestamp
             };
 
+            // READONE:
+            var person = await _userRepo.GetPersonPlusDexListVMAsync(dto.ApplicationUserName, dto.PersonNickname);
+            dto.LocalCounter = person?.LocalCounter ?? -4040;
+            // READ MANY:
+            // List<SocialMediaDTO> outListCount = new();
+            // await outList.ForEachAsync(async i =>
+            // {
+            //     var person = await _userRepo.GetPersonPlusDexListVMAsync(i.ApplicationUserName, i.PersonNickname);
+            //     i.LocalCounter = person?.LocalCounter ?? -4040;
+            //     outListCount.Add(i);
+            // });
+            // outListCount.OrderBy(s => s.SocialMediaId);
+            // outList = outListCount;
+
+
             return Ok(dto);
         }
 
@@ -208,6 +223,21 @@ namespace NetDexTest_01.Controllers
             }
             outList = outList.OrderBy(e => e.EntryItemId).ToList();
 
+                        // READONE:
+            // var person = await _userRepo.GetPersonPlusDexListVMAsync(i.ApplicationUserName, i.PersonNickname);
+            // dto.LocalCounter = person?.LocalCounter ?? -4040;
+            // READ MANY:
+            List<EntryItemDTO> outListCount = new();
+            await outList.ForEachAsync(async i =>
+            {
+                var person = await _userRepo.GetPersonPlusDexListVMAsync(i.ApplicationUserName, i.PersonNickname);
+                i.LocalCounter = person?.LocalCounter ?? -4040;
+                outListCount.Add(i);
+            });
+            outListCount.OrderBy(e => e.EntryItemId);
+            outList = outListCount;
+
+            
             return Ok(outList);
         }
 
@@ -252,6 +282,21 @@ namespace NetDexTest_01.Controllers
             }
             outList = outList.OrderBy(e => e.EntryItemId).ToList();
 
+                        // READONE:
+            // var person = await _userRepo.GetPersonPlusDexListVMAsync(i.ApplicationUserName, i.PersonNickname);
+            // dto.LocalCounter = person?.LocalCounter ?? -4040;
+            // READ MANY:
+            List<EntryItemDTO> outListCount = new();
+            await outList.ForEachAsync(async i =>
+            {
+                var person = await _userRepo.GetPersonPlusDexListVMAsync(i.ApplicationUserName, i.PersonNickname);
+                i.LocalCounter = person?.LocalCounter ?? -4040;
+                outListCount.Add(i);
+            });
+            outListCount.OrderBy(e => e.EntryItemId);
+            outList = outListCount;
+
+            
             return Ok(outList);
         }
 
@@ -303,6 +348,21 @@ namespace NetDexTest_01.Controllers
             }
             outList = outList.OrderBy(e => e.EntryItemId).ToList();
 
+                        // READONE:
+            // var person = await _userRepo.GetPersonPlusDexListVMAsync(i.ApplicationUserName, i.PersonNickname);
+            // dto.LocalCounter = person?.LocalCounter ?? -4040;
+            // READ MANY:
+            List<EntryItemDTO> outListCount = new();
+            await outList.ForEachAsync(async i =>
+            {
+                var person = await _userRepo.GetPersonPlusDexListVMAsync(i.ApplicationUserName, i.PersonNickname);
+                i.LocalCounter = person?.LocalCounter ?? -4040;
+                outListCount.Add(i);
+            });
+            outListCount.OrderBy(e => e.EntryItemId);
+            outList = outListCount;
+
+            
             return Ok(outList);
         }
 

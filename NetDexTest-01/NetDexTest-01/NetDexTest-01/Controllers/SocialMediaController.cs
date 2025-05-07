@@ -57,6 +57,9 @@ namespace NetDexTest_01.Controllers
                 ContactInfoId = social.ContactInfo.Id,
                 PersonId = social.ContactInfo.Person.Id,
                 DexHolderId = social.ContactInfo.Person.DexHolder.Id,
+                
+                LocalCounter = null,
+                
                 PersonNickname = social.ContactInfo.Person.Nickname,
                 ApplicationUserEmail = social.ContactInfo.Person.DexHolder.ApplicationUser.Email,
                 ApplicationUserName = social.ContactInfo.Person.DexHolder.ApplicationUser.UserName,
@@ -65,6 +68,21 @@ namespace NetDexTest_01.Controllers
                 SocialHandle = social.SocialHandle ?? "---",
                 LogTimestamp = social.LogTimestamp
             };
+
+            // READONE:
+            var person = await _userRepo.GetPersonPlusDexListVMAsync(dto.ApplicationUserName, dto.PersonNickname);
+            dto.LocalCounter = person?.LocalCounter ?? -4040;
+            // READ MANY:
+            // List<SocialMediaDTO> outListCount = new();
+            // await outList.ForEachAsync(async i =>
+            // {
+            //     var person = await _userRepo.GetPersonPlusDexListVMAsync(i.ApplicationUserName, i.PersonNickname);
+            //     i.LocalCounter = person?.LocalCounter ?? -4040;
+            //     outListCount.Add(i);
+            // });
+            // outListCount.OrderBy(s => s.SocialMediaId);
+            // outList = outListCount;
+
 
             return Ok(dto);
         }
@@ -81,12 +99,15 @@ namespace NetDexTest_01.Controllers
                             .ThenInclude(d => d.ApplicationUser)
                 .ToListAsync();
 
-            var result = list.Select(s => new SocialMediaDTO
+            var outList = list.Select(s => new SocialMediaDTO
             {
                 SocialMediaId = s.Id,
                 ContactInfoId = s.ContactInfo.Id,
                 PersonId = s.ContactInfo.Person.Id,
                 DexHolderId = s.ContactInfo.Person.DexHolder.Id,
+                
+                LocalCounter = null,
+                
                 PersonNickname = s.ContactInfo.Person.Nickname,
                 ApplicationUserEmail = s.ContactInfo.Person.DexHolder.ApplicationUser.Email,
                 ApplicationUserName = s.ContactInfo.Person.DexHolder.ApplicationUser.UserName,
@@ -96,7 +117,21 @@ namespace NetDexTest_01.Controllers
                 LogTimestamp = s.LogTimestamp
             }).ToList();
 
-            return Ok(result);
+                        // READONE:
+            // var person = await _userRepo.GetPersonPlusDexListVMAsync(i.ApplicationUserName, i.PersonNickname);
+            // dto.LocalCounter = person?.LocalCounter ?? -4040;
+            // READ MANY:
+            List<SocialMediaDTO> outListCount = new();
+            await outList.ForEachAsync(async i =>
+            {
+                var person = await _userRepo.GetPersonPlusDexListVMAsync(i.ApplicationUserName, i.PersonNickname);
+                i.LocalCounter = person?.LocalCounter ?? -4040;
+                outListCount.Add(i);
+            });
+            outListCount.OrderBy(s => s.SocialMediaId);
+            outList = outListCount;
+
+            return Ok(outList);
         }
 
 
@@ -125,7 +160,7 @@ namespace NetDexTest_01.Controllers
 
             if (list == null) return NotFound("list was null");
             List<SocialMediaDTO> outList = new();
-
+            
             await Task.Run(() => {
                 outList = list.Select(s => new SocialMediaDTO
                 {
@@ -133,6 +168,9 @@ namespace NetDexTest_01.Controllers
                     ContactInfoId = s.ContactInfo.Id,
                     PersonId = s.ContactInfo.Person.Id,
                     DexHolderId = s.ContactInfo.Person.DexHolder.Id,
+                    
+                    LocalCounter = null,
+
                     PersonNickname = s.ContactInfo.Person.Nickname,
                     ApplicationUserEmail = s.ContactInfo.Person.DexHolder.ApplicationUser.Email,
                     ApplicationUserName = s.ContactInfo.Person.DexHolder.ApplicationUser.UserName,
@@ -143,8 +181,28 @@ namespace NetDexTest_01.Controllers
                 }).OrderBy(s => s.SocialMediaId).ToList();
             });
 
+
+            
+
+
+                        // READONE:
+            // var person = await _userRepo.GetPersonPlusDexListVMAsync(i.ApplicationUserName, i.PersonNickname);
+            // dto.LocalCounter = person?.LocalCounter ?? -4040;
+            // READ MANY:
+            List<SocialMediaDTO> outListCount = new();
+            await outList.ForEachAsync(async i =>
+            {
+                var person = await _userRepo.GetPersonPlusDexListVMAsync(i.ApplicationUserName, i.PersonNickname);
+                i.LocalCounter = person?.LocalCounter ?? -4040;
+                outListCount.Add(i);
+            });
+            outListCount.OrderBy(s => s.SocialMediaId);
+            outList = outListCount;
+
             return Ok(outList);
         }
+            //NOTE: required reading: https://stackoverflow.com/questions/18667633/how-can-i-use-async-with-foreach
+            //var results = await Task.WhenAll(tasks);
 
 
         [HttpGet("transfer/person/{input}/{criteria}")]
@@ -184,6 +242,9 @@ namespace NetDexTest_01.Controllers
                     ContactInfoId = s.ContactInfo.Id,
                     PersonId = s.ContactInfo.Person.Id,
                     DexHolderId = s.ContactInfo.Person.DexHolder.Id,
+                    
+                    LocalCounter = null,
+                    
                     PersonNickname = s.ContactInfo.Person.Nickname,
                     ApplicationUserEmail = s.ContactInfo.Person.DexHolder.ApplicationUser.Email,
                     ApplicationUserName = s.ContactInfo.Person.DexHolder.ApplicationUser.UserName,
@@ -212,6 +273,20 @@ namespace NetDexTest_01.Controllers
             //     outList.Add(e);
             // }
             //outList = outList.OrderBy(s => s.EntryItemId).ToList();
+
+                        // READONE:
+            // var person = await _userRepo.GetPersonPlusDexListVMAsync(i.ApplicationUserName, i.PersonNickname);
+            // dto.LocalCounter = person?.LocalCounter ?? -4040;
+            // READ MANY:
+            List<SocialMediaDTO> outListCount = new();
+            await outList.ForEachAsync(async i =>
+            {
+                var person = await _userRepo.GetPersonPlusDexListVMAsync(i.ApplicationUserName, i.PersonNickname);
+                i.LocalCounter = person?.LocalCounter ?? -4040;
+                outListCount.Add(i);
+            });
+            outListCount.OrderBy(s => s.SocialMediaId);
+            outList = outListCount;
 
             return Ok(outList);
         }

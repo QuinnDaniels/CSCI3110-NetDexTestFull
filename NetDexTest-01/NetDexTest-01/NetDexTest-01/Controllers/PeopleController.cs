@@ -168,6 +168,60 @@ namespace NetDexTest_01.Controllers
             return Ok(personVM); // bug solved with chatgpt. pass object directly instead of model
         }
 
+        [Route("retrieveRequestpathOptions/{input}/{criteria}/{option?}")]
+        [HttpGet()]
+        public async Task<ActionResult<PersonPlusDexListVM>> GetPersonWithVM(string input, string criteria, string? option)
+        {
+            //var person = _context.Person.FirstOrDefault(a => a.Id.Equals(id));
+            await Console.Out.WriteLineAsync($"\n\n\n\n GetPersonWithVM START!! \n\n\n");
+            var id = criteria;
+            var userId = input;
+
+
+            PersonPlusDexListVM? personVM = null;
+
+
+            if (int.TryParse(id, out int idout)) // in case you want to try to use the local counter
+            {
+                await Console.Out.WriteLineAsync($"\nCriteria, {id}, is an int!");
+                var setter = await _userRepo.GetPersonPlusDexListVMAsync(userId, id, option);
+                personVM = setter;
+                await Console.Out.WriteLineAsync($"\nPersonVM:\t, {personVM?.Nickname ?? $"PERSON {id} NOT FOUND"}!!!\n");
+            }
+            else
+            {
+                await Console.Out.WriteLineAsync($"\nCriteria, {id}, is NOT an int!");
+                var setter = await _userRepo.GetPersonPlusDexListVMAsync(userId, id);
+                personVM = setter;
+                await Console.Out.WriteLineAsync($"\nPersonVM:\t, {personVM?.Nickname ?? $"PERSON {id} NOT FOUND"}!!!\n");
+
+            }
+
+            await Console.Out.WriteLineAsync($"\n==>\tGetting Person with input and criteria\n\nLOG:\n\t{personVM.ToJson()} \n\n\n");
+
+
+            if (personVM == null)
+            {
+                return NotFound();
+            }
+            JsonSerializerOptions options = new()
+            {
+                ReferenceHandler = ReferenceHandler.IgnoreCycles, //Preserve
+                WriteIndented = true,
+
+                //ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
+                //PreserveReferencesHandling = PreserveReferencesHandling.None
+            };
+
+            string modelJson = JsonSerializer.Serialize(personVM, options);
+
+            //var model = all;
+
+            await Console.Out.WriteLineAsync($"\n\nGetPersonWithVM\n\t{input}\n\t{criteria}\nserialized: {modelJson}\n \n\n\n\n");
+
+            var model = modelJson;
+            return Ok(personVM); // bug solved with chatgpt. pass object directly instead of model
+        }
 
 
 
