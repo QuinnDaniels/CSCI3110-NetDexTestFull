@@ -66,6 +66,12 @@ namespace NetDexTest_01.Models.ViewModels
         public string? ShortTitle { get; set; }
         public string? FlavorText { get; set; }
         public DateTime LogTimestamp { get; set; }
+        /// <summary>
+        /// LocalCount of the position that the person that the entry belongs to is at within a user's dex. Aids in page navigation
+        /// </summary>
+        /// <value></value>
+        public int? LocalCounter { get; set; }
+
     }
 
 
@@ -82,6 +88,12 @@ namespace NetDexTest_01.Models.ViewModels
         public string CategoryField { get; set; } = string.Empty;
         public string SocialHandle { get; set; } = string.Empty;
         public DateTime LogTimestamp { get; set; }
+        /// <summary>
+        /// LocalCount of the position that the person that the entry belongs to is at within a user's dex. Aids in page navigation
+        /// </summary>
+        /// <value></value>
+        public int? LocalCounter { get; set; }
+
     }
 
 

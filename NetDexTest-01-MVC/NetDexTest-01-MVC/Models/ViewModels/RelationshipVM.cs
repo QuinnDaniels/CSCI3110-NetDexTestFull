@@ -10,9 +10,11 @@ namespace NetDexTest_01_MVC.Models.ViewModels
         public string? AppEmail { get; set; }
         public int? Id { get; set; } = 0;
         public string AppUsername { get; set; }
+        public int? PersonParentLc { get; set; }
         public int? PersonParentId { get; set; }
         public string? ParentNickname { get; set; }
         public string RelationshipDescription { get; set; } = string.Empty;
+        public int? PersonChildLc { get; set; }
         public int? PersonChildId { get; set; }
         public string? ChildNickname { get; set; }
         public DateTime? LastUpdated { get; set; }

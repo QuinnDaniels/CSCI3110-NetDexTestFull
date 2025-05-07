@@ -72,17 +72,34 @@ namespace NetDexTest_01.Models.ViewModels
         {
 
         }
-
+//TODO - account for newly added LocalCounter fields
         public string? AppEmail { get; set; }
         public int? Id { get; set; } = 0;
         public string AppUsername { get; set; }
         public int? PersonParentId { get; set; }
+        public int? PersonParentLc { get; set; }
         public string? ParentNickname { get; set; }
         public string RelationshipDescription { get; set; } = string.Empty;
         public int? PersonChildId { get; set; }
+        public int? PersonChildLc { get; set; }
         public string? ChildNickname { get; set; }
         public DateTime? LastUpdated { get; set; }
 
 
     }
 }
+
+//hi
+
+//hello!!
+// start comments with the //'s
+//start!
+// lol cute~
+
+// Public int?
+
+// yeah, so i'm making integer parameters.
+// they're supposed to be accessible from outside the class, so they're [[Public]]
+// and they can be [nullable], which means the class is allowed to exist, even if it's missing something in that field
+
+//
