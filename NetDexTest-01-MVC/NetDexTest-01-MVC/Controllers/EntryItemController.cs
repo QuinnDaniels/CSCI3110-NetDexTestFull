@@ -442,6 +442,26 @@ namespace NetDexTest_01_MVC.Controllers
                     // we're working with the confirmed current user, so just get the email that's stored in user session service
                     ViewData["LoggedInEmail"] = _userSessionService.GetEmail();
                     TempData["tEmail"] = _userSessionService.GetEmail();
+                    try
+                    {
+                        var person = await _personService.GetPersonPlusDexListVMAsync(_userSessionService.GetEmail(), personId);
+                        if (person == null)
+                        {
+                            return NotFound();
+                        }
+                        await _userSessionService.SetTempPersonAsync(person.RecordCollectorId, person.ContactInfoId);
+                        TempData["tRecordCollectorId"] = _userSessionService.GetTempRecordCollector();
+                        //TempData["tContactInfoId"] = _userSessionService.GetTempContactInfo();
+                        ViewData["RecordCollectorId"] = _userSessionService.GetTempRecordCollector();
+                        //ViewData["ContactInfoId"] = _userSessionService.GetTempContactInfo();
+                        return View();
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine("Error in EntryItem getting PersonPlusDex view endpoint: " + ex.Message);
+                        return BadRequest("Error fetching person for viewing.");
+                    }
+
                     //return RedirectToAction("GetEntryItemDetailedView", "People");
                     return View();
                     //return ControllerContext.MyDisplayRouteInfo("", $" URL = {url}");

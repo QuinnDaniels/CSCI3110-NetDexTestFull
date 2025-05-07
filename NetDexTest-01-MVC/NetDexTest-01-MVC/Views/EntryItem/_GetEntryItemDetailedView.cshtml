@@ -1,0 +1,107 @@
+﻿@model NetDexTest_01_MVC.Models.ViewModels.EntryItemDTO
+
+@{
+    var loggedInEmail = ViewData["LoggedInEmail"]?.ToString();
+
+    var lastPerson = ViewData["LastPerson"]?.ToString();
+}
+
+
+
+<h1>GetEntryItemDetailedView</h1>
+
+<input type="hidden" id="recordCollectorId" value="@TempData["entryId"]" />
+<input type="hidden" id="entryItemId" value="@ViewData["entryId"]" />
+<input type="hidden" id="email" value="@ViewData["LoggedInEmail"]" />
+<input type="hidden" id="lastPerson" value="@TempData["LastPerson"]" />
+
+
+<div id="miniView">
+    <h2 id="title"></h2>
+    <p id="flavor"></p>
+    <p><small id="dateLogged"></small></p>
+</div>
+
+
+<hr/>
+
+
+<div>
+    <h4>EntryItemDTO</h4>
+    <hr />
+    <div id="entryRedirectHolder">
+        <p>
+            Links to interact with the entry go here!
+        </p>
+    </div>
+    <dl class="row">
+        <dt class = "col-sm-2" id="dt_EntryItemId">
+            @Html.DisplayNameFor(model => model.EntryItemId)
+        </dt>
+        <dd class = "col-sm-10" id="dd_EntryItemId">
+            @Html.DisplayFor(model => model.EntryItemId)
+        </dd>
+        <dt class = "col-sm-2" id="dt_ShortTitle">
+            @Html.DisplayNameFor(model => model.ShortTitle)
+        </dt>
+        <dd class = "col-sm-10" id="dd_ShortTitle">
+            @Html.DisplayFor(model => model.ShortTitle)
+        </dd>
+        <dt class = "col-sm-2" id="dt_FlavorText">
+            @Html.DisplayNameFor(model => model.FlavorText)
+        </dt>
+        <dd class = "col-sm-10" id="dd_FlavorText">
+            @Html.DisplayFor(model => model.FlavorText)
+        </dd>
+        <dt class = "col-sm-2" id="dt_LogTimestamp">
+            @Html.DisplayNameFor(model => model.LogTimestamp)
+        </dt>
+        <dd class = "col-sm-10"  id="dd_LogTimestamp">
+            @Html.DisplayFor(model => model.LogTimestamp)
+        </dd>
+        <dt class = "col-sm-2"  id="dt_RecordCollectorId">
+            @Html.DisplayNameFor(model => model.RecordCollectorId)
+        </dt>
+        <dd class = "col-sm-10" id="dd_RecordCollectorId">
+            @Html.DisplayFor(model => model.RecordCollectorId)
+        </dd>
+        @* <dt class = "col-sm-2" type="hidden" id="dt_PersonId">
+            @Html.DisplayNameFor(model => model.PersonId)
+        </dt> *@
+        @* <dd class = "col-sm-10" type="hidden" id="dd_PersonId">
+            @Html.DisplayFor(model => model.PersonId)
+        </dd> *@
+        @* <dt class = "col-sm-2" type="hidden" id="dt_DexHolderId">
+            @Html.DisplayNameFor(model => model.DexHolderId)
+        </dt> *@
+        @* <dd class = "col-sm-10" type="hidden" id="dd_DexHolderId">
+            @Html.DisplayFor(model => model.DexHolderId)
+        </dd> *@
+        @* <dt class = "col-sm-2" type="hidden" id="dt_PersonNickname">
+            @Html.DisplayNameFor(model => model.PersonNickname)
+        </dt> *@
+        @* <dd class = "col-sm-10" type="hidden" id="dd_PersonNickname">
+            @Html.DisplayFor(model => model.PersonNickname)
+        </dd> *@
+        @* <dt class = "col-sm-2" type="hidden" id="dt_ApplicationUserEmail">
+            @Html.DisplayNameFor(model => model.ApplicationUserEmail)
+        </dt> *@
+        @* <dd class = "col-sm-10" type="hidden" id="dd_ApplicationUserEmail">
+            @Html.DisplayFor(model => model.ApplicationUserEmail)
+        </dd> *@
+        @* <dt class = "col-sm-2" type="hidden" id="dt_ApplicationUserName">
+            @Html.DisplayNameFor(model => model.ApplicationUserName)
+        </dt> *@
+        @* <dd class = "col-sm-10" type="hidden" id="dd_ApplicationUserName">
+            @Html.DisplayFor(model => model.ApplicationUserName)
+        </dd> *@
+    </dl>
+</div>
+
+
+
+@section Scripts {
+    <script type="module" src="~/js/entryItemDetails.js"></script>
+}
+
+

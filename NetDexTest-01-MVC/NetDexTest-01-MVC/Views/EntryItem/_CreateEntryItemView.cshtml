@@ -1,0 +1,52 @@
+
+@{
+    ViewData["Title"] = "Create Entry Item";
+    var loggedInEmail = TempData["LoggedInEmail"]?.ToString();
+    var lastPerson = TempData["LastPerson"]?.ToString();
+    var recordCollector = TempData["RecordCollectorId"]?.ToString();
+}
+
+<h2>Create Entry Item</h2>
+
+@* moved these out of the form bc of the request model, it may mess it up *@
+<input type="hidden" readonly name="PersonId" value="@lastPerson" />
+<input type="hidden" readonly name="ApplicationUserEmail" value="@loggedInEmail" />
+
+<form id="createEntryForm">
+    <input type="hidden" readonly id="RecordCollectorId" name="recordCollectorId" value="@recordCollector" />
+
+    <div class="form-group">
+        <label for="ShortTitle">Short Title</label>
+        <input type="text" class="form-control" id="ShortTitle" name="shortTitle" maxlength="256" required />
+    </div>
+
+    <div class="form-group">
+        <label for="FlavorText">Flavor Text</label>
+        <textarea class="form-control" id="FlavorText" name="flavorText" rows="5" required></textarea>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Submit</button>
+    <a class="btn btn-secondary" href="/dex/u/@loggedInEmail/p/@lastPerson/rec/list/ie">Back to List</a>
+</form>
+
+@section Scripts {
+    <script type="module" src="~/js/createEntryItem.js"></script>
+}
+
+@{
+    #region OldScaffold
+
+
+
+
+
+
+
+
+
+
+    #endregion OldScaffold
+
+
+
+}    using System.Drawing;

@@ -1,0 +1,94 @@
+﻿@model NetDexTest_01_MVC.Models.ViewModels.EntryItemDTO
+
+@{
+    ViewData["Title"] = "CreateEntryItemView";
+}
+
+
+<div id="emergencyLink">
+    <a href="/dex/u/@TempData["tUsername"]/p/@lastPerson/rec/list/ie">&lArr; Back to Entry List view</Details></a>
+</div>
+
+<h1>CreateEntryItemView</h1>
+
+<h4>EntryItemVM</h4>
+<hr />
+<hr />
+<hr />
+
+
+
+
+
+
+@* <div class="row">
+    <div class="col-md-4">
+        <form asp-action="CreateEntryItemView">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="EntryItemId" class="control-label"></label>
+                <input asp-for="EntryItemId" class="form-control" />
+                <span asp-validation-for="EntryItemId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="RecordCollectorId" class="control-label"></label>
+                <input asp-for="RecordCollectorId" class="form-control" />
+                <span asp-validation-for="RecordCollectorId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PersonId" class="control-label"></label>
+                <input asp-for="PersonId" class="form-control" />
+                <span asp-validation-for="PersonId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DexHolderId" class="control-label"></label>
+                <input asp-for="DexHolderId" class="form-control" />
+                <span asp-validation-for="DexHolderId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PersonNickname" class="control-label"></label>
+                <input asp-for="PersonNickname" class="form-control" />
+                <span asp-validation-for="PersonNickname" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ApplicationUserEmail" class="control-label"></label>
+                <input asp-for="ApplicationUserEmail" class="form-control" />
+                <span asp-validation-for="ApplicationUserEmail" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ApplicationUserName" class="control-label"></label>
+                <input asp-for="ApplicationUserName" class="form-control" />
+                <span asp-validation-for="ApplicationUserName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ShortTitle" class="control-label"></label>
+                <input asp-for="ShortTitle" class="form-control" />
+                <span asp-validation-for="ShortTitle" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="FlavorText" class="control-label"></label>
+                <input asp-for="FlavorText" class="form-control" />
+                <span asp-validation-for="FlavorText" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="LogTimestamp" class="control-label"></label>
+                <input asp-for="LogTimestamp" class="form-control" />
+                <span asp-validation-for="LogTimestamp" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div> *@
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_CreateEntryItemView");}
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script src="~/js/entryItemCreate.js" type="module" defer></script>
+
+}

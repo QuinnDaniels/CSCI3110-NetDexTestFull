@@ -15,12 +15,16 @@ async function fetchEntryItem(entryItemId) {
 
 
          
+        const _miniView = document.getElementById("miniView");
+        const _title = document.getElementById("title");
+        const _flavor = document.getElementById("flavor");
+        const _dateLogged = document.getElementById("dateLogged");
 
-        const shorttitle = document.getElementById("_ShortTitle");
-        const flavortext = document.getElementById("_FlavorText");
-        const logtimestamp = document.getElementById("_LogTimestamp");
-        const entryitemid = document.getElementById("_EntryItemId");
-        const recordcollectorid = document.getElementById("_RecordCollectorId");
+        const shorttitle = document.getElementById("dd_ShortTitle");
+        const flavortext = document.getElementById("dd_FlavorText");
+        const logtimestamp = document.getElementById("dd_LogTimestamp");
+        const entryitemid = document.getElementById("dd_EntryItemId");
+        const recordcollectorid = document.getElementById("dd_RecordCollectorId");
 
         DOM.removeChildren(entryitemid);
         DOM.removeChildren(shorttitle);
@@ -28,11 +32,11 @@ async function fetchEntryItem(entryItemId) {
         DOM.removeChildren(logtimestamp);
         DOM.removeChildren(recordcollectorid);
 
-        DOM.setElementText("#_ShortTitle", item.shortTitle);
-        DOM.setElementText("#_FlavorText", item.flavorText);
-        DOM.setElementValue("#_LogTimestamp", item.logTimestamp);
-        DOM.setElementValue("#_EntryItemId", item.entryItemId);
-        DOM.setElementValue("#_RecordCollectorId", item.recordCollectorId);
+        DOM.setElementText("#dd_ShortTitle", item.shortTitle);
+        DOM.setElementText("#dd_FlavorText", item.flavorText);
+        DOM.setElementValue("#dd_LogTimestamp", item.logTimestamp);
+        DOM.setElementValue("#dd_EntryItemId", item.entryItemId);
+        DOM.setElementValue("#dd_RecordCollectorId", item.recordCollectorId);
 
         DOM.removeChildren(entryRedirectHolder);
         const linker = document.getElementById("entryRedirectHolder");
