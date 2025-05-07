@@ -20,17 +20,20 @@ namespace NetDexTest_01_MVC.Controllers
             private readonly ILogger<EntryItemController> _logger;
             private IAuthService _authService;
             private readonly IUserService _userService;
+            private readonly IEntryItemService _entryService;
             private readonly IApiCallerService _apiCallerService;
 
             public EntryItemController(ILogger<EntryItemController> logger,
                 IAuthService authService,
                 IApiCallerService apiCallerService,
                 IUserService userService,
+                IEntryItemService entryService,
                 IUserSessionService userSessionService, IPersonService personService)
             {
                 _logger = logger;
                 _authService = authService;
                 _apiCallerService = apiCallerService;
+                _entryService = entryService;
                 _userService = userService;
                 _userSessionService = userSessionService;
                 _personService = personService;
@@ -245,8 +248,25 @@ namespace NetDexTest_01_MVC.Controllers
                     // we're working with the confirmed current user, so just get the email that's stored in user session service
                     ViewData["LoggedInEmail"] = _userSessionService.GetEmail();
                     TempData["tEmail"] = _userSessionService.GetEmail();
-                    TempData["entryId"] = entryItemId;
+                    TempData["entryId"] = entryItemId.ToString();
                     ViewData["entryId"] = entryItemId;
+
+                    try
+                    {
+                        EntryItemVM? entryVM = null;
+                        entryVM = await _entryService.GetByIdAsync(entryItemId);
+                        if (entryVM == null) return NotFound("An entry could not be found for the specified Int64 entryItemId");
+                        ViewData["oldTitle"] = entryVM.ShortTitle;
+                        ViewData["oldFlavor"] = entryVM.FlavorText;
+                        TempData["oldTitle"] = entryVM.ShortTitle;
+                        TempData["oldFlavor"] = entryVM.FlavorText;
+                    }
+                    catch (Exception ex)
+                    {
+                        await Console.Out.WriteLineAsync($"\n\n---------EditEntryItemView(str, str, long)------Using _entryService.GetByIdAsync(long)\n\t ERROR: resulted in \"{ex.Message}\"\n\n-----------------------");
+                        throw;
+                    }
+
 
                     try {
                         var person = await _personService.GetPersonPlusDexListVMAsync(_userSessionService.GetEmail(), personId);
@@ -274,8 +294,23 @@ namespace NetDexTest_01_MVC.Controllers
                     TempData["tEmail"] = _userSessionService.GetTempEmail();
                     TempData["LastPerson"] = _userSessionService.GetTempPerson();
                     ViewData["LastPerson"] = _userSessionService.GetTempPerson();
-                    TempData["entryId"] = entryItemId;
+                    TempData["entryId"] = entryItemId.ToString();
                     ViewData["entryId"] = entryItemId;
+
+
+                    try
+                    {
+                        EntryItemVM? entryVM = null;
+                        entryVM = await _entryService.GetByIdAsync(entryItemId);
+                        if (entryVM == null) return NotFound("An entry could not be found for the specified Int64 entryItemId");
+                        TempData["oldTitle"] = entryVM.ShortTitle;
+                        TempData["oldFlavor"] = entryVM.FlavorText;
+                    }
+                    catch (Exception ex)
+                    {
+                        await Console.Out.WriteLineAsync($"\n\n---------EditEntryItemView(str, str, long)------Using _entryService.GetByIdAsync(long)\n\t ERROR: resulted in \"{ex.Message}\"\n\n-----------------------");
+                        throw;
+                    }
 
                     try
                     {
@@ -357,6 +392,8 @@ namespace NetDexTest_01_MVC.Controllers
                     ViewData["LastPerson"] = _userSessionService.GetTempPerson();
                     // we're working with the confirmed current user, so just get the email that's stored in user session service
                     ViewData["LoggedInEmail"] = _userSessionService.GetEmail();
+                    TempData["tUsername"] = _userSessionService.GetUsername();
+                    ViewData["tUsername"] = _userSessionService.GetUsername();
                     TempData["tEmail"] = _userSessionService.GetEmail();
                     //return RedirectToAction("GetEntryItemDetailedView", "People");
                     return View();
@@ -367,6 +404,8 @@ namespace NetDexTest_01_MVC.Controllers
 
                     await _userSessionService.SetTempPersonAsync(personId);
                     await Console.Out.WriteLineAsync($"\n\n--GET---DetailsViewByRoute(userId)------Using temp email!-----\n\t{_userSessionService.GetTempEmail()}");
+                    ViewData["tUsername"] = _userSessionService.GetUsername();
+                    TempData["tUsername"] = _userSessionService.GetUsername();
                     ViewData["LoggedInEmail"] = _userSessionService.GetTempEmail();
                     TempData["tEmail"] = _userSessionService.GetTempEmail();
                     TempData["LastPerson"] = _userSessionService.GetTempPerson();
@@ -440,6 +479,8 @@ namespace NetDexTest_01_MVC.Controllers
                     TempData["LastPerson"] = _userSessionService.GetTempPerson();
                     ViewData["LastPerson"] = _userSessionService.GetTempPerson();
                     // we're working with the confirmed current user, so just get the email that's stored in user session service
+                    TempData["tUsername"] = _userSessionService.GetUsername();
+                    TempData["tUsername"] = _userSessionService.GetUsername();
                     ViewData["LoggedInEmail"] = _userSessionService.GetEmail();
                     TempData["tEmail"] = _userSessionService.GetEmail();
                     try
@@ -474,6 +515,8 @@ namespace NetDexTest_01_MVC.Controllers
                     ViewData["LoggedInEmail"] = _userSessionService.GetTempEmail();
                     TempData["tEmail"] = _userSessionService.GetTempEmail();
                     TempData["LastPerson"] = _userSessionService.GetTempPerson();
+                    ViewData["tUsername"] = _userSessionService.GetUsername();
+                    TempData["tUsername"] = _userSessionService.GetUsername();
                     ViewData["LastPerson"] = _userSessionService.GetTempPerson();
                     try
                     {

@@ -1,0 +1,93 @@
+﻿@model NetDexTest_01_MVC.Models.ViewModels.EntryItemVM
+
+@{
+    await Console.Out.WriteLineAsync("\n\n-----Entry Item Edit Reached!----------\n\n");
+
+    ViewData["Title"] = "Edit Entry Item";
+    var loggedInEmail = ViewData["LoggedInEmail"]?.ToString();
+    var lastPerson = ViewData["LastPerson"]?.ToString();
+
+}
+<h1>EditEntryItemView</h1>
+
+<h4>EntryItemVM</h4>
+<hr />
+
+
+<h1 id="entryHeading">GetEntryItemDetailedView</h1>
+<div id="emergencyLink">
+    <a href="/dex/u/@TempData["tUsername"]/p/@TempData["LastPerson"]/rec/list/ie">&lArr; Back to Entry List view</a>
+</div>
+
+<div type="hidden" id="fallbackInfo">
+    <input type="hidden" id="recordCollectorId" value="@TempData["tRecordCollectorId"]" />
+    <input type="hidden" id="entryItemId" value="@ViewData["entryId"]" />
+    <input type="hidden" id="email" value="@ViewData["LoggedInEmail"]" />
+    <input type="hidden" id="username" value="@TempData["tUsername"]" />
+    <input type="hidden" id="lastPerson" value="@TempData["LastPerson"]" />
+
+</div>
+
+@TempData["tEmail"]
+<h1> </h1>
+@* @TempData["LastPerson"] *@
+<hr />
+
+
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_EditEntryItemView");
+    }
+
+    <script src="~/js/entryItemEdit.js" type="module" defer></script>
+    <script type="text/javascript">
+    </script>
+}
+
+
+
+
+
+
+
+
+@* <div class="row">
+    <div class="col-md-4">
+        <form asp-action="EditEntryItemView">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Id" class="control-label"></label>
+                <input asp-for="Id" class="form-control" />
+                <span asp-validation-for="Id" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ShortTitle" class="control-label"></label>
+                <input asp-for="ShortTitle" class="form-control" />
+                <span asp-validation-for="ShortTitle" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="FlavorText" class="control-label"></label>
+                <input asp-for="FlavorText" class="form-control" />
+                <span asp-validation-for="FlavorText" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="LogTimestamp" class="control-label"></label>
+                <input asp-for="LogTimestamp" class="form-control" />
+                <span asp-validation-for="LogTimestamp" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="RecordCollectorId" class="control-label"></label>
+                <input asp-for="RecordCollectorId" class="form-control" />
+                <span asp-validation-for="RecordCollectorId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div> *@

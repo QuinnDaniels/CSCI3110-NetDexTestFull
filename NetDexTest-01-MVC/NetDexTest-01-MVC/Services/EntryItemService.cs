@@ -29,7 +29,7 @@ namespace NetDexTest_01_MVC.Services
             return await response.Content.ReadFromJsonAsync<List<EntryItemVM>>(_jsonOptions);
         }
 
-        public async Task<EntryItemVM> GetByIdAsync(long id)
+        public async Task<EntryItemVM?> GetByIdAsync(long id)
         {
             var response = await _client.GetAsync($"https://localhost:7134/api/entry/transfer/one/{id}");
             response.EnsureSuccessStatusCode();

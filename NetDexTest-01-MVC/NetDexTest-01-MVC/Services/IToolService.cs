@@ -141,4 +141,34 @@ namespace toolExtensions
         }
     }
 
+
+    public static class ListExtension
+    {
+
+        /// <summary>
+        /// <para>
+        /// An extension method that should give you exception-safe async iteration by changing the return type of the lambda from void to Task, so that exceptions will propagate up correctly
+        /// </para>
+        /// 
+        /// <code>
+        /// await db.Groups.ToList().ForEachAsync(async i => {
+        ///await GetAdminsFromGroup(i.Gid);
+        ///});
+        /// </code>
+        /// </summary>
+        /// <remarks>
+        ///     Source: <see href="https://stackoverflow.com/a/28996883">Stack Overflow: How can I use Async with ForEach?</see>
+        /// </remarks>
+        /// <returns></returns>
+        public static async Task ForEachAsync<T>(this List<T> list, Func<T, Task> func)
+        {
+            foreach (var value in list)
+            {
+                await func(value);
+            }
+        }
+    }
+
+
+
 }

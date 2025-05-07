@@ -53,6 +53,12 @@ export class PersonRepository { //create a class and export it (for use in UserI
     //    4.	Return the object
     /*---------------------------*/
     /**/
+    
+    
+    
+    
+    
+
     async read(input, criteria) {
         const address = `${this.#baseAddress}/retrieveRequestpath/${input}/${criteria}`;
         //return await response.json();
@@ -89,6 +95,68 @@ export class PersonRepository { //create a class and export it (for use in UserI
             console.error("Error:", error);
         }
     
+    
+
+    // async readTargetProperty(input, criteria, option, property) {
+    //     const address = `${this.#baseAddress}/retrieveRequestpathOptions/${input}/${criteria}/${option}`;
+        
+    //     const response = await fetch(address, {
+    //         method: "GET",
+    //     });
+    //     console.log("response: ", response, response.body);
+
+    //     if (!response.ok) {
+    //         console.log("status code",response.status);
+    //         console.log("status message",response.statusText);
+    //         console.log(address);
+    //         throw new Error("There was an HTTP error creating the person data.");
+    //     }
+    //     const person = await response.json();
+    //     console.log("Success:", person);
+        
+    //     if (property == "personId")
+    //     if (property == "localCounter")
+    //     if (property == "nickname")
+    //     if (property == "nickname")
+        
+        
+        
+    //     return result;
+    //     }
+    //     catch(error) {
+    //         console.error("Error:", error);
+    //     }
+
+
+    async readGlobally(input, criteria, option) {
+        const address = `${this.#baseAddress}/retrieveRequestpathOptions/${input}/${criteria}/${option}`;
+        //return await response.json();
+        console.log("readGlobally(): ", "Option used: ", option);
+        console.info("readGlobally(): ", "Options available: ", "\"local\" || \"l\" || \"1\"",
+            "\"global\" || \"g\" || \"2\"",
+            "\"records\" || \"r\" || \"3\"",
+            "\"contacts\" || \"c\" || \"4\"");
+
+        const response = await fetch(address, {
+            method: "GET",
+            //body: formData
+        });
+        console.log("response: ", response, response.body);
+
+        if (!response.ok) {
+            console.log("status code",response.status);
+            console.log("status message",response.statusText);
+            console.log(address);
+            throw new Error("There was an HTTP error creating the person data.");
+        }
+        const result = await response.json();
+        console.log("Success:", result);
+        return result;
+        }
+        catch(error) {
+            console.error("Error:", error);
+        }
+
 
 
 

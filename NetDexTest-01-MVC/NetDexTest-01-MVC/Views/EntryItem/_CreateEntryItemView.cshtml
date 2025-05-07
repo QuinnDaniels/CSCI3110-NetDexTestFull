@@ -13,7 +13,8 @@
 <input type="hidden" readonly name="ApplicationUserEmail" value="@loggedInEmail" />
 
 <form id="createEntryForm">
-    <input type="hidden" readonly id="RecordCollectorId" name="recordCollectorId" value="@recordCollector" />
+    <input type="hidden" readonly id="RecordCollectorId" name="recordCollectorId"
+        value="@TempData["RecordCollectorId"]" />
 
     <div class="form-group">
         <label for="ShortTitle">Short Title</label>

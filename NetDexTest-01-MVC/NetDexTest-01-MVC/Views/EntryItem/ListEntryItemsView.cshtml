@@ -6,6 +6,15 @@
     var loggedInEmail = ViewData["LoggedInEmail"]?.ToString();
     var lastPerson = ViewData["LastPerson"]?.ToString();
 }
+<div type="hidden" id="fallbackInfo">
+    <input type="hidden" id="recordCollectorId" value="@TempData["tRecordCollectorId"]" />
+    <input type="hidden" id="entryItemId" value="@ViewData["entryId"]" />
+    <input type="hidden" id="email" value="@ViewData["LoggedInEmail"]" />
+    <input type="hidden" id="username" value="@TempData["tUsername"]" />
+    <input type="hidden" id="lastPerson" value="@TempData["LastPerson"]" />
+
+</div>
+
 <div id="emergencyLink">
     <a href="/dex/u/@TempData["tUsername"]/p/@lastPerson">&lArr; Back to Details view</Details></a>
 </div>

@@ -28,13 +28,13 @@
 -->
 @if(HttpContextAccessor.HttpContext.User.Identity.IsAuthenticated)
 {
-    <h4>Logged In</h4>
+    <h4>Logged In using HttpContext User Identity</h4>
 }
-else
+@* else
 {
     <p>Identity failed to load. Not logged in</p>
 }
-
+ *@
 
 
 @if (User != null)

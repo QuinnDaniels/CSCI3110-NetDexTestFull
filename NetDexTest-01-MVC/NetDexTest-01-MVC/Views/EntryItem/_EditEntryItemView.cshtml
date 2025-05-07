@@ -1,0 +1,47 @@
+@model NetDexTest_01_MVC.Models.ViewModels.EntryItemVM
+@{
+    ViewData["Title"] = "_EditEntryItemView.cshtml";
+}
+
+<h5 id="editEntryFormHeading">@ViewData["Title"]</h5>
+
+
+
+
+<form id="editEntryForm">
+    <input type="hidden" name="RecordCollectorId" id="_record" value="@TempData["tRecordCollectorId"]" />
+    <input type="hidden" name="Id" id="_entry" value="@TempData["entryId"]" />
+
+    <div class="form-group">
+        <label for="ShortTitle">Short Title</label>
+        <input type="text" class="form-control" id="_ShortTitle" name="ShortTitle" value="@TempData["oldTitle"]" />   @* value="@Model.ShortTitle" *@
+        @* required *@
+    </div>
+
+    <div class="form-group">
+        <label for="FlavorText">Flavor Text</label>
+        <textarea class="form-control" id="_FlavorText" name="FlavorText" rows="5" value="@TempData["oldFlavor"]" required>@TempData["oldFlavor"]</textarea> @* @Model.FlavorText *@   @* value="@Model.ShortTitle" *@
+    </div>
+
+    <button type="submit" class="btn btn-success">Save</button>
+    <a class="btn btn-secondary" href="/dex/u/@TempData["tUsername"]/p/@TempData["LastPerson"]/rec/list/ie">Back to
+        List</a>
+
+</form>
+
+
+<hr>
+
+<form id="oldRecordCollection">
+    <input type="readonly" name="ShortTitle" id="_oldShortTitle" value="@TempData["oldTitle"]" />
+    <input type="readonly" name="FlavorText" id="_oldFlavorText" value="@TempData["oldFlavor"]" />
+</form>
+
+@section Scripte {
+        @try{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+        catch (Exception ex)
+        {
+            await Console.Out.WriteLineAsync($"\n\n\n-----------------------\n\t_EditEntryItemView.cshtml\n----------------------------\n\nAn ERROR Occurred while trying to load validation scipts! :\n\n\t\t{ex.Message}");
+        }
+
+}

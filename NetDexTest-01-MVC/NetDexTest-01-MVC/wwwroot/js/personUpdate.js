@@ -10,7 +10,6 @@ DOM.removeChildren(personHeading);
 personHeading.appendChild(
     DOM.createImg("/images/ajax-loader.gif", "Loading image"));
 
-
 const personId = document.getElementById("_Id").value;
 console.log("personId:", personId);
 
