@@ -1,17 +1,17 @@
 @model IEnumerable<NetDexTest_01_MVC.Models.ViewModels.EntryItemDTO>
 @{
+
     ViewData["Title"] = "Entry Items List";
     await Console.Out.WriteLineAsync("\n\n-----ListEntryItems Reached!----------\n\n");
     var loggedInEmail = ViewData["LoggedInEmail"]?.ToString();
     var lastPerson = ViewData["LastPerson"]?.ToString();
-
 }
 <div id="emergencyLink">
     <a href="/dex/u/@TempData["tUsername"]/p/@lastPerson">&lArr; Back to Details view</Details></a>
 </div>
-<h1> </h1>
 @TempData["tEmail"]
-@TempData["LastPerson"]
+<h1> </h1>
+@* @TempData["LastPerson"] *@
 
 @section Scripts {
     @{

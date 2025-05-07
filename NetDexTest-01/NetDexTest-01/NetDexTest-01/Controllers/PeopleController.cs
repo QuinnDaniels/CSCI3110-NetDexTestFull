@@ -126,7 +126,6 @@ namespace NetDexTest_01.Controllers
             PersonPlusDexListVM? personVM = null;
 
 
-        // TODO - [[[[USE ME]]]] AS REFERENCE TO FIX THE GET ONE PERSON METHOD
             if (int.TryParse(id, out int idout)) // in case you want to try to use the local counter
             {
                 await Console.Out.WriteLineAsync($"\nCriteria, {id}, is an int!");

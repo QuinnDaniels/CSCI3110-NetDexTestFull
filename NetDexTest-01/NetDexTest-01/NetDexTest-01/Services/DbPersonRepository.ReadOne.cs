@@ -4,7 +4,6 @@ using NetDexTest_01.Models.Entities;
 
 namespace NetDexTest_01.Services
 {
-    // TODO: do this!
     /// <summary>
     /// interacts with Extensions of Person (Ci, Fn, Rc)
     /// </summary>
@@ -212,7 +211,6 @@ namespace NetDexTest_01.Services
             return person;
         }
 
-        // TODO - FIX THIS METHOD TO ACCEPT AN INTEGER FOR CRITERIA
         public async Task<Person?> GetOneByUserInputAsync(string input, string inCriteria){
             Person? person = null;
             

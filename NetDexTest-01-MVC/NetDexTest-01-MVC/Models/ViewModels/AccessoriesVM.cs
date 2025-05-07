@@ -67,13 +67,13 @@ namespace NetDexTest_01_MVC.Models.ViewModels
     // NOTE - later: create a /Models/DTOs/EntryItemDTOs.cs file
     public class EntryItemDTO
     {
-        public Int64 EntryItemId { get; set; }
-        public Int64 RecordCollectorId { get; set; }
-        public int PersonId { get; set; }
-        public int DexHolderId { get; set; }
-        public string PersonNickname { get; set; }
-        public string ApplicationUserEmail { get; set; }
-        public string ApplicationUserName { get; set; }
+        public Int64? EntryItemId { get; set; } // HACK - changed to nullable for Create view
+        public Int64? RecordCollectorId { get; set; } // HACK - changed to nullable for Create view
+        public int? PersonId { get; set; } // HACK - changed to nullable for Create view
+        public int? DexHolderId { get; set; } // HACK - changed to nullable for Create view
+        public string? PersonNickname { get; set; } // HACK - changed to nullable for Create view
+        public string? ApplicationUserEmail { get; set; } // HACK - changed to nullable for Create view
+        public string? ApplicationUserName { get; set; } // HACK - changed to nullable for Create view
         public string? ShortTitle { get; set; }
         public string? FlavorText { get; set; }
         public DateTime LogTimestamp { get; set; }

@@ -45,48 +45,7 @@ namespace NetDexTest_01_MVC.Controllers
         //{
         //    return View();
         //}
-
-
-        [HttpGet("list", Name = "DexListDestination")]
-        public async Task<IActionResult> ListDexIndex()
-        {
-            await Console.Out.WriteLineAsync($"\n\n\n\n\n\n\n--GET---ListDexIndex()----ACCESSING------------\n");
-            await Console.Out.WriteLineAsync($"\n\n--GET---ListDexIndex()----Checking tmpData---\n\n\t{TempData["tEmail"]}");
-            if (!_userSessionService.IsLoggedIn()) RedirectToAction("Login", "Auth");
-            
-            if (await _userSessionService.HasAnyRoleAsync("Admin", "Administrator", "Moderator", "User"))
-            {
-
-                //var req = _userSessionService.GetEmail();
-                //var dex = await _personService.GetDexHolderMiddleVMAsync(req);
-
-                await Console.Out.WriteLineAsync($"\n\n--GET---ListDexIndex()----Checking tmpData---\n\n\t{TempData["tEmail"]}");
-                await Console.Out.WriteLineAsync($"\n\n--GET---ListDexIndex()----Checking userTmp---\n\n\t{_userSessionService.GetTempEmail()}");
-                if (TempData["tEmail"] != null || _userSessionService.GetTempEmail() != null)
-                {
-                    if (TempData["tEmail"] != null) { ViewData["LoggedInEmail"] = TempData["tEmail"]; }
-                    if (_userSessionService.GetTempEmail() != null) { _userSessionService.GetTempEmail(); }
-                }
-                else
-                {
-                    ViewData["LoggedInEmail"] = _userSessionService.GetEmail();
-
-                }
-
-                ////ICollection<AdminUserVM> userList = await _userService.GetAllUsersAdminAsync();
-                ////if(userList != null )
-                ////{
-                //return View(dex);// userList);
-                //}
-                //return BadRequest();
-
-                return View();
-            }
-            return Unauthorized("You must be logged into an authorized account to view this page!");
-
-            //return View();
-        }
-
+        #region  ReadOneUser
 
         [Route("u/{id}")]
         [HttpGet(Name = "DexIndexSingle")]
@@ -153,13 +112,62 @@ namespace NetDexTest_01_MVC.Controllers
 
 
 
+        #endregion ReadOneUser
+
+        #region  ReadAllUsers
 
 
 
+        [HttpGet("list", Name = "DexListDestination")]
+        public async Task<IActionResult> ListDexIndex()
+        {
+            await Console.Out.WriteLineAsync($"\n\n\n\n\n\n\n--GET---ListDexIndex()----ACCESSING------------\n");
+            await Console.Out.WriteLineAsync($"\n\n--GET---ListDexIndex()----Checking tmpData---\n\n\t{TempData["tEmail"]}");
+            if (!_userSessionService.IsLoggedIn()) RedirectToAction("Login", "Auth");
+
+            if (await _userSessionService.HasAnyRoleAsync("Admin", "Administrator", "Moderator", "User"))
+            {
+
+                //var req = _userSessionService.GetEmail();
+                //var dex = await _personService.GetDexHolderMiddleVMAsync(req);
+
+                await Console.Out.WriteLineAsync($"\n\n--GET---ListDexIndex()----Checking tmpData---\n\n\t{TempData["tEmail"]}");
+                await Console.Out.WriteLineAsync($"\n\n--GET---ListDexIndex()----Checking userTmp---\n\n\t{_userSessionService.GetTempEmail()}");
+                if (TempData["tEmail"] != null || _userSessionService.GetTempEmail() != null)
+                {
+                    if (TempData["tEmail"] != null) { ViewData["LoggedInEmail"] = TempData["tEmail"]; }
+                    if (_userSessionService.GetTempEmail() != null) { _userSessionService.GetTempEmail(); }
+                }
+                else
+                {
+                    ViewData["LoggedInEmail"] = _userSessionService.GetEmail();
+
+                }
+
+                ////ICollection<AdminUserVM> userList = await _userService.GetAllUsersAdminAsync();
+                ////if(userList != null )
+                ////{
+                //return View(dex);// userList);
+                //}
+                //return BadRequest();
+
+                return View();
+            }
+            return Unauthorized("You must be logged into an authorized account to view this page!");
+
+            //return View();
+        }
+        #endregion ReadAllUsers
 
 
 
+#region  Create User
+    // NOTE: View AuthController for User Creation
+#endregion Create User
 
+
+
+        #region Create Person
         [HttpGet("create")]
         public async Task<IActionResult> CreatePerson()
         {
@@ -227,7 +235,147 @@ namespace NetDexTest_01_MVC.Controllers
         //TODO
         //TODO
         //TODO
-        
+        #endregion  Create Person
+
+
+
+        #region Read Person*1
+        [Route("u/{id}/p/{criteria}")]
+        [HttpGet(Name = "PersonDetails")]
+        public async Task<IActionResult> DetailsViewByRoute(string id, string criteria)
+        {
+            await Console.Out.WriteLineAsync($"\n\n--GET---DetailsViewByRoute(id)----ACCESSING---------\n");
+
+            if (!_userSessionService.IsLoggedIn()) RedirectToAction("Login", "Auth");
+
+            bool roleFlag = await _userSessionService.HasAnyRoleAsync("Admin", "Administrator", "Moderator");
+            await Console.Out.WriteLineAsync($"\n\n--GET---DetailsViewByRoute(id)-----------roleFlag---\n\t{roleFlag}");
+            bool userFlag = await _userSessionService.HasAnyRoleAsync("User");
+            await Console.Out.WriteLineAsync($"\n\n--GET---DetailsViewByRoute(id)-----------userFlag---\n\t{userFlag}");
+            bool currentUserFlag = await _authService.CheckInputAgainstSessionAsync(id);
+            await Console.Out.WriteLineAsync($"\n\n--GET---DetailsViewByRoute(id)----currentUserFlag---\n\t{currentUserFlag}");
+
+            //bool userExists = await _authService.CheckIfUserExistsAsync(id);
+            //await Console.Out.WriteLineAsync($"\n\n--GET---DetailsViewByRoute(id)------userExists?-----\n\t{userExists}");
+            bool userPersonExists = await _authService.CheckIfUserExistsAsync(id);//, criteria);
+            await Console.Out.WriteLineAsync($"\n\n--GET---DetailsViewByRoute(id)------userPersonExists?-----\n\t{userPersonExists}");
+
+            var url = Url.RouteUrl("DexListDestination");
+            // if the target exists...
+            //if (userExists)
+            if (userPersonExists)
+            {
+                if (userFlag && currentUserFlag)
+                {
+                    await _userSessionService.SetTempPersonAsync(criteria);
+
+                    TempData["LastPerson"] = _userSessionService.GetTempPerson();
+                    ViewData["LastPerson"] = _userSessionService.GetTempPerson();
+                    // we're working with the confirmed current user, so just get the email that's stored in user session service
+                    ViewData["LoggedInEmail"] = _userSessionService.GetEmail();
+                    TempData["tEmail"] = _userSessionService.GetEmail();
+                    //return RedirectToAction("DetailsViewByRoute", "People");
+
+
+
+                    try
+                    {
+                        var person = await _personService.GetPersonPlusDexListVMAsync(id, criteria);
+                        if (person == null)
+                        {
+                            return NotFound();
+                        }
+                        await _userSessionService.SetTempPersonAsync(person.RecordCollectorId, person.ContactInfoId);
+                        TempData["tRecordCollectorId"] = _userSessionService.GetTempRecordCollector();
+                        ViewData["RecordCollectorId"] = _userSessionService.GetTempRecordCollector();
+                        TempData["tContactInfoId"] = _userSessionService.GetTempContactInfo();
+                        ViewData["ContactInfoId"] = _userSessionService.GetTempContactInfo();
+
+                        return View(); // assumes you have Views/People/DeletePerson.cshtml
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine("Error in DetailsPerson view endpoint: " + ex.Message);
+                        return BadRequest("Error fetching person for viewing.");
+                    }
+
+
+
+
+
+                    return View();
+                    //return ControllerContext.MyDisplayRouteInfo("", $" URL = {url}");
+                }
+                else if (roleFlag)
+                {
+
+                    await _userSessionService.SetTempPersonAsync(criteria);
+                    await Console.Out.WriteLineAsync($"\n\n--GET---DetailsViewByRoute(id)------Using temp email!-----\n\t{_userSessionService.GetTempEmail()}");
+                    ViewData["LoggedInEmail"] = _userSessionService.GetTempEmail();
+                    TempData["tEmail"] = _userSessionService.GetTempEmail();
+                    TempData["LastPerson"] = _userSessionService.GetTempPerson();
+                    ViewData["LastPerson"] = _userSessionService.GetTempPerson();
+
+                    // HACK disbling for now for if an admin goes to another user to create a person
+                    //await _userSessionService.CloseTempSessionData();
+                    //return ControllerContext.MyDisplayRouteInfo("", $" URL = {url}");
+
+
+
+                    try
+                    {
+                        var person = await _personService.GetPersonPlusDexListVMAsync(id, criteria);
+                        if (person == null)
+                        {
+                            return NotFound();
+                        }
+                        await _userSessionService.SetTempPersonAsync(person.RecordCollectorId, person.ContactInfoId);
+                        TempData["tRecordCollectorId"] = _userSessionService.GetTempRecordCollector();
+                        ViewData["RecordCollectorId"] = _userSessionService.GetTempRecordCollector();
+                        TempData["tContactInfoId"] = _userSessionService.GetTempContactInfo();
+                        ViewData["ContactInfoId"] = _userSessionService.GetTempContactInfo();
+
+
+                        return View(); // assumes you have Views/People/DeletePerson.cshtml
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine("Error in DetailsPerson view endpoint: " + ex.Message);
+                        return BadRequest("Error fetching person for viewing.");
+                    }
+                    //TODO                                      
+
+
+
+
+                    return View();
+                    //return RedirectToAction("Index", "Home", new { id = 2 });
+                    //return View();
+
+
+                    // TODO : check if the input matches the logged in user
+                }
+                return Unauthorized("You cannot access another User's page, unless you are using an Administrator or Moderator's account!!");
+            }
+            else
+            {
+                return BadRequest("That user does not exist!");
+            }
+
+
+            //return View();
+        }
+        #endregion  Read Person*1
+
+
+        #region  ReadAllPeople
+            // NOTE: SEE Read One User (List or ListDexById)
+        #endregion ReadAllPeople
+
+
+
+
+        #region Update Person
         [Route("u/{input}/edit/{edit}")]
         [HttpGet]
         public async Task<IActionResult> UpdatePerson(string input, string edit)
@@ -425,35 +573,32 @@ namespace NetDexTest_01_MVC.Controllers
 
             //return View();
         }
+        #endregion Update Person
 
 
 
 
 
 
-
-
-
-
-
-        [Route("u/{id}/p/{criteria}")]
-        [HttpGet(Name = "PersonDetails")]
-        public async Task<IActionResult> DetailsViewByRoute(string id, string criteria)
+        #region UpdateDex
+        [Route("edit/{input}")]
+        [HttpGet]
+        public async Task<IActionResult> UpdateDex(string input)  //, string edit)
         {
-            await Console.Out.WriteLineAsync($"\n\n--GET---DetailsViewByRoute(id)----ACCESSING---------\n");
-
+            await Console.Out.WriteLineAsync($"\n\n\n\n\n\n\n--GET---UpdateDex()----ACCESSING------------\n");
+            await Console.Out.WriteLineAsync($"\n\n--GET---UpdateDex()----Checking tmpData---\n\n\t{TempData["tEmail"]}");
             if (!_userSessionService.IsLoggedIn()) RedirectToAction("Login", "Auth");
 
             bool roleFlag = await _userSessionService.HasAnyRoleAsync("Admin", "Administrator", "Moderator");
             await Console.Out.WriteLineAsync($"\n\n--GET---DetailsViewByRoute(id)-----------roleFlag---\n\t{roleFlag}");
             bool userFlag = await _userSessionService.HasAnyRoleAsync("User");
             await Console.Out.WriteLineAsync($"\n\n--GET---DetailsViewByRoute(id)-----------userFlag---\n\t{userFlag}");
-            bool currentUserFlag = await _authService.CheckInputAgainstSessionAsync(id);
+            bool currentUserFlag = await _authService.CheckInputAgainstSessionAsync(input);
             await Console.Out.WriteLineAsync($"\n\n--GET---DetailsViewByRoute(id)----currentUserFlag---\n\t{currentUserFlag}");
 
             //bool userExists = await _authService.CheckIfUserExistsAsync(id);
             //await Console.Out.WriteLineAsync($"\n\n--GET---DetailsViewByRoute(id)------userExists?-----\n\t{userExists}");
-            bool userPersonExists = await _authService.CheckIfUserExistsAsync(id);//, criteria);
+            bool userPersonExists = await _authService.CheckIfUserExistsAsync(input);//, criteria);
             await Console.Out.WriteLineAsync($"\n\n--GET---DetailsViewByRoute(id)------userPersonExists?-----\n\t{userPersonExists}");
 
             var url = Url.RouteUrl("DexListDestination");
@@ -463,87 +608,127 @@ namespace NetDexTest_01_MVC.Controllers
             {
                 if (userFlag && currentUserFlag)
                 {
-                    await _userSessionService.SetTempPersonAsync(criteria);
+                    //await _userSessionService.SetTempPersonAsync(criteria);
 
-                    TempData["LastPerson"] = _userSessionService.GetTempPerson();
-                    ViewData["LastPerson"] = _userSessionService.GetTempPerson();
+                    //TempData["LastPerson"] = _userSessionService.GetTempPerson();
+                    //ViewData["LastPerson"] = _userSessionService.GetTempPerson();
                     // we're working with the confirmed current user, so just get the email that's stored in user session service
                     ViewData["LoggedInEmail"] = _userSessionService.GetEmail();
                     TempData["tEmail"] = _userSessionService.GetEmail();
                     //return RedirectToAction("DetailsViewByRoute", "People");
-                    
-                    
-                    
-                    try
-                    {
-                        var person = await _personService.GetPersonPlusDexListVMAsync(id, criteria);
-                        if (person == null)
-                        {
-                            return NotFound();
-                        }
-                        await _userSessionService.SetTempPersonAsync(person.RecordCollectorId, person.ContactInfoId);
-                        TempData["tRecordCollectorId"] = _userSessionService.GetTempRecordCollector();
-                        ViewData["RecordCollectorId"] = _userSessionService.GetTempRecordCollector();
-                        TempData["tContactInfoId"] = _userSessionService.GetTempContactInfo();
-                        ViewData["ContactInfoId"] = _userSessionService.GetTempContactInfo();
-                        
-                        return View(); // assumes you have Views/People/DeletePerson.cshtml
-                    }
-                    catch (Exception ex)
-                    {
-                        Console.WriteLine("Error in DetailsPerson view endpoint: " + ex.Message);
-                        return BadRequest("Error fetching person for viewing.");
-                    }
 
 
-                    
-                    
-                    
-                    return View();
+                    // - get all person by user
+                    // - get dexholdervm -> .People.include fullname
+                    // - get the person by searching criteria
+                    var dexVM = await _personService.GetDexHolderMiddleVMAsync(input);
+                    DexHolderUserEditVM? editUserVM = null;
+
+                    // - if person is not null
+                    if (dexVM != null)
+                    {
+                        // - instantiate new vm
+                        editUserVM = dexVM.getEditInstance();
+                    }
+                    // - endif
+
+                    if (editUserVM != null)
+                    {
+                        //populate ViewData here
+
+
+                        ViewData["_ApplicationUserId"] = editUserVM.ApplicationUserId;
+                        ViewData["_ApplicationUserName"] = editUserVM.ApplicationUserName;
+                        ViewData["_ApplicationEmail"] = editUserVM.ApplicationEmail;
+                        ViewData["_FirstName"] = editUserVM.FirstName;
+                        ViewData["_MiddleName"] = editUserVM.MiddleName;
+                        ViewData["_LastName"] = editUserVM.LastName;
+                        ViewData["_Gender"] = editUserVM.Gender;
+                        ViewData["_Pronouns"] = editUserVM.Pronouns;
+                        ViewData["_DateOfBirth"] = editUserVM.DateOfBirth;
+                        ViewData["_DexId"] = editUserVM.DexId;
+
+
+                        TempData["_ApplicationUserId"] = editUserVM.ApplicationUserId;
+                        TempData["_ApplicationUserName"] = editUserVM.ApplicationUserName;
+                        TempData["_ApplicationEmail"] = editUserVM.ApplicationEmail;
+                        TempData["_FirstName"] = editUserVM.FirstName;
+                        TempData["_MiddleName"] = editUserVM.MiddleName;
+                        TempData["_LastName"] = editUserVM.LastName;
+                        TempData["_Gender"] = editUserVM.Gender;
+                        TempData["_Pronouns"] = editUserVM.Pronouns;
+                        TempData["_DateOfBirth"] = editUserVM.DateOfBirth;
+                        TempData["_DexId"] = editUserVM.DexId;
+
+
+
+                        return View(editUserVM);
+                    }
+                    // - pass the resulting EditFullPersonVM into view
                     //return ControllerContext.MyDisplayRouteInfo("", $" URL = {url}");
                 }
                 else if (roleFlag)
                 {
 
-                    await _userSessionService.SetTempPersonAsync(criteria);
+                    //await _userSessionService.SetTempPersonAsync(criteria);
                     await Console.Out.WriteLineAsync($"\n\n--GET---DetailsViewByRoute(id)------Using temp email!-----\n\t{_userSessionService.GetTempEmail()}");
                     ViewData["LoggedInEmail"] = _userSessionService.GetTempEmail();
                     TempData["tEmail"] = _userSessionService.GetTempEmail();
-                    TempData["LastPerson"] = _userSessionService.GetTempPerson();
-                    ViewData["LastPerson"] = _userSessionService.GetTempPerson();
+                    //TempData["LastPerson"] = _userSessionService.GetTempPerson();
+                    //ViewData["LastPerson"] = _userSessionService.GetTempPerson();
+
+
+
+                    var dexVM = await _personService.GetDexHolderMiddleVMAsync(input);//, edit);
+                    await Console.Out.WriteLineAsync($"\n--GET---DetailsViewByRoute(id)------ {dexVM?.ApplicationUserName ?? "Response is null!"} -----\n\t");
+                    //await Console.Out.WriteLineAsync($"\n--GET---DetailsViewByRoute(id)------ {dexVM?.Nickname??"Response is null!"} -----\n\tSTATUS:\t{dexVMResponse?.Status.ToString()??"Status is null!"}");
+                    DexHolderUserEditVM? editUserVM = null;
+
+                    // PersonPlusDexListVM? dexVM = dexVMResponse.getPlusDexInstance();
+                    //await Console.Out.WriteLineAsync($"\n--GET---DetailsViewByRoute(id)------ dexVMGetInstance: not null? {dexVM!=null} -----\n\tSTATUS:\t{dexVMResponse?.Status.ToString()??"Status is null!"}");
+
+                    // - if person is not null
+                    if (dexVM != null)
+                    {
+                        // - instantiate new vm
+                        editUserVM = dexVM.getEditInstance();
+                    }
+                    // - endif
+
+                    if (editUserVM != null)
+                    {
+
+                        ViewData["_ApplicationUserId"] = editUserVM.ApplicationUserId;
+                        ViewData["_ApplicationUserName"] = editUserVM.ApplicationUserName;
+                        ViewData["_ApplicationEmail"] = editUserVM.ApplicationEmail;
+                        ViewData["_FirstName"] = editUserVM.FirstName;
+                        ViewData["_MiddleName"] = editUserVM.MiddleName;
+                        ViewData["_LastName"] = editUserVM.LastName;
+                        ViewData["_Gender"] = editUserVM.Gender;
+                        ViewData["_Pronouns"] = editUserVM.Pronouns;
+                        ViewData["_DateOfBirth"] = editUserVM.DateOfBirth;
+                        ViewData["_DexId"] = editUserVM.DexId;
+
+
+                        TempData["_ApplicationUserId"] = editUserVM.ApplicationUserId;
+                        TempData["_ApplicationUserName"] = editUserVM.ApplicationUserName;
+                        TempData["_ApplicationEmail"] = editUserVM.ApplicationEmail;
+                        TempData["_FirstName"] = editUserVM.FirstName;
+                        TempData["_MiddleName"] = editUserVM.MiddleName;
+                        TempData["_LastName"] = editUserVM.LastName;
+                        TempData["_Gender"] = editUserVM.Gender;
+                        TempData["_Pronouns"] = editUserVM.Pronouns;
+                        TempData["_DateOfBirth"] = editUserVM.DateOfBirth;
+                        TempData["_DexId"] = editUserVM.DexId;
+
+                        //TempData["_tmpEditPersonData"] = editUserVM;
+                        return View(editUserVM);
+                    }
+
 
                     // HACK disbling for now for if an admin goes to another user to create a person
                     //await _userSessionService.CloseTempSessionData();
                     //return ControllerContext.MyDisplayRouteInfo("", $" URL = {url}");
-                    
-                    
-                    
-                    try
-                    {
-                        var person = await _personService.GetPersonPlusDexListVMAsync(id, criteria);
-                        if (person == null)
-                        {
-                            return NotFound();
-                        }
-                        await _userSessionService.SetTempPersonAsync(person.RecordCollectorId, person.ContactInfoId);
-                        TempData["tRecordCollectorId"] = _userSessionService.GetTempRecordCollector();
-                        ViewData["RecordCollectorId"] = _userSessionService.GetTempRecordCollector();
-                        TempData["tContactInfoId"] = _userSessionService.GetTempContactInfo();
-                        ViewData["ContactInfoId"] = _userSessionService.GetTempContactInfo();
-                        
-
-                        return View(); // assumes you have Views/People/DeletePerson.cshtml
-                    }
-                    catch (Exception ex)
-                    {
-                        Console.WriteLine("Error in DetailsPerson view endpoint: " + ex.Message);
-                        return BadRequest("Error fetching person for viewing.");
-                    }
-//TODO                                      
-
-                    
-                    
-                    
                     return View();
                     //return RedirectToAction("Index", "Home", new { id = 2 });
                     //return View();
@@ -561,11 +746,16 @@ namespace NetDexTest_01_MVC.Controllers
 
             //return View();
         }
+        #endregion UpdateDex
 
 
 
 
 
+
+
+
+        #region DeletePerson
         [HttpGet("u/{input}/delete/{criteria}")]
         public async Task<IActionResult> DeletePerson(string input, string criteria)
         {
@@ -697,178 +887,11 @@ namespace NetDexTest_01_MVC.Controllers
                         //TempData["_Pronouns"] = editUserVM.Pronouns;
                         //TempData["_DateOfBirth"] = editUserVM.DateOfBirth;
                         //TempData["_DexId"] = editUserVM.DexId;
+        #endregion  DeletePerson
 
-
-
-
-        [Route("edit/{input}")]
-        [HttpGet]
-        public async Task<IActionResult> UpdateDex(string input)  //, string edit)
-        {
-            await Console.Out.WriteLineAsync($"\n\n\n\n\n\n\n--GET---UpdateDex()----ACCESSING------------\n");
-            await Console.Out.WriteLineAsync($"\n\n--GET---UpdateDex()----Checking tmpData---\n\n\t{TempData["tEmail"]}");
-            if (!_userSessionService.IsLoggedIn()) RedirectToAction("Login", "Auth");
-
-            bool roleFlag = await _userSessionService.HasAnyRoleAsync("Admin", "Administrator", "Moderator");
-            await Console.Out.WriteLineAsync($"\n\n--GET---DetailsViewByRoute(id)-----------roleFlag---\n\t{roleFlag}");
-            bool userFlag = await _userSessionService.HasAnyRoleAsync("User");
-            await Console.Out.WriteLineAsync($"\n\n--GET---DetailsViewByRoute(id)-----------userFlag---\n\t{userFlag}");
-            bool currentUserFlag = await _authService.CheckInputAgainstSessionAsync(input);
-            await Console.Out.WriteLineAsync($"\n\n--GET---DetailsViewByRoute(id)----currentUserFlag---\n\t{currentUserFlag}");
-
-            //bool userExists = await _authService.CheckIfUserExistsAsync(id);
-            //await Console.Out.WriteLineAsync($"\n\n--GET---DetailsViewByRoute(id)------userExists?-----\n\t{userExists}");
-            bool userPersonExists = await _authService.CheckIfUserExistsAsync(input);//, criteria);
-            await Console.Out.WriteLineAsync($"\n\n--GET---DetailsViewByRoute(id)------userPersonExists?-----\n\t{userPersonExists}");
-
-            var url = Url.RouteUrl("DexListDestination");
-            // if the target exists...
-            //if (userExists)
-            if (userPersonExists)
-            {
-                if (userFlag && currentUserFlag)
-                {
-                    //await _userSessionService.SetTempPersonAsync(criteria);
-
-                    //TempData["LastPerson"] = _userSessionService.GetTempPerson();
-                    //ViewData["LastPerson"] = _userSessionService.GetTempPerson();
-                    // we're working with the confirmed current user, so just get the email that's stored in user session service
-                    ViewData["LoggedInEmail"] = _userSessionService.GetEmail();
-                    TempData["tEmail"] = _userSessionService.GetEmail();
-                    //return RedirectToAction("DetailsViewByRoute", "People");
-
-
-                    // - get all person by user
-                    // - get dexholdervm -> .People.include fullname
-                    // - get the person by searching criteria
-                    var dexVM = await _personService.GetDexHolderMiddleVMAsync(input);
-                    DexHolderUserEditVM? editUserVM = null;
-
-                    // - if person is not null
-                    if (dexVM != null)
-                    {
-                        // - instantiate new vm
-                        editUserVM = dexVM.getEditInstance();
-                    }
-                    // - endif
-
-                    if (editUserVM != null)
-                    {
-                        //populate ViewData here
-
-
-                        ViewData["_ApplicationUserId"] = editUserVM.ApplicationUserId;
-                        ViewData["_ApplicationUserName"] = editUserVM.ApplicationUserName;
-                        ViewData["_ApplicationEmail"] = editUserVM.ApplicationEmail;
-                        ViewData["_FirstName"] = editUserVM.FirstName;
-                        ViewData["_MiddleName"] = editUserVM.MiddleName;
-                        ViewData["_LastName"] = editUserVM.LastName;
-                        ViewData["_Gender"] = editUserVM.Gender;
-                        ViewData["_Pronouns"] = editUserVM.Pronouns;
-                        ViewData["_DateOfBirth"] = editUserVM.DateOfBirth;
-                        ViewData["_DexId"] = editUserVM.DexId;
-
-
-                        TempData["_ApplicationUserId"] = editUserVM.ApplicationUserId;
-                        TempData["_ApplicationUserName"] = editUserVM.ApplicationUserName;
-                        TempData["_ApplicationEmail"] = editUserVM.ApplicationEmail;
-                        TempData["_FirstName"] = editUserVM.FirstName;
-                        TempData["_MiddleName"] = editUserVM.MiddleName;
-                        TempData["_LastName"] = editUserVM.LastName;
-                        TempData["_Gender"] = editUserVM.Gender;
-                        TempData["_Pronouns"] = editUserVM.Pronouns;
-                        TempData["_DateOfBirth"] = editUserVM.DateOfBirth;
-                        TempData["_DexId"] = editUserVM.DexId;
-
-
-
-                        return View(editUserVM);
-                    }
-                    // - pass the resulting EditFullPersonVM into view
-                    //return ControllerContext.MyDisplayRouteInfo("", $" URL = {url}");
-                }
-                else if (roleFlag)
-                {
-
-                    //await _userSessionService.SetTempPersonAsync(criteria);
-                    await Console.Out.WriteLineAsync($"\n\n--GET---DetailsViewByRoute(id)------Using temp email!-----\n\t{_userSessionService.GetTempEmail()}");
-                    ViewData["LoggedInEmail"] = _userSessionService.GetTempEmail();
-                    TempData["tEmail"] = _userSessionService.GetTempEmail();
-                    //TempData["LastPerson"] = _userSessionService.GetTempPerson();
-                    //ViewData["LastPerson"] = _userSessionService.GetTempPerson();
-
-
-
-                    var dexVM = await _personService.GetDexHolderMiddleVMAsync(input);//, edit);
-                    await Console.Out.WriteLineAsync($"\n--GET---DetailsViewByRoute(id)------ {dexVM?.ApplicationUserName ?? "Response is null!"} -----\n\t");
-                    //await Console.Out.WriteLineAsync($"\n--GET---DetailsViewByRoute(id)------ {dexVM?.Nickname??"Response is null!"} -----\n\tSTATUS:\t{dexVMResponse?.Status.ToString()??"Status is null!"}");
-                    DexHolderUserEditVM? editUserVM = null;
-
-                   // PersonPlusDexListVM? dexVM = dexVMResponse.getPlusDexInstance();
-                    //await Console.Out.WriteLineAsync($"\n--GET---DetailsViewByRoute(id)------ dexVMGetInstance: not null? {dexVM!=null} -----\n\tSTATUS:\t{dexVMResponse?.Status.ToString()??"Status is null!"}");
-
-                    // - if person is not null
-                    if (dexVM != null)
-                    {
-                        // - instantiate new vm
-                        editUserVM = dexVM.getEditInstance();
-                    }
-                    // - endif
-
-                    if (editUserVM != null)
-                    {
-
-                        ViewData["_ApplicationUserId"] = editUserVM.ApplicationUserId;
-                        ViewData["_ApplicationUserName"] = editUserVM.ApplicationUserName;
-                        ViewData["_ApplicationEmail"] = editUserVM.ApplicationEmail;
-                        ViewData["_FirstName"] = editUserVM.FirstName;
-                        ViewData["_MiddleName"] = editUserVM.MiddleName;
-                        ViewData["_LastName"] = editUserVM.LastName;
-                        ViewData["_Gender"] = editUserVM.Gender;
-                        ViewData["_Pronouns"] = editUserVM.Pronouns;
-                        ViewData["_DateOfBirth"] = editUserVM.DateOfBirth;
-                        ViewData["_DexId"] = editUserVM.DexId;
-
-
-                        TempData["_ApplicationUserId"] = editUserVM.ApplicationUserId;
-                        TempData["_ApplicationUserName"] = editUserVM.ApplicationUserName;
-                        TempData["_ApplicationEmail"] = editUserVM.ApplicationEmail;
-                        TempData["_FirstName"] = editUserVM.FirstName;
-                        TempData["_MiddleName"] = editUserVM.MiddleName;
-                        TempData["_LastName"] = editUserVM.LastName;
-                        TempData["_Gender"] = editUserVM.Gender;
-                        TempData["_Pronouns"] = editUserVM.Pronouns;
-                        TempData["_DateOfBirth"] = editUserVM.DateOfBirth;
-                        TempData["_DexId"] = editUserVM.DexId;
-
-                        //TempData["_tmpEditPersonData"] = editUserVM;
-                        return View(editUserVM);
-                    }
-
-
-                    // HACK disbling for now for if an admin goes to another user to create a person
-                    //await _userSessionService.CloseTempSessionData();
-                    //return ControllerContext.MyDisplayRouteInfo("", $" URL = {url}");
-                    return View();
-                    //return RedirectToAction("Index", "Home", new { id = 2 });
-                    //return View();
-
-
-                    // TODO : check if the input matches the logged in user
-                }
-                return Unauthorized("You cannot access another User's page, unless you are using an Administrator or Moderator's account!!");
-            }
-            else
-            {
-                return BadRequest("That user does not exist!");
-            }
-
-
-            //return View();
-        }
 
         /**-------------------------------------------------------------*/
-
+        #region Delete User
         [HttpGet("delete/{input}")]
         public async Task<IActionResult> DeleteUser(string input)
         {
@@ -972,7 +995,7 @@ namespace NetDexTest_01_MVC.Controllers
             }
 
         }
-
+        #endregion Delete User
 
 
 

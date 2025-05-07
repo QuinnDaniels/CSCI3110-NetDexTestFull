@@ -896,8 +896,8 @@ export let DOM = {
         innerDiv.classList.add("nav");
         innerDiv.classList.add("operationLinks");
         innerDiv.innerHTML =
-            `<a class="nav-item btn btn-sm btn-link-primary"      href="/dex/u/${input}/p/${criteria}/rec/ie${entryid}">Back to List</a> |
-             <a class="nav-item btn btn-sm btn-outline-secondary" href="/dex/u/${input}/p/${criteria}/Edit/ie/${entryid}">Edit</a> | 
+            `<a class="nav-item btn btn-sm btn-outline-success"      href="/dex/u/${input}/p/${criteria}/rec/ie/${entryid}">View</a> |
+             <a class="nav-item btn btn-sm btn-outline-warning" href="/dex/u/${input}/p/${criteria}/Edit/ie/${entryid}">Edit</a> | 
              <a class="nav-item btn btn-sm btn-outline-danger"    href="/dex/u/${input}/p/${criteria}/Delete/ie/${entryid}">Delete</a>`;
         //div.appendChild(innerDiv);
         console.log("div buttons to add", innerDiv);

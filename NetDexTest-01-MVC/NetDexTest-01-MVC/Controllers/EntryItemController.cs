@@ -37,8 +37,96 @@ namespace NetDexTest_01_MVC.Controllers
             }
 
 
+        #region ReadAll
+
+        [Route("u/{userId}/p/{personId}/rec/list/ie")]
+        [HttpGet(Name = "EntryItemList")]
+        public async Task<IActionResult> ListEntryItemsView(string userId, string personId)
+        {
+            await Console.Out.WriteLineAsync($"\n\n--GET---GetEntryItemDetailedView(userId)----ACCESSING---------\n");
+
+            if (!_userSessionService.IsLoggedIn()) RedirectToAction("Login", "Auth");
+
+            bool roleFlag = await _userSessionService.HasAnyRoleAsync("Admin", "Administrator", "Moderator");
+            await Console.Out.WriteLineAsync($"\n\n--GET---GetEntryItemDetailedView(userId)-----------roleFlag---\n\t{roleFlag}");
+            bool userFlag = await _userSessionService.HasAnyRoleAsync("User");
+            await Console.Out.WriteLineAsync($"\n\n--GET---GetEntryItemDetailedView(userId)-----------userFlag---\n\t{userFlag}");
+            bool currentUserFlag = await _authService.CheckInputAgainstSessionAsync(userId);
+            await Console.Out.WriteLineAsync($"\n\n--GET---GetEntryItemDetailedView(userId)----currentUserFlag---\n\t{currentUserFlag}");
+
+            //bool userExists = await _authService.CheckIfUserExistsAsync(userId);
+            //await Console.Out.WriteLineAsync($"\n\n--GET---GetEntryItemDetailedView(userId)------userExists?-----\n\t{userExists}");
+            bool userPersonExists = await _authService.CheckIfUserExistsAsync(userId);//, personId);
+            await Console.Out.WriteLineAsync($"\n\n--GET---GetEntryItemDetailedView(userId)------userPersonExists?-----\n\t{userPersonExists}");
+
+            //var url = Url.RouteUrl("DexListDestination");
+            if (userPersonExists)
+            {
+                if (userFlag && currentUserFlag)
+                {
+                    await _userSessionService.SetTempPersonAsync(personId);
+
+                    var tempPerson = await _personService.GetPersonPlusDexListVMAsync(userId, personId);
+
+
+                    ViewData["personNickname"] = tempPerson?.Nickname ?? "tempPerson was null in EntryItemsController.ListEntryItemsView";
+
+                    TempData["LastPerson"] = _userSessionService.GetTempPerson();
+                    ViewData["LastPerson"] = _userSessionService.GetTempPerson();
+                    // we're working with the confirmed current user, so just get the email that's stored in user session service
+                    ViewData["LoggedInEmail"] = _userSessionService.GetEmail();
+                    TempData["tEmail"] = _userSessionService.GetEmail();
+                    //return RedirectToAction("GetEntryItemDetailedView", "People");
+                    TempData["tUsername"] = _userSessionService.GetUsername();
+                    ViewData["tUsername"] = _userSessionService.GetUsername();
+
+                    return View();
+                    //return ControllerContext.MyDisplayRouteInfo("", $" URL = {url}");
+                }
+                else if (roleFlag)
+                {
+
+                    await _userSessionService.SetTempPersonAsync(personId);
+                    await Console.Out.WriteLineAsync($"\n\n--GET---DetailsViewByRoute(userId)------Using temp email!-----\n\t{_userSessionService.GetTempEmail()}");
+                    var tempPerson = await _personService.GetPersonPlusDexListVMAsync(userId, personId);
+                    ViewData["personNickname"] = tempPerson?.Nickname ?? "tempPerson was null in EntryItemsController.ListEntryItemsView";
+
+                    ViewData["LoggedInEmail"] = _userSessionService.GetTempEmail();
+                    TempData["tEmail"] = _userSessionService.GetTempEmail();
+                    TempData["LastPerson"] = _userSessionService.GetTempPerson();
+                    ViewData["LastPerson"] = _userSessionService.GetTempPerson();
+                    TempData["tUsername"] = _userSessionService.GetUsername();
+                    ViewData["tUsername"] = _userSessionService.GetUsername();
+                    // TempData["entryId"] = entryItemId;
+                    // ViewData["entryId"] = entryItemId;
+
+
+                    // HACK - hopefully this shouldnt need to include anything about record collector
+
+
+                    // await _userSessionService.SetTempPersonAsync(personId);
+                    // ViewData["LoggedInEmail"] = _userSessionService.GetTempEmail();
+                    // TempData["tEmail"] = _userSessionService.GetTempEmail();
+                    // TempData["LastPerson"] = _userSessionService.GetTempPerson();
+                    // ViewData["LastPerson"] = _userSessionService.GetTempPerson();
+
+
+                    return View();
+                    // TODO : check if the input matches the logged in user
+                }
+                return Unauthorized("You cannot access another User's page, unless you are using an Administrator or Moderator's account!!");
+            }
+            else
+            {
+                return BadRequest("That user does not exist!");
+            }
+        }
+        #endregion ReadAll
+
+
+        #region  ReadOne
             
-            [Route("u/{userId}/p/{personId}/rec/ie/{entryItemId}")]
+        [Route("u/{userId}/p/{personId}/rec/ie/{entryItemId}")]
             [HttpGet(Name = "EntryItemDetails")]
             public async Task<IActionResult> GetEntryItemDetailedView(string userId, string personId, long entryItemId)
             {
@@ -70,9 +158,17 @@ namespace NetDexTest_01_MVC.Controllers
                         // we're working with the confirmed current user, so just get the email that's stored in user session service
                         ViewData["LoggedInEmail"] = _userSessionService.GetEmail();
                         TempData["tEmail"] = _userSessionService.GetEmail();
+                        TempData["tUsername"] = _userSessionService.GetUsername();
+                        ViewData["tUsername"] = _userSessionService.GetUsername();
+                        TempData["entryId"] = entryItemId;
+                        ViewData["entryId"] = entryItemId;
                         //return RedirectToAction("GetEntryItemDetailedView", "People");
                         return View();
                         //return ControllerContext.MyDisplayRouteInfo("", $" URL = {url}");
+
+
+
+
                     }
                     else if (roleFlag)
                     {
@@ -83,21 +179,25 @@ namespace NetDexTest_01_MVC.Controllers
                         TempData["tEmail"] = _userSessionService.GetTempEmail();
                         TempData["LastPerson"] = _userSessionService.GetTempPerson();
                         ViewData["LastPerson"] = _userSessionService.GetTempPerson();
+                        ViewData["tUsername"] = _userSessionService.GetUsername();
+                        TempData["tUsername"] = _userSessionService.GetUsername();
                         TempData["entryId"] = entryItemId;
                         ViewData["entryId"] = entryItemId;
 
 
-                        // HACK - hopefully this shouldnt need to include anything about record collector
 
 
-                        // await _userSessionService.SetTempPersonAsync(personId);
-                        // ViewData["LoggedInEmail"] = _userSessionService.GetTempEmail();
-                        // TempData["tEmail"] = _userSessionService.GetTempEmail();
-                        // TempData["LastPerson"] = _userSessionService.GetTempPerson();
-                        // ViewData["LastPerson"] = _userSessionService.GetTempPerson();
+                    // HACK - hopefully this shouldnt need to include anything about record collector
 
 
-                        return View();
+                    // await _userSessionService.SetTempPersonAsync(personId);
+                    // ViewData["LoggedInEmail"] = _userSessionService.GetTempEmail();
+                    // TempData["tEmail"] = _userSessionService.GetTempEmail();
+                    // TempData["LastPerson"] = _userSessionService.GetTempPerson();
+                    // ViewData["LastPerson"] = _userSessionService.GetTempPerson();
+
+
+                    return View();
                         // TODO : check if the input matches the logged in user
                     }
                     return Unauthorized("You cannot access another User's page, unless you are using an Administrator or Moderator's account!!");
@@ -108,7 +208,9 @@ namespace NetDexTest_01_MVC.Controllers
             }
         }
 
-
+        #endregion ReadOne
+        #region Edit
+            
 
 
         [Route("u/{userId}/p/{personId}/edit/ie/{entryItemId}")]
@@ -143,9 +245,25 @@ namespace NetDexTest_01_MVC.Controllers
                     // we're working with the confirmed current user, so just get the email that's stored in user session service
                     ViewData["LoggedInEmail"] = _userSessionService.GetEmail();
                     TempData["tEmail"] = _userSessionService.GetEmail();
-                    //return RedirectToAction("GetEntryItemDetailedView", "People");
-                    return View();
-                    //return ControllerContext.MyDisplayRouteInfo("", $" URL = {url}");
+                    TempData["entryId"] = entryItemId;
+                    ViewData["entryId"] = entryItemId;
+
+                    try {
+                        var person = await _personService.GetPersonPlusDexListVMAsync(_userSessionService.GetEmail(), personId);
+                        if (person == null) {
+                            return NotFound();
+                        }
+                        await _userSessionService.SetTempPersonAsync(person.RecordCollectorId, person.ContactInfoId);
+                        TempData["tRecordCollectorId"] = _userSessionService.GetTempRecordCollector();
+                        //TempData["tContactInfoId"] = _userSessionService.GetTempContactInfo();
+                        ViewData["RecordCollectorId"] = _userSessionService.GetTempRecordCollector();
+                        //ViewData["ContactInfoId"] = _userSessionService.GetTempContactInfo();
+
+                        return View();
+                    } catch (Exception ex) {
+                        Console.WriteLine("Error in EntryItem getting PersonPlusDex view endpoint: " + ex.Message);
+                        return BadRequest("Error fetching person for viewing.");
+                    }
                 }
                 else if (roleFlag)
                 {
@@ -159,6 +277,27 @@ namespace NetDexTest_01_MVC.Controllers
                     TempData["entryId"] = entryItemId;
                     ViewData["entryId"] = entryItemId;
 
+                    try
+                    {
+                        var person = await _personService.GetPersonPlusDexListVMAsync(_userSessionService.GetEmail(), personId);
+                        if (person == null)
+                        {
+                            return NotFound();
+                        }
+                        await _userSessionService.SetTempPersonAsync(person.RecordCollectorId, person.ContactInfoId);
+                        TempData["tRecordCollectorId"] = _userSessionService.GetTempRecordCollector();
+                        //TempData["tContactInfoId"] = _userSessionService.GetTempContactInfo();
+                        ViewData["RecordCollectorId"] = _userSessionService.GetTempRecordCollector();
+                        //ViewData["ContactInfoId"] = _userSessionService.GetTempContactInfo();
+
+                        return View(); 
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine("Error in EntryItem getting PersonPlusDex view endpoint: " + ex.Message);
+                        return BadRequest("Error fetching person for viewing.");
+                    }
+
 
                     // HACK - hopefully this shouldnt need to include anything about record collector
 
@@ -170,7 +309,7 @@ namespace NetDexTest_01_MVC.Controllers
                     // ViewData["LastPerson"] = _userSessionService.GetTempPerson();
 
 
-                    return View();
+                    //return View();
                     // TODO : check if the input matches the logged in user
                 }
                 return Unauthorized("You cannot access another User's page, unless you are using an Administrator or Moderator's account!!");
@@ -182,7 +321,9 @@ namespace NetDexTest_01_MVC.Controllers
         }
 
 
-
+        #endregion Edit
+        #region Delete
+            
 
 
         [Route("u/{userId}/p/{personId}/delete/ie/{entryItemId}")]
@@ -230,21 +371,31 @@ namespace NetDexTest_01_MVC.Controllers
                     TempData["tEmail"] = _userSessionService.GetTempEmail();
                     TempData["LastPerson"] = _userSessionService.GetTempPerson();
                     ViewData["LastPerson"] = _userSessionService.GetTempPerson();
+                    // HACK - hopefully this shouldnt need to include anything about record collector
+                    // NOTE - UPDATE: It totally fucking did!!!!
                     TempData["entryId"] = entryItemId;
                     ViewData["entryId"] = entryItemId;
+                    try
+                    {
+                        var person = await _personService.GetPersonPlusDexListVMAsync(_userSessionService.GetEmail(), personId);
+                        if (person == null)
+                        {
+                            return NotFound();
+                        }
+                        await _userSessionService.SetTempPersonAsync(person.RecordCollectorId, person.ContactInfoId);
+                        TempData["tRecordCollectorId"] = _userSessionService.GetTempRecordCollector();
+                        //TempData["tContactInfoId"] = _userSessionService.GetTempContactInfo();
+                        ViewData["RecordCollectorId"] = _userSessionService.GetTempRecordCollector();
+                        //ViewData["ContactInfoId"] = _userSessionService.GetTempContactInfo();
 
-
-                    // HACK - hopefully this shouldnt need to include anything about record collector
-
-
-                    // await _userSessionService.SetTempPersonAsync(personId);
-                    // ViewData["LoggedInEmail"] = _userSessionService.GetTempEmail();
-                    // TempData["tEmail"] = _userSessionService.GetTempEmail();
-                    // TempData["LastPerson"] = _userSessionService.GetTempPerson();
-                    // ViewData["LastPerson"] = _userSessionService.GetTempPerson();
-
-
-                    return View();
+                        return View();
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine("Error in EntryItem getting PersonPlusDex view endpoint: " + ex.Message);
+                        return BadRequest("Error fetching person for viewing.");
+                    }
+                    //return View();
                     // TODO : check if the input matches the logged in user
                 }
                 return Unauthorized("You cannot access another User's page, unless you are using an Administrator or Moderator's account!!");
@@ -254,6 +405,10 @@ namespace NetDexTest_01_MVC.Controllers
                 return BadRequest("That user does not exist!");
             }
         }
+        #endregion Delete
+        #region Create
+            
+            
 
         [Route("u/{userId}/p/{personId}/create/rec/ie")]
             [HttpGet(Name = "EntryItemCreate")]
@@ -300,18 +455,25 @@ namespace NetDexTest_01_MVC.Controllers
                     TempData["tEmail"] = _userSessionService.GetTempEmail();
                     TempData["LastPerson"] = _userSessionService.GetTempPerson();
                     ViewData["LastPerson"] = _userSessionService.GetTempPerson();
-
-
-                    // HACK - hopefully this shouldnt need to include anything about record collector
-
-
-                    // await _userSessionService.SetTempPersonAsync(personId);
-                    // ViewData["LoggedInEmail"] = _userSessionService.GetTempEmail();
-                    // TempData["tEmail"] = _userSessionService.GetTempEmail();
-                    // TempData["LastPerson"] = _userSessionService.GetTempPerson();
-                    // ViewData["LastPerson"] = _userSessionService.GetTempPerson();
-
-
+                    try
+                    {
+                        var person = await _personService.GetPersonPlusDexListVMAsync(_userSessionService.GetEmail(), personId);
+                        if (person == null)
+                        {
+                            return NotFound();
+                        }
+                        await _userSessionService.SetTempPersonAsync(person.RecordCollectorId, person.ContactInfoId);
+                        TempData["tRecordCollectorId"] = _userSessionService.GetTempRecordCollector();
+                        //TempData["tContactInfoId"] = _userSessionService.GetTempContactInfo();
+                        ViewData["RecordCollectorId"] = _userSessionService.GetTempRecordCollector();
+                        //ViewData["ContactInfoId"] = _userSessionService.GetTempContactInfo();
+                        return View();
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine("Error in EntryItem getting PersonPlusDex view endpoint: " + ex.Message);
+                        return BadRequest("Error fetching person for viewing.");
+                    }
                     return View();
                     // TODO : check if the input matches the logged in user
                 }
@@ -323,83 +485,11 @@ namespace NetDexTest_01_MVC.Controllers
             }
         }
 
+        #endregion Create
 
 
 
-        [Route("u/{userId}/p/{personId}/rec/list/ie")]
-            [HttpGet(Name = "EntryItemList")]
-            public async Task<IActionResult> ListEntryItemsView(string userId, string personId)
-            {
-            await Console.Out.WriteLineAsync($"\n\n--GET---GetEntryItemDetailedView(userId)----ACCESSING---------\n");
 
-            if (!_userSessionService.IsLoggedIn()) RedirectToAction("Login", "Auth");
-
-            bool roleFlag = await _userSessionService.HasAnyRoleAsync("Admin", "Administrator", "Moderator");
-            await Console.Out.WriteLineAsync($"\n\n--GET---GetEntryItemDetailedView(userId)-----------roleFlag---\n\t{roleFlag}");
-            bool userFlag = await _userSessionService.HasAnyRoleAsync("User");
-            await Console.Out.WriteLineAsync($"\n\n--GET---GetEntryItemDetailedView(userId)-----------userFlag---\n\t{userFlag}");
-            bool currentUserFlag = await _authService.CheckInputAgainstSessionAsync(userId);
-            await Console.Out.WriteLineAsync($"\n\n--GET---GetEntryItemDetailedView(userId)----currentUserFlag---\n\t{currentUserFlag}");
-
-            //bool userExists = await _authService.CheckIfUserExistsAsync(userId);
-            //await Console.Out.WriteLineAsync($"\n\n--GET---GetEntryItemDetailedView(userId)------userExists?-----\n\t{userExists}");
-            bool userPersonExists = await _authService.CheckIfUserExistsAsync(userId);//, personId);
-            await Console.Out.WriteLineAsync($"\n\n--GET---GetEntryItemDetailedView(userId)------userPersonExists?-----\n\t{userPersonExists}");
-
-            //var url = Url.RouteUrl("DexListDestination");
-            if (userPersonExists)
-            {
-                if (userFlag && currentUserFlag)
-                {
-                    await _userSessionService.SetTempPersonAsync(personId);
-
-                    TempData["LastPerson"] = _userSessionService.GetTempPerson();
-                    ViewData["LastPerson"] = _userSessionService.GetTempPerson();
-                    // we're working with the confirmed current user, so just get the email that's stored in user session service
-                    ViewData["LoggedInEmail"] = _userSessionService.GetEmail();
-                    TempData["tEmail"] = _userSessionService.GetEmail();
-                    //return RedirectToAction("GetEntryItemDetailedView", "People");
-                    TempData["tUsername"] = _userSessionService.GetUsername();
-                    ViewData["tUsername"] = _userSessionService.GetUsername();
-
-                    return View();
-                    //return ControllerContext.MyDisplayRouteInfo("", $" URL = {url}");
-                }
-                else if (roleFlag)
-                {
-
-                    await _userSessionService.SetTempPersonAsync(personId);
-                    await Console.Out.WriteLineAsync($"\n\n--GET---DetailsViewByRoute(userId)------Using temp email!-----\n\t{_userSessionService.GetTempEmail()}");
-                    ViewData["LoggedInEmail"] = _userSessionService.GetTempEmail();
-                    TempData["tEmail"] = _userSessionService.GetTempEmail();
-                    TempData["LastPerson"] = _userSessionService.GetTempPerson();
-                    ViewData["LastPerson"] = _userSessionService.GetTempPerson();
-                    TempData["tUsername"] = _userSessionService.GetUsername();
-                    ViewData["tUsername"] = _userSessionService.GetUsername();
-                    // TempData["entryId"] = entryItemId;
-                    // ViewData["entryId"] = entryItemId;
-
-
-                    // HACK - hopefully this shouldnt need to include anything about record collector
-
-
-                    // await _userSessionService.SetTempPersonAsync(personId);
-                    // ViewData["LoggedInEmail"] = _userSessionService.GetTempEmail();
-                    // TempData["tEmail"] = _userSessionService.GetTempEmail();
-                    // TempData["LastPerson"] = _userSessionService.GetTempPerson();
-                    // ViewData["LastPerson"] = _userSessionService.GetTempPerson();
-
-
-                    return View();
-                    // TODO : check if the input matches the logged in user
-                }
-                return Unauthorized("You cannot access another User's page, unless you are using an Administrator or Moderator's account!!");
-            }
-            else
-            {
-                return BadRequest("That user does not exist!");
-            }
-        }
 
 
 

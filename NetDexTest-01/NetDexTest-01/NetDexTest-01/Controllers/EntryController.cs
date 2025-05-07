@@ -264,8 +264,7 @@ namespace NetDexTest_01.Controllers
             var entries = await _repo.GetAllEntryItemsByUserAsync(input);
             if (entries == null) return NotFound($"Entries could not be found for user, {input}");
 
-            // TODO - FIX THIS METHOD TO PARSE OUT CRITERIA AS AN INTEGER
-            // FIXME
+            // HACK - modified method [[GetOneByUserInputAsync]] in PersonRepository to accept a parsed int from criteria, in case Person.Id gets used as a parameter
             var person = await _personRepo.GetOneByUserInputAsync(input, criteria);
             //await _personRepo.GetPersonByNickName()
             if (person == null) return NotFound($"Person could not be found for user, {input}, person, {criteria}");
