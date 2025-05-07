@@ -41,5 +41,14 @@ namespace NetDexTest_01.Services
         Task<DexHolderMiddleVM?> GetDexHolderMiddleVMAsync(string input);
         Task<DexHolderPlusVM?> GetDexHolderPlusVMAsync(string input);
         Task<PersonPlusDexListVM?> GetPersonPlusDexListVMAsync(string input, string criteria);
+        /// <summary>
+        /// Like the standard version of this method, passing a string option will allow specification of local or global
+        /// </summary>
+        /// <param name="input"></param>
+        /// <param name="criteria"></param>
+        /// <param name="option"></param>
+        /// <returns></returns>
+        Task<PersonPlusDexListVM?> GetPersonPlusDexListVMAsync(string input, string criteria, string? option);
+
     }
 }

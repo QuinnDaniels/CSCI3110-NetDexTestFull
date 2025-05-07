@@ -3,6 +3,7 @@ using NetDexTest_01.Models.Entities;
 using NetDexTest_01.Models.ViewModels;
 using NetDexTest_01.Services;
 using NuGet.Protocol;
+using toolExtensions;
 
 
 namespace NetDexTest_01.Services
@@ -452,5 +453,84 @@ namespace NetDexTest_01.Services
             }
 
         }
+
+        public async Task<PersonPlusDexListVM?> GetPersonPlusDexListVMAsync(string input, string criteria, string? option)
+        {
+            var dexPlus = await GetDexHolderPlusVMAsync(input);
+
+            if (dexPlus != null)
+            {
+                var peopleList = dexPlus.People.OrderBy(p => p.LocalCounter).ToList();
+                PersonPlusDexListVM? personSelect = null;
+                try
+                {
+                    if (int.TryParse(criteria, out int idout)) // in case you want to try to use the local counter
+                    {
+                        await Console.Out.WriteLineAsync($"\n\n\n\tINFO: criteria, {criteria}, is an int. Checking option, {option}, for specification. Version 0.1 options are: \"local\",\"global\", \"records\", \"contacts\",or null (defaults to localCount)  !!!\n\n\n");
+                        
+                        bool flagMatch = false;
+                        if (!option.IsNullOrEmpty())
+                        {
+                            if (option == "local" || option == "l" || option == "1")
+                            { 
+                                personSelect = peopleList.FirstOrDefault(p => p.LocalCounter == idout);
+                                flagMatch =   true;
+                            }
+                            else if (option == "global" || option== "g" || option == "2")
+                            {
+                                personSelect = peopleList.FirstOrDefault(p => p.Id == idout); 
+                                flagMatch = true;
+                            }
+                            else if (option == "records" || option == "r" || option == "3")
+                            {
+                                personSelect = peopleList.FirstOrDefault(p => p.RecordCollectorId == idout);
+                                flagMatch = true;
+                            }
+                            else if (option == "contacts" || option == "c" || option == "4")
+                            {
+                                personSelect = peopleList.FirstOrDefault(p => p.ContactInfoId == idout);
+                                flagMatch = true;
+                            }
+                        }
+                        if (!flagMatch)
+                        {
+                            personSelect = peopleList.FirstOrDefault(p => p.LocalCounter == idout);
+                        }
+                    }
+                    else { await Console.Out.WriteLineAsync($"\n\n\n\tINFO: Person was not able to be found in DexHolder People list using criteria as LocalCounter, {criteria}!!!\n\n\n"); }
+                    if (personSelect == null)
+                    {
+                        personSelect = peopleList.FirstOrDefault(p => p.Nickname == criteria);
+                    }
+
+                    if (personSelect != null)
+                    {
+                        //await Console.Out.WriteLineAsync($"\n\n\nLOG:\n\n\t{personSelect.ToJson()}\n\n\n");
+                        return personSelect;
+                    }
+                    else
+                    {
+                        await Console.Out.WriteLineAsync($"\n\n\nWARNING: Person was not able to be found in DexHolder People list using criteria, {criteria}!!!\n\n\n");
+                        return null;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    await _tools.ConOut("GetPersonPlusDexVMAsync EXCEPTION", ex);
+                    return null;
+                }
+            }
+            else
+            {
+                await Console.Out.WriteLineAsync($"\n\n\nWARNING: DexHolder was not able to be found using input, {input}!!!\n\n\n");
+                return null;
+            }
+
+        }
+
+
+
+
+
     }
 }

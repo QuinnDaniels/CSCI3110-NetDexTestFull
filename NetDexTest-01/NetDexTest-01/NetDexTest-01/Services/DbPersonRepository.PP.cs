@@ -3,13 +3,12 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
 using NetDexTest_01.Models.Entities;
 using NetDexTest_01.Models.ViewModels;
-
+using toolExtensions;
 using System.Diagnostics;
 using System.Linq.Expressions;
 
 namespace NetDexTest_01.Services
 {
-    // TODO: do this!
     /// <summary>
     /// interacts with Extensions of Person (Ci, Fn, Rc)
     /// </summary>
@@ -247,6 +246,32 @@ namespace NetDexTest_01.Services
 
             } );
 
+
+            
+            // READONE:
+            // var parent = await _userRepo.GetPersonPlusDexListVMAsync(dto.AppUsername, dto.ParentNickname);
+            // dto.PersonParentLc = parent?.LocalCounter ?? -4040;
+            // var child = await _userRepo.GetPersonPlusDexListVMAsync(dto.AppUsername, dto.ChildNickname);
+            // dto.PersonChildLc = child?.LocalCounter ?? -4040;
+            // READ MANY:
+            List<RelationshipVM> outListCount = new();
+            await relationshipVMs.ForEachAsync(async i =>
+            {
+                var parent = await _userRepo.GetPersonPlusDexListVMAsync(i.AppUsername, i.ParentNickname);
+                i.PersonParentLc = parent?.LocalCounter ?? -4040;
+                
+                var child = await _userRepo.GetPersonPlusDexListVMAsync(i.AppUsername, i.ChildNickname);
+                i.PersonChildLc = child?.LocalCounter ?? -4040;
+                
+                outListCount.Add(i);
+            });
+            outListCount.OrderBy(s => s.AppEmail)
+                    .ThenBy(p => p.PersonParentLc)
+                    .ThenBy(p => p.PersonChildLc)
+                    .ThenBy(p => p.RelationshipDescription);
+            relationshipVMs = outListCount;
+
+            
             return relationshipVMs;
         }
 
@@ -307,6 +332,31 @@ namespace NetDexTest_01.Services
                         await Console.Out.WriteLineAsync("\n\n\n------EMAIL MISMATCH---------\n\n\n");
                     }
                 });
+                
+                // READONE:
+                // var parent = await _userRepo.GetPersonPlusDexListVMAsync(dto.AppUsername, dto.ParentNickname);
+                // dto.PersonParentLc = parent?.LocalCounter ?? -4040;
+                // var child = await _userRepo.GetPersonPlusDexListVMAsync(dto.AppUsername, dto.ChildNickname);
+                // dto.PersonChildLc = child?.LocalCounter ?? -4040;
+                // READ MANY:
+                List<RelationshipVM> outListCount = new();
+                await relationshipVMs.ForEachAsync(async i =>
+                {
+                    var parent = await _userRepo.GetPersonPlusDexListVMAsync(i.AppUsername, i.ParentNickname);
+                    i.PersonParentLc = parent?.LocalCounter ?? -4040;
+                    
+                    var child = await _userRepo.GetPersonPlusDexListVMAsync(i.AppUsername, i.ChildNickname);
+                    i.PersonChildLc = child?.LocalCounter ?? -4040;
+                    
+                    outListCount.Add(i);
+                });
+                outListCount.OrderBy(s => s.AppEmail)
+                        .ThenBy(p => p.PersonParentLc)
+                        .ThenBy(p => p.PersonChildLc)
+                        .ThenBy(p => p.RelationshipDescription);
+                relationshipVMs = outListCount;
+
+                
                 return relationshipVMs;
             }
             else
@@ -350,6 +400,32 @@ namespace NetDexTest_01.Services
 
                 if (relationshipOut != null)
                 {
+
+                    // READONE:
+                    var parent = await _userRepo.GetPersonPlusDexListVMAsync(relationshipOut.AppUsername, relationshipOut.ParentNickname);
+                    relationshipOut.PersonParentLc = parent?.LocalCounter ?? -4040;
+                    var child = await _userRepo.GetPersonPlusDexListVMAsync(relationshipOut.AppUsername, relationshipOut.ChildNickname);
+                    relationshipOut.PersonChildLc = child?.LocalCounter ?? -4040;
+                    // READ MANY:
+                    // List<RelationshipVM> outListCount = new();
+                    // await relationshipVMs.ForEachAsync(async i =>
+                    // {
+                    //     var parent = await _userRepo.GetPersonPlusDexListVMAsync(i.AppUsername, i.ParentNickname);
+                    //     i.PersonParentLc = parent?.LocalCounter ?? -4040;
+
+                    //     var child = await _userRepo.GetPersonPlusDexListVMAsync(i.AppUsername, i.ChildNickname);
+                    //     i.PersonChildLc = child?.LocalCounter ?? -4040;
+
+                    //     outListCount.Add(i);
+                    // });
+                    // outListCount.OrderBy(s => s.AppEmail)
+                    //         .ThenBy(p => p.PersonParentLc)
+                    //         .ThenBy(p => p.PersonChildLc)
+                    //         .ThenBy(p => p.RelationshipDescription);
+                    // relationshipVMs = outListCount;
+
+
+
                     return relationshipOut;
                 }
                 else
