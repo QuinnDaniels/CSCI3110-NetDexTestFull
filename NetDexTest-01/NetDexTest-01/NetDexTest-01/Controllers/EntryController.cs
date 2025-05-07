@@ -79,7 +79,7 @@ namespace NetDexTest_01.Controllers
 
         [Route("create")]
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody] EntryItemVM item)
+        public async Task<IActionResult> Create([FromForm] EntryItemVM item)
         {
             if (await _repo.CreateEntryItemWithVMAsync(item))
                 return Ok("EntryItem created.");

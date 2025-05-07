@@ -881,7 +881,7 @@ export let DOM = {
         innerDiv.innerHTML =
             `<a class="btn btn-outline-primary" href="/dex/u/${input}/p/${criteria}/Edit/ie/${id}">Edit</a> | 
              <a class="btn btn-outline-danger" href="/dex/u/${input}/p/${criteria}/Delete/ie/${id}">Delete</a> |
-             <a class="btn btn-link" href="/dex/u/${input}/p/${criteria}/rec/ie">Back to List</a> `;
+             <a class="btn btn-link" href="/dex/u/${input}/p/${criteria}/rec/list/ie">Back to List</a> `;
         //div.appendChild(innerDiv);
         console.log("div buttons to add", innerDiv);
         return innerDiv;

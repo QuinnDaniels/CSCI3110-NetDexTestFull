@@ -13,14 +13,30 @@
     
 
 }
+
+<h1 id="entryHeading">GetEntryItemDetailedView</h1>
 <div id="emergencyLink">
-    <a href="/dex/u/@TempData["tUsername"]/p/@lastPerson/rec/list/ie">&lArr; Back to Entry List view</Details></a>
+    <a href="/dex/u/@TempData["tUsername"]/p/@TempData["LastPerson"]/rec/list/ie">&lArr; Back to Entry List view</a>
 </div>
+
+<input type="hidden" id="recordCollectorId" value="@TempData["entryId"]" />
+<input type="hidden" id="entryItemId" value="@ViewData["entryId"]" />
+<input type="hidden" id="email" value="@ViewData["LoggedInEmail"]" />
+<input type="hidden" id="username" value="@TempData["tUsername"]" />
+<input type="hidden" id="lastPerson" value="@TempData["LastPerson"]" />
+@* @try
+{
+
+}
+catch (Exception ex)
+{
+    <p id="errorOccurred">Error: " @ex "</p>
+}
+ *@
+
 @TempData["tEmail"]
 <h1> </h1>
 @* @TempData["LastPerson"] *@
-<hr/>
-<hr/>
 <hr/>
 
 @section Scripts {

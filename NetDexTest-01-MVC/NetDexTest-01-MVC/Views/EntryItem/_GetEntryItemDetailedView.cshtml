@@ -8,15 +8,15 @@
 
 
 
-<h1>GetEntryItemDetailedView</h1>
 
-<input type="hidden" id="recordCollectorId" value="@TempData["entryId"]" />
+
+@* <input type="hidden" id="recordCollectorId" value="@TempData["entryId"]" />
 <input type="hidden" id="entryItemId" value="@ViewData["entryId"]" />
 <input type="hidden" id="email" value="@ViewData["LoggedInEmail"]" />
-<input type="hidden" id="lastPerson" value="@TempData["LastPerson"]" />
+<input type="hidden" id="lastPerson" value="@TempData["LastPerson"]" /> *@
 
 
-<div id="miniView">
+@* <div id="miniView">
     <h2 id="title"></h2>
     <p id="flavor"></p>
     <p><small id="dateLogged"></small></p>
@@ -24,10 +24,10 @@
 
 
 <hr/>
+ *@
 
-
-<div>
-    <h4>EntryItemDTO</h4>
+<div id="entryItemContainer">
+    @* <h4 id="entryItemHeader">EntryItemDTO</h4> *@
     <hr />
     <div id="entryRedirectHolder">
         <p>
@@ -60,7 +60,8 @@
             @Html.DisplayFor(model => model.LogTimestamp)
         </dd>
         <dt class = "col-sm-2"  id="dt_RecordCollectorId">
-            @Html.DisplayNameFor(model => model.RecordCollectorId)
+            @* @Html.DisplayNameFor(model => model.RecordCollectorId) *@
+            RecCollectorId
         </dt>
         <dd class = "col-sm-10" id="dd_RecordCollectorId">
             @Html.DisplayFor(model => model.RecordCollectorId)
@@ -100,8 +101,8 @@
 
 
 
-@section Scripts {
+@* @section Scripts {
     <script type="module" src="~/js/entryItemDetails.js"></script>
 }
-
+ *@
 
