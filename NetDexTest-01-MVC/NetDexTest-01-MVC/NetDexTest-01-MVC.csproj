@@ -8,15 +8,18 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Remove="Views\SocialMedia\ListSocialMediasView.cshtml" />
     <Content Remove="wwwroot\js\userListAll.js" />
     <Content Remove="wwwroot\js\_adminTable.js" />
   </ItemGroup>
 
   <ItemGroup>
+    <_ContentIncludedByDefault Remove="Views\SocialMedia\ListSocialMediasView.cshtml" />
     <_ContentIncludedByDefault Remove="wwwroot\js\userListAll.js" />
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="Views\SocialMedia\ListSocialMediasView.cshtml" />
     <None Include="wwwroot\js\_adminTable.js" />
     <None Include="wwwroot\js\userListAll.js" />
   </ItemGroup>
@@ -27,6 +30,10 @@
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="8.0.7" />
     <PackageReference Include="Rick.Docs.Samples.RouteInfo" Version="1.0.0.8" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="8.1.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Views\SocialMedia\ListSocialMediasView.cshtml" />
   </ItemGroup>
 
 </Project>
