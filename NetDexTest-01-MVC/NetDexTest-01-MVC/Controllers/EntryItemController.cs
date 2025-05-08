@@ -46,21 +46,21 @@ namespace NetDexTest_01_MVC.Controllers
         [HttpGet(Name = "EntryItemList")]
         public async Task<IActionResult> ListEntryItemsView(string userId, string personId)
         {
-            await Console.Out.WriteLineAsync($"\n\n--GET---GetEntryItemDetailedView(userId)----ACCESSING---------\n");
+            await Console.Out.WriteLineAsync($"\n\n--GET---ListEntryItemsView(userId)----ACCESSING---------\n");
 
             if (!_userSessionService.IsLoggedIn()) RedirectToAction("Login", "Auth");
 
             bool roleFlag = await _userSessionService.HasAnyRoleAsync("Admin", "Administrator", "Moderator");
-            await Console.Out.WriteLineAsync($"\n\n--GET---GetEntryItemDetailedView(userId)-----------roleFlag---\n\t{roleFlag}");
+            await Console.Out.WriteLineAsync($"\n\n--GET---ListEntryItemsView(userId)-----------roleFlag---\n\t{roleFlag}");
             bool userFlag = await _userSessionService.HasAnyRoleAsync("User");
-            await Console.Out.WriteLineAsync($"\n\n--GET---GetEntryItemDetailedView(userId)-----------userFlag---\n\t{userFlag}");
+            await Console.Out.WriteLineAsync($"\n\n--GET---ListEntryItemsView(userId)-----------userFlag---\n\t{userFlag}");
             bool currentUserFlag = await _authService.CheckInputAgainstSessionAsync(userId);
-            await Console.Out.WriteLineAsync($"\n\n--GET---GetEntryItemDetailedView(userId)----currentUserFlag---\n\t{currentUserFlag}");
+            await Console.Out.WriteLineAsync($"\n\n--GET---ListEntryItemsView(userId)----currentUserFlag---\n\t{currentUserFlag}");
 
             //bool userExists = await _authService.CheckIfUserExistsAsync(userId);
-            //await Console.Out.WriteLineAsync($"\n\n--GET---GetEntryItemDetailedView(userId)------userExists?-----\n\t{userExists}");
+            //await Console.Out.WriteLineAsync($"\n\n--GET---ListEntryItemsView(userId)------userExists?-----\n\t{userExists}");
             bool userPersonExists = await _authService.CheckIfUserExistsAsync(userId);//, personId);
-            await Console.Out.WriteLineAsync($"\n\n--GET---GetEntryItemDetailedView(userId)------userPersonExists?-----\n\t{userPersonExists}");
+            await Console.Out.WriteLineAsync($"\n\n--GET---ListEntryItemsView(userId)------userPersonExists?-----\n\t{userPersonExists}");
 
             //var url = Url.RouteUrl("DexListDestination");
             if (userPersonExists)
@@ -79,7 +79,7 @@ namespace NetDexTest_01_MVC.Controllers
                     // we're working with the confirmed current user, so just get the email that's stored in user session service
                     ViewData["LoggedInEmail"] = _userSessionService.GetEmail();
                     TempData["tEmail"] = _userSessionService.GetEmail();
-                    //return RedirectToAction("GetEntryItemDetailedView", "People");
+                    //return RedirectToAction("ListEntryItemsView", "People");
                     TempData["tUsername"] = _userSessionService.GetUsername();
                     ViewData["tUsername"] = _userSessionService.GetUsername();
 
@@ -225,21 +225,21 @@ namespace NetDexTest_01_MVC.Controllers
             [HttpGet(Name = "EntryItemEdit")]
             public async Task<IActionResult> EditEntryItemView(string userId, string personId, long entryItemId)
             {
-            await Console.Out.WriteLineAsync($"\n\n--GET---GetEntryItemDetailedView(userId)----ACCESSING---------\n");
+            await Console.Out.WriteLineAsync($"\n\n--GET---EditEntryItemView(userId)----ACCESSING---------\n");
 
             if (!_userSessionService.IsLoggedIn()) RedirectToAction("Login", "Auth");
 
             bool roleFlag = await _userSessionService.HasAnyRoleAsync("Admin", "Administrator", "Moderator");
-            await Console.Out.WriteLineAsync($"\n\n--GET---GetEntryItemDetailedView(userId)-----------roleFlag---\n\t{roleFlag}");
+            await Console.Out.WriteLineAsync($"\n\n--GET---EditEntryItemView(userId)-----------roleFlag---\n\t{roleFlag}");
             bool userFlag = await _userSessionService.HasAnyRoleAsync("User");
-            await Console.Out.WriteLineAsync($"\n\n--GET---GetEntryItemDetailedView(userId)-----------userFlag---\n\t{userFlag}");
+            await Console.Out.WriteLineAsync($"\n\n--GET---EditEntryItemView(userId)-----------userFlag---\n\t{userFlag}");
             bool currentUserFlag = await _authService.CheckInputAgainstSessionAsync(userId);
-            await Console.Out.WriteLineAsync($"\n\n--GET---GetEntryItemDetailedView(userId)----currentUserFlag---\n\t{currentUserFlag}");
+            await Console.Out.WriteLineAsync($"\n\n--GET---EditEntryItemView(userId)----currentUserFlag---\n\t{currentUserFlag}");
 
             //bool userExists = await _authService.CheckIfUserExistsAsync(userId);
-            //await Console.Out.WriteLineAsync($"\n\n--GET---GetEntryItemDetailedView(userId)------userExists?-----\n\t{userExists}");
+            //await Console.Out.WriteLineAsync($"\n\n--GET---EditEntryItemView(userId)------userExists?-----\n\t{userExists}");
             bool userPersonExists = await _authService.CheckIfUserExistsAsync(userId);//, personId);
-            await Console.Out.WriteLineAsync($"\n\n--GET---GetEntryItemDetailedView(userId)------userPersonExists?-----\n\t{userPersonExists}");
+            await Console.Out.WriteLineAsync($"\n\n--GET---EditEntryItemView(userId)------userPersonExists?-----\n\t{userPersonExists}");
 
             //var url = Url.RouteUrl("DexListDestination");
             if (userPersonExists)
@@ -370,21 +370,21 @@ namespace NetDexTest_01_MVC.Controllers
             [HttpGet(Name = "EntryItemDelete")]
             public async Task<IActionResult> DeleteEntryItemView(string userId, string personId, long entryItemId)
             {
-            await Console.Out.WriteLineAsync($"\n\n--GET---GetEntryItemDetailedView(userId)----ACCESSING---------\n");
+            await Console.Out.WriteLineAsync($"\n\n--GET---DeleteEntryItemView(userId)----ACCESSING---------\n");
 
             if (!_userSessionService.IsLoggedIn()) RedirectToAction("Login", "Auth");
 
             bool roleFlag = await _userSessionService.HasAnyRoleAsync("Admin", "Administrator", "Moderator");
-            await Console.Out.WriteLineAsync($"\n\n--GET---GetEntryItemDetailedView(userId)-----------roleFlag---\n\t{roleFlag}");
+            await Console.Out.WriteLineAsync($"\n\n--GET---DeleteEntryItemView(userId)-----------roleFlag---\n\t{roleFlag}");
             bool userFlag = await _userSessionService.HasAnyRoleAsync("User");
-            await Console.Out.WriteLineAsync($"\n\n--GET---GetEntryItemDetailedView(userId)-----------userFlag---\n\t{userFlag}");
+            await Console.Out.WriteLineAsync($"\n\n--GET---DeleteEntryItemView(userId)-----------userFlag---\n\t{userFlag}");
             bool currentUserFlag = await _authService.CheckInputAgainstSessionAsync(userId);
-            await Console.Out.WriteLineAsync($"\n\n--GET---GetEntryItemDetailedView(userId)----currentUserFlag---\n\t{currentUserFlag}");
+            await Console.Out.WriteLineAsync($"\n\n--GET---DeleteEntryItemView(userId)----currentUserFlag---\n\t{currentUserFlag}");
 
             //bool userExists = await _authService.CheckIfUserExistsAsync(userId);
-            //await Console.Out.WriteLineAsync($"\n\n--GET---GetEntryItemDetailedView(userId)------userExists?-----\n\t{userExists}");
+            //await Console.Out.WriteLineAsync($"\n\n--GET---DeleteEntryItemView(userId)------userExists?-----\n\t{userExists}");
             bool userPersonExists = await _authService.CheckIfUserExistsAsync(userId);//, personId);
-            await Console.Out.WriteLineAsync($"\n\n--GET---GetEntryItemDetailedView(userId)------userPersonExists?-----\n\t{userPersonExists}");
+            await Console.Out.WriteLineAsync($"\n\n--GET---DeleteEntryItemView(userId)------userPersonExists?-----\n\t{userPersonExists}");
 
             //var url = Url.RouteUrl("DexListDestination");
             if (userPersonExists)
@@ -400,7 +400,7 @@ namespace NetDexTest_01_MVC.Controllers
                     TempData["tUsername"] = _userSessionService.GetUsername();
                     ViewData["tUsername"] = _userSessionService.GetUsername();
                     TempData["tEmail"] = _userSessionService.GetEmail();
-                    //return RedirectToAction("GetEntryItemDetailedView", "People");
+                    //return RedirectToAction("DeleteEntryItemView", "People");
                     return View();
                     //return ControllerContext.MyDisplayRouteInfo("", $" URL = {url}");
                 }
@@ -458,21 +458,21 @@ namespace NetDexTest_01_MVC.Controllers
             [HttpGet(Name = "EntryItemCreate")]
             public async Task<IActionResult> CreateEntryItemView(string userId, string personId)
             {
-            await Console.Out.WriteLineAsync($"\n\n--GET---GetEntryItemDetailedView(userId)----ACCESSING---------\n");
+            await Console.Out.WriteLineAsync($"\n\n--GET---CreateEntryItemView(userId)----ACCESSING---------\n");
 
             if (!_userSessionService.IsLoggedIn()) RedirectToAction("Login", "Auth");
 
             bool roleFlag = await _userSessionService.HasAnyRoleAsync("Admin", "Administrator", "Moderator");
-            await Console.Out.WriteLineAsync($"\n\n--GET---GetEntryItemDetailedView(userId)-----------roleFlag---\n\t{roleFlag}");
+            await Console.Out.WriteLineAsync($"\n\n--GET---CreateEntryItemView(userId)-----------roleFlag---\n\t{roleFlag}");
             bool userFlag = await _userSessionService.HasAnyRoleAsync("User");
-            await Console.Out.WriteLineAsync($"\n\n--GET---GetEntryItemDetailedView(userId)-----------userFlag---\n\t{userFlag}");
+            await Console.Out.WriteLineAsync($"\n\n--GET---CreateEntryItemView(userId)-----------userFlag---\n\t{userFlag}");
             bool currentUserFlag = await _authService.CheckInputAgainstSessionAsync(userId);
-            await Console.Out.WriteLineAsync($"\n\n--GET---GetEntryItemDetailedView(userId)----currentUserFlag---\n\t{currentUserFlag}");
+            await Console.Out.WriteLineAsync($"\n\n--GET---CreateEntryItemView(userId)----currentUserFlag---\n\t{currentUserFlag}");
 
             //bool userExists = await _authService.CheckIfUserExistsAsync(userId);
-            //await Console.Out.WriteLineAsync($"\n\n--GET---GetEntryItemDetailedView(userId)------userExists?-----\n\t{userExists}");
+            //await Console.Out.WriteLineAsync($"\n\n--GET---CreateEntryItemView(userId)------userExists?-----\n\t{userExists}");
             bool userPersonExists = await _authService.CheckIfUserExistsAsync(userId);//, personId);
-            await Console.Out.WriteLineAsync($"\n\n--GET---GetEntryItemDetailedView(userId)------userPersonExists?-----\n\t{userPersonExists}");
+            await Console.Out.WriteLineAsync($"\n\n--GET---CreateEntryItemView(userId)------userPersonExists?-----\n\t{userPersonExists}");
 
             //var url = Url.RouteUrl("DexListDestination");
             if (userPersonExists)
