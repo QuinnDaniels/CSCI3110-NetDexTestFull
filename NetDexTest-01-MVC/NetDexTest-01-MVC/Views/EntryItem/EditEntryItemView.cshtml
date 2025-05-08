@@ -7,16 +7,23 @@
     var loggedInEmail = ViewData["LoggedInEmail"]?.ToString();
     var lastPerson = ViewData["LastPerson"]?.ToString();
 
+    // @TempData["tRecordCollectorId"]"
+    // @ViewData["entryId"]"
+
+    //@ViewData["entryId"]"
+    //@TempData["tRecordCollectorId"]"
+
+
 }
+
+@* <h4>EntryItemVM</h4>
+<hr /> *@
+
+
+<h4 id="entryHeading">EditEntryItemView</h4>
 <h1>EditEntryItemView</h1>
-
-<h4>EntryItemVM</h4>
-<hr />
-
-
-<h1 id="entryHeading">GetEntryItemDetailedView</h1>
 <div id="emergencyLink">
-    <a href="/dex/u/@TempData["tUsername"]/p/@TempData["LastPerson"]/rec/list/ie">&lArr; Back to Entry List view</a>
+    <a href="/dex/u/@ViewData["LoggedInEmail"]/p/@TempData["LastPerson"]/rec/list/ie">&lArr; Back to Entry List view</a>
 </div>
 
 <div type="hidden" id="fallbackInfo">
@@ -32,16 +39,58 @@
 <h1> </h1>
 @* @TempData["LastPerson"] *@
 <hr />
+<form id="editEntryForm">
+    <input type="hidden" name="RecordCollectorId" id="_record" value="@TempData["tRecordCollectorId"]" />
+    <input type="hidden" name="Id" id="_entry" value="@TempData["entryId"]" />
 
+    <div class="form-group">
+        <label for="ShortTitle">Short Title</label>
+        <input type="text" class="form-control" id="_ShortTitle" name="ShortTitle" value="@TempData["oldTitle"]" />   @* value="@Model.ShortTitle" *@
+        @* required *@
+    </div>
 
+    <div class="form-group">
+        <label for="FlavorText">Flavor Text</label>
+        <textarea class="form-control" id="_FlavorText" name="FlavorText" rows="5" value="@TempData["oldFlavor"]" required>@TempData["oldFlavor"]</textarea> @* @Model.FlavorText *@   @* value="@Model.ShortTitle" *@
+    </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
+    <div class="form-group">
+        <button type="submit" class="btn btn-success">Save</button>
+    </div>
+
+</form>
+<div itemid="cancelButton">
+    <a class="btn btn-secondary" href="/dex/u/@ViewData["LoggedInEmail"]/p/@TempData["LastPerson"]/rec/list/ie">
+        Back to
+        List
+    </a>
 </div>
+
+<hr>
+
+<form id="oldRecordCollection">
+    <div class="form-group row">
+        <label class="col-sm-2 col-form-label"  for="_oldShortTitle">Current Entry:</label>
+        @* <p>Current Entry:</p> *@
+        <input class="form-control" type="readonly" readonly name="ShortTitle" id="_oldShortTitle" value="@TempData["oldTitle"]" />
+    </div>
+
+    <div class="form-group">
+        <input hidden type="readonly" readonly name="FlavorText" id="_oldFlavorTextDisplay"
+            value="@TempData["oldFlavor"]" />
+    </div>
+    <div class="form-group row">
+        <label for="ShortTitle" class="col-sm-2 col-form-label">Current Entry:</label>
+        <textarea rows="10" class="form-control" type="readonly" readonly name="FlavorText" id="_oldFlavorTextDisplay">@TempData["oldFlavor"] </textarea>
+    </div>
+</form>
+
+
 
 @section Scripts {
     @{
-        await Html.RenderPartialAsync("_EditEntryItemView");
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+        //await Html.RenderPartialAsync("_EditEntryItemView");
     }
 
     <script src="~/js/entryItemEdit.js" type="module" defer></script>

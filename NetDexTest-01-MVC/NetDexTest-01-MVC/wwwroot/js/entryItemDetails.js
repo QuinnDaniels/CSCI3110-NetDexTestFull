@@ -43,8 +43,8 @@ async function fetchEntryItem(entryItemId) {
         const shorttitle = document.getElementById("dd_ShortTitle");
         const flavortext = document.getElementById("dd_FlavorText");
         const logtimestamp = document.getElementById("dd_LogTimestamp");
-        const entryitemid = document.getElementById("dd_EntryItemId");
-        const recordcollectorid = document.getElementById("dd_RecordCollectorId");
+        const entryitemid = document.getElementById("dd_EntryItemId").toString();
+        const recordcollectorid = document.getElementById("dd_RecordCollectorId").toString();
 
         DOM.removeChildren(entryitemid);
         DOM.removeChildren(shorttitle);
@@ -55,8 +55,8 @@ async function fetchEntryItem(entryItemId) {
         DOM.setElementText("#dd_ShortTitle", item.shortTitle);
         DOM.setElementText("#dd_FlavorText", item.flavorText);
         DOM.setElementText("#dd_LogTimestamp", stamp);
-        DOM.setElementText("#dd_EntryItemId", item.entryItemId);
-        DOM.setElementText("#dd_RecordCollectorId", item.recordCollectorId);
+        DOM.setElementText("#dd_EntryItemId", item.entryItemId.toString());
+        DOM.setElementText("#dd_RecordCollectorId", item.recordCollectorId.toString());
 
         // DOM.setElementText("#dd_title", shortitle);
         // DOM.setElementText("#dd_flavor", item.flavorText);
@@ -66,7 +66,7 @@ async function fetchEntryItem(entryItemId) {
 
         const linker = document.getElementById("entryRedirectHolder");
         DOM.removeChildren(entryRedirectHolder);
-        linker.appendChild(DOM.entryItemDetailsButtons(email, lastPerson, item.entryItemId)); //, records, contacts));
+        linker.appendChild(DOM.entryItemDetailsButtons(email, lastPerson, item.entryItemId.toString())); //, records, contacts));
 
         let entryHeading = document.getElementById("entryHeading");
         DOM.removeChildren(entryHeading);
@@ -81,6 +81,6 @@ async function fetchEntryItem(entryItemId) {
 }
 
 window.onload = () =>  {
-    const id = document.getElementById("entryItemId").value;
+    const id = document.getElementById("entryItemId").value.toString();
      fetchEntryItem(id);
 };

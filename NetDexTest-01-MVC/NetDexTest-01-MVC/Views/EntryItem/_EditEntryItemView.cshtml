@@ -1,8 +1,8 @@
 @model NetDexTest_01_MVC.Models.ViewModels.EntryItemVM
-@{
+@* @{
     ViewData["Title"] = "_EditEntryItemView.cshtml";
 }
-
+ *@
 <h5 id="editEntryFormHeading">@ViewData["Title"]</h5>
 
 
@@ -37,11 +37,11 @@
     <input type="readonly" name="FlavorText" id="_oldFlavorText" value="@TempData["oldFlavor"]" />
 </form>
 
-@section Scripte {
+@* @section Scripts {
         @try{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
         catch (Exception ex)
         {
             await Console.Out.WriteLineAsync($"\n\n\n-----------------------\n\t_EditEntryItemView.cshtml\n----------------------------\n\nAn ERROR Occurred while trying to load validation scipts! :\n\n\t\t{ex.Message}");
         }
 
-}
+} *@

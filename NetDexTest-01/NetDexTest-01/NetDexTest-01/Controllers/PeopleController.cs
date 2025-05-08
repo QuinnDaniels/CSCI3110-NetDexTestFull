@@ -60,7 +60,15 @@ namespace NetDexTest_01.Controllers
                 return NotFound();
             }
 
-            return Ok(person);
+            return Ok(new
+            {
+                Nickname = person.Nickname, //tokenResponse.UserOut
+                //Username = user.UserName,
+                //Roles = rolesString, //tokenResponse.Roles,
+                //AccessToken = tokenResponse.Token,
+                //RefreshToken = tokenResponse.RefreshToken //refreshToken //tokenResponse.RefreshToken
+            }); 
+
         }
 
 

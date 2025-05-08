@@ -100,8 +100,8 @@ namespace NetDexTest_01_MVC.Controllers
                     ViewData["LastPerson"] = _userSessionService.GetTempPerson();
                     TempData["tUsername"] = _userSessionService.GetUsername();
                     ViewData["tUsername"] = _userSessionService.GetUsername();
-                    // TempData["entryId"] = entryItemId;
-                    // ViewData["entryId"] = entryItemId;
+                    // TempData["entryId"] = entryItemId.ToString();
+                    // ViewData["entryId"] = entryItemId.ToString();
 
 
                     // HACK - hopefully this shouldnt need to include anything about record collector
@@ -158,13 +158,15 @@ namespace NetDexTest_01_MVC.Controllers
 
                         TempData["LastPerson"] = _userSessionService.GetTempPerson();
                         ViewData["LastPerson"] = _userSessionService.GetTempPerson();
+                        await Console.Out.WriteLineAsync($"\n++++++++++++\n\temail:\t{_userSessionService.GetTempEmail()}");
                         // we're working with the confirmed current user, so just get the email that's stored in user session service
                         ViewData["LoggedInEmail"] = _userSessionService.GetEmail();
+                        TempData["LoggedInEmail"] = _userSessionService.GetEmail();
                         TempData["tEmail"] = _userSessionService.GetEmail();
                         TempData["tUsername"] = _userSessionService.GetUsername();
                         ViewData["tUsername"] = _userSessionService.GetUsername();
-                        TempData["entryId"] = entryItemId;
-                        ViewData["entryId"] = entryItemId;
+                        TempData["entryId"] = entryItemId.ToString();
+                        ViewData["entryId"] = entryItemId.ToString();
                         //return RedirectToAction("GetEntryItemDetailedView", "People");
                         return View();
                         //return ControllerContext.MyDisplayRouteInfo("", $" URL = {url}");
@@ -178,14 +180,17 @@ namespace NetDexTest_01_MVC.Controllers
 
                         await _userSessionService.SetTempPersonAsync(personId);
                         await Console.Out.WriteLineAsync($"\n\n--GET---DetailsViewByRoute(userId)------Using temp email!-----\n\t{_userSessionService.GetTempEmail()}");
+                        
+                        await Console.Out.WriteLineAsync($"\n++++++++++++++++++\n\temail:\t{_userSessionService.GetTempEmail()}");
                         ViewData["LoggedInEmail"] = _userSessionService.GetTempEmail();
+                        TempData["LoggedInEmail"] = _userSessionService.GetTempEmail();
                         TempData["tEmail"] = _userSessionService.GetTempEmail();
                         TempData["LastPerson"] = _userSessionService.GetTempPerson();
                         ViewData["LastPerson"] = _userSessionService.GetTempPerson();
                         ViewData["tUsername"] = _userSessionService.GetUsername();
                         TempData["tUsername"] = _userSessionService.GetUsername();
-                        TempData["entryId"] = entryItemId;
-                        ViewData["entryId"] = entryItemId;
+                        TempData["entryId"] = entryItemId.ToString();
+                        ViewData["entryId"] = entryItemId.ToString();
 
 
 
@@ -249,7 +254,7 @@ namespace NetDexTest_01_MVC.Controllers
                     ViewData["LoggedInEmail"] = _userSessionService.GetEmail();
                     TempData["tEmail"] = _userSessionService.GetEmail();
                     TempData["entryId"] = entryItemId.ToString();
-                    ViewData["entryId"] = entryItemId;
+                    ViewData["entryId"] = entryItemId.ToString();
 
                     try
                     {
@@ -295,7 +300,7 @@ namespace NetDexTest_01_MVC.Controllers
                     TempData["LastPerson"] = _userSessionService.GetTempPerson();
                     ViewData["LastPerson"] = _userSessionService.GetTempPerson();
                     TempData["entryId"] = entryItemId.ToString();
-                    ViewData["entryId"] = entryItemId;
+                    ViewData["entryId"] = entryItemId.ToString();
 
 
                     try
@@ -412,8 +417,8 @@ namespace NetDexTest_01_MVC.Controllers
                     ViewData["LastPerson"] = _userSessionService.GetTempPerson();
                     // HACK - hopefully this shouldnt need to include anything about record collector
                     // NOTE - UPDATE: It totally fucking did!!!!
-                    TempData["entryId"] = entryItemId;
-                    ViewData["entryId"] = entryItemId;
+                    TempData["entryId"] = entryItemId.ToString();
+                    ViewData["entryId"] = entryItemId.ToString();
                     try
                     {
                         var person = await _personService.GetPersonPlusDexListVMAsync(_userSessionService.GetEmail(), personId);
@@ -482,6 +487,7 @@ namespace NetDexTest_01_MVC.Controllers
                     TempData["tUsername"] = _userSessionService.GetUsername();
                     TempData["tUsername"] = _userSessionService.GetUsername();
                     ViewData["LoggedInEmail"] = _userSessionService.GetEmail();
+                    TempData["LoggedInEmail"] = _userSessionService.GetEmail();
                     TempData["tEmail"] = _userSessionService.GetEmail();
                     try
                     {
@@ -513,6 +519,7 @@ namespace NetDexTest_01_MVC.Controllers
                     await _userSessionService.SetTempPersonAsync(personId);
                     await Console.Out.WriteLineAsync($"\n\n--GET---DetailsViewByRoute(userId)------Using temp email!-----\n\t{_userSessionService.GetTempEmail()}");
                     ViewData["LoggedInEmail"] = _userSessionService.GetTempEmail();
+                    TempData["LoggedInEmail"] = _userSessionService.GetTempEmail();
                     TempData["tEmail"] = _userSessionService.GetTempEmail();
                     TempData["LastPerson"] = _userSessionService.GetTempPerson();
                     ViewData["tUsername"] = _userSessionService.GetUsername();
@@ -526,7 +533,7 @@ namespace NetDexTest_01_MVC.Controllers
                             return NotFound();
                         }
                         await _userSessionService.SetTempPersonAsync(person.RecordCollectorId, person.ContactInfoId);
-                        TempData["tRecordCollectorId"] = _userSessionService.GetTempRecordCollector();
+                        TempData["RecordCollectorId"] = _userSessionService.GetTempRecordCollector();
                         //TempData["tContactInfoId"] = _userSessionService.GetTempContactInfo();
                         ViewData["RecordCollectorId"] = _userSessionService.GetTempRecordCollector();
                         //ViewData["ContactInfoId"] = _userSessionService.GetTempContactInfo();

@@ -158,6 +158,32 @@ export class PersonRepository { //create a class and export it (for use in UserI
         }
 
 
+    async readNickname(id) {
+        const address = `${this.#baseAddress}/${id}`;
+        //return await response.json();
+
+        const response = await fetch(address, {
+            method: "GET",
+            //body: formData
+        });
+        console.log("response: ", response, response.body);
+
+        if (!response.ok) {
+            console.log("status code",response.status);
+            console.log("status message",response.statusText);
+            console.log(address);
+            throw new Error("There was an HTTP error creating the person data.");
+        }
+        const result = await response.json();
+        console.log("Success:", result);
+        return result;
+        }
+        catch(error) {
+            console.error("Error:", error);
+        }
+
+
+
 
 
     async makeHttpCallAsync(method, url, data) {

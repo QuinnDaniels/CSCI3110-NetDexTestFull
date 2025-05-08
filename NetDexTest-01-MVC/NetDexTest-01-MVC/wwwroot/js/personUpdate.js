@@ -20,6 +20,9 @@ console.log("localCounter:", personId);
 
 await populatePersonData();
 const updatePersonForm = document.getElementById("updatePersonForm");
+
+
+
 updatePersonForm.addEventListener("submit", async (e) => {
     e.preventDefault();
     const formData = new FormData(updatePersonForm);
@@ -56,9 +59,14 @@ async function populatePersonData() {
 
         DOM.removeChildren(personHeading);
         personHeading.appendChild(document.createTextNode(`${localCounter} - ${person.nickname}`));
+
+        
+        
+        
     }
     catch (error) {
         console.log(error);
         window.location.replace(`/dex/u/${currentEmail}`);
     }
 }
+console.log("form: ", updatePersonForm);

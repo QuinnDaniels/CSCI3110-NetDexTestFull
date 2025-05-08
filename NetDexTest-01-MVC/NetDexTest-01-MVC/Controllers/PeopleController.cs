@@ -283,7 +283,7 @@ namespace NetDexTest_01_MVC.Controllers
                         var person = await _personService.GetPersonPlusDexListVMAsync(id, criteria);
                         if (person == null)
                         {
-                            return NotFound();
+                            return NotFound("first try - person returned null. (userflag and currentflag are true) try refreshing?");
                         }
                         await _userSessionService.SetTempPersonAsync(person.RecordCollectorId, person.ContactInfoId);
                         TempData["tRecordCollectorId"] = _userSessionService.GetTempRecordCollector();
@@ -327,7 +327,7 @@ namespace NetDexTest_01_MVC.Controllers
                         var person = await _personService.GetPersonPlusDexListVMAsync(id, criteria);
                         if (person == null)
                         {
-                            return NotFound();
+                            return NotFound("second try - person returned null. (roleflag is true) try refreshing?");
                         }
                         await _userSessionService.SetTempPersonAsync(person.RecordCollectorId, person.ContactInfoId);
                         TempData["tRecordCollectorId"] = _userSessionService.GetTempRecordCollector();

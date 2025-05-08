@@ -16,7 +16,7 @@
 
 <h1 id="entryHeading">GetEntryItemDetailedView</h1>
 <div id="emergencyLink">
-    <a href="/dex/u/@TempData["tUsername"]/p/@TempData["LastPerson"]/rec/list/ie">&lArr; Back to Entry List view</a>
+    <a href="/dex/u/@ViewData["LoggedInEmail"]/p/@TempData["LastPerson"]/rec/list/ie">&lArr; Back to Entry List view</a>
 </div>
 
 <input type="hidden" id="recordCollectorId" value="@TempData["tRecordCollectorId"]" />
@@ -40,13 +40,9 @@ catch (Exception ex)
 <hr/>
 
 @section Scripts {
-    @{
-        // include the partial view
-        //
-        //  5
-        await Html.RenderPartialAsync("_GetEntryItemDetailedView");
-    }
     <script src="~/js/entryItemDetails.js" type="module" defer></script>
     <script type="text/javascript">
     </script>
+    @{ await Html.RenderPartialAsync("_GetEntryItemDetailedView");
+    }
 }

@@ -82,7 +82,30 @@ namespace NetDexTest_01.Controllers
         public async Task<IActionResult> Create([FromForm] EntryItemVM item)
         {
             if (await _repo.CreateEntryItemWithVMAsync(item))
-                return Ok("EntryItem created.");
+            {
+                var result = await _personRepo.ReadRecordByIdAsync(item.RecordCollectorId);
+
+                var returner = result.EntryItems.FirstOrDefault(e => e.ShortTitle == item.ShortTitle && e.FlavorText == item.FlavorText && e.RecordCollectorId == item.RecordCollectorId);
+
+                if (returner == null) return NotFound();
+                return Ok(returner);
+                //    new
+                //{
+
+                    // = inPerson.Nickname,
+                    //DateOfBirth = inPerson.DateOfBirth,
+                    //Gender = inPerson.Gender,
+                    //Pronouns = inPerson.Pronouns,
+                    //Rating = inPerson.Rating,
+                    //Favorite = inPerson.Favorite,
+                    //Email = person.Email);
+                //});
+
+
+            }
+
+
+                //return Ok("EntryItem created.");
             return BadRequest("Invalid Person or EntryItem.");
         }
 
@@ -113,7 +136,11 @@ namespace NetDexTest_01.Controllers
         public async Task<IActionResult> PutUpdate([FromForm] EntryItemVM item)
         {
             if (await _repo.UpdateEntryItemAsync(item))
-                return Ok("EntryItem updated.");
+            {
+                var entry = await _context.EntryItem.FindAsync(item.Id);
+                
+                return Ok(entry);
+            }
             return BadRequest("Invalid Entry or Person.");
         }
 

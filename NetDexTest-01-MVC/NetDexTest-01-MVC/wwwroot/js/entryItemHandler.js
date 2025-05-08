@@ -38,14 +38,22 @@ export const EntryItemService = {
         if (res.ok != true){ throw new Error("Failed to create entry."); }
         return await res.json();
     },
-
+    
     async update(form) {
+        console.log("update(form): ", form);
         const formData = new FormData(form);
         const res = await fetch(`${apiBase}/put`, {
             method: "PUT",
             body: formData
         });
-        if (!res.ok) throw new Error("Failed to update entry.");
+        console.log("update response: ", res);
+        console.log("update response: ", res.status, res.statusText);
+        console.log("update response json: ", res.json);
+        console.log("update response ok: ", res.ok);
+        if (!res.ok){
+            alert("failed to update");
+            throw new Error("Failed to update entry.");
+        } 
     },
 
     async delete(id) {
