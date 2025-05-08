@@ -34,6 +34,7 @@ namespace NetDexTest_01_MVC
             builder.Services.AddScoped<IUserService, UserService>();
             // TODO
             builder.Services.AddScoped<IEntryItemService, EntryItemService>();
+            builder.Services.AddScoped<ISocialMediaService, SocialMediaService>();
             //builder.Services.AddScoped<ISocialMediaRepository, SocialMediaService>();
 
             builder.Services.AddDistributedMemoryCache(); // Required

@@ -1,0 +1,125 @@
+﻿@model IEnumerable<NetDexTest_01_MVC.Models.ViewModels.SocialMediaDTO>
+@{
+    // TODO - convert this into a proper partial view
+
+}
+
+@{
+    ViewData["Title"] = "Social Medias List";
+    var loggedInEmail = ViewData["LoggedInEmail"]?.ToString();
+    var lastPerson = ViewData["LastPerson"]?.ToString();
+}
+
+<h2>Social Medias</h2>
+
+<p>
+    <a class="btn btn-primary" href="/dex/u/@loggedInEmail/p/@lastPerson/create/cont/soc">Create New Social Media</a>
+</p>
+
+<div>
+    <table class="table" id="socialmediaTable">
+        <thead>
+            <tr>
+                <th>Category Field</th>
+                <th>Social Handle</th>
+                <th>Logged</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody id="socialmediaTableBody">
+            <tr>
+                <td colspan="4">Loading...</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+
+
+
+
+<input type="hidden" id="userId" value="@loggedInEmail" />
+<input type="hidden" id="personId" value="@lastPerson" />
+
+@section Scripts {
+    <script type="module" src="~/js/socialMediasList.js" defer></script>
+}
+
+@* <table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.SocialMediaId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ContactInfoId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PersonId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DexHolderId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PersonNickname)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ApplicationUserEmail)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ApplicationUserName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CategoryField)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FlavorText)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.LogTimestamp)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.SocialMediaId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ContactInfoId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PersonId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DexHolderId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PersonNickname)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ApplicationUserEmail)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ApplicationUserName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CategoryField)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FlavorText)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.LogTimestamp)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+            </td>
+        </tr>
+}
+    </tbody>
+</table> *@

@@ -1,0 +1,79 @@
+﻿@model NetDexTest_01_MVC.Models.ViewModels.SocialMediaDTO
+
+@* @{
+    var loggedInEmail = ViewData["LoggedInEmail"]?.ToString();
+
+    var lastPerson = ViewData["LastPerson"]?.ToString();
+} *@
+
+
+
+
+
+@* <input type="hidden" id="contactInfoId" value="@TempData["entryId"]" />
+<input type="hidden" id="socialMediaId" value="@ViewData["entryId"]" />
+<input type="hidden" id="email" value="@ViewData["LoggedInEmail"]" />
+<input type="hidden" id="lastPerson" value="@TempData["LastPerson"]" /> *@
+
+
+@* <div id="miniView">
+    <h2 id="title"></h2>
+    <p id="flavor"></p>
+    <p><small id="dateLogged"></small></p>
+</div>
+
+
+<hr/>
+ *@
+
+<div id="socialMediaContainer">
+    @* <h4 id="socialMediaHeader">SocialMediaDTO</h4> *@
+    <hr />
+    <div id="entryRedirectHolder">
+        <p>
+            Links to interact with the entry go here!
+        </p>
+    </div>
+    <dl class="row">
+        <dt class="col-sm-2" id="dt_SocialMediaId">
+            @Html.DisplayNameFor(model => model.SocialMediaId)
+        </dt>
+        <dd class="col-sm-10" id="dd_SocialMediaId">
+            @Html.DisplayFor(model => model.SocialMediaId)
+        </dd>
+        <dt class="col-sm-2" id="dt_CategoryField">
+            @Html.DisplayNameFor(model => model.CategoryField)
+        </dt>
+        <dd class="col-sm-10" id="dd_CategoryField">
+            @Html.DisplayFor(model => model.CategoryField)
+        </dd>
+        <dt class="col-sm-2" id="dt_SocialHandle">
+            @Html.DisplayNameFor(model => model.SocialHandle)
+        </dt>
+        <dd class="col-sm-10" id="dd_SocialHandle">
+            @Html.DisplayFor(model => model.SocialHandle)
+        </dd>
+        <dt class="col-sm-2" id="dt_LogTimestamp">
+            @Html.DisplayNameFor(model => model.LogTimestamp)
+        </dt>
+        <dd class="col-sm-10" id="dd_LogTimestamp">
+            @Html.DisplayFor(model => model.LogTimestamp)
+        </dd>
+        <dt class="col-sm-2" id="dt_ContactInfoId">
+            @* @Html.DisplayNameFor(model => model.ContactInfoId) *@
+            ContactInfoId
+        </dt>
+        <dd class="col-sm-10" id="dd_ContactInfoId">
+            @Html.DisplayFor(model => model.ContactInfoId)
+        </dd>
+
+    </dl>
+</div>
+
+
+
+@* @section Scripts {
+    <script type="module" src="~/js/socialMediaDetails.js"></script>
+}
+ *@
+

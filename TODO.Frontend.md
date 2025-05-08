@@ -69,13 +69,13 @@ public ValuesController : ApiController
  ~~eventually: {localCount} (?) I mean, we can use DexHolderListVM -> List<PersonListDexVM> on the backend and since we're already passing email, I mean it should work. but. later...~~ 
 |
 V
-- [ ] `/dex/{input!}/p/{nickname}` (detail)
+- [x] `/dex/{input!}/p/{nickname}` (detail)
 
 
-- [ ] `/dex/{input!}/p/{nickname}/Edit` 
+- [x] `/dex/{input!}/p/{nickname}/Edit` 
 
-- [ ] `/dex/{input!}/p/{nickname}/rec/ie` (list)
-- [ ] `/dex/{input!}/p/{nickname}/rec/ie/{id}`
+- [x] `/dex/{input!}/p/{nickname}/rec/ie` (list)
+- [x] `/dex/{input!}/p/{nickname}/rec/ie/{id}`
     - TODO: viewmodel
 
 - [ ]`/dex/{input!}/p/{nickname}/cont/` // NOTE get contactInfo noteText
@@ -98,6 +98,43 @@ Relations:
      - include drop down menus
 - `PUT /dex/{input!}/pplist (FromForm)`
      - just include the string
+
+
+
+`Duplicated` | `Verified`
+
+
+
+[ ] `wwwroot/js/`
+-------------------------------------------
+- [ ] [ ] `socialMediaHandler.js`
+- [ ] [ ] `socialMediasList.js`
+- [ ] [ ] `socialMediaDetails.js`
+- [ ] [ ] `socialMediaCreate.js`
+- [ ] [ ] `socialMediaEdit.js`
+- [ ] [ ] `socialMediaDelete.js`
+
+[ ] `Views/SocialMedia/`
+-------------------------------------------
+- [x] [ ] `ListSocialMediasView.cshtml`
+- [x] [ ] `_ListSocialMediasView.cshtml`
+- [x] [ ] `GetSocialMediaDetailedView.cshtml`
+- [x] [ ] `_GetSocialMediaDetailedView.cshtml`
+- [x] [ ] `CreateSocialMediaView.cshtml`
+- [x] [ ] `EditSocialMediaView.cshtml`
+- [x] [ ] `DeleteSocialMediaView.cshtml`
+
+
+[ ] `Services/`
+-------------------------------------------
+- [x] [ ] `ISocialMediaService.cs`
+- [x] [ ] `SocialMediaService.cs`
+
+
+[ ] `Controllers/`
+-------------------------------------------
+- [x] [ ] `SocialMediaController.cs`
+
 
 
 

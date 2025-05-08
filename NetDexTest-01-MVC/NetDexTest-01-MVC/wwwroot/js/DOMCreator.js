@@ -881,7 +881,7 @@ export let DOM = {
         innerDiv.innerHTML =
             `<a class="btn btn-outline-primary" href="/dex/u/${input}/p/${criteria}/Edit/ie/${id}">Edit</a> | 
              <a class="btn btn-outline-danger" href="/dex/u/${input}/p/${criteria}/Delete/ie/${id}">Delete</a> |
-             <a class="btn btn-link" href="/dex/u/${input}/p/${criteria}/rec/list/ie">Back to List</a> `;
+             <a class="btn btn-link" href="/dex/u/${input}/p/${criteria}/cont/list/soc">Back to List</a> `;
         //div.appendChild(innerDiv);
         console.log("div buttons to add", innerDiv);
         return innerDiv;
@@ -896,7 +896,38 @@ export let DOM = {
         innerDiv.classList.add("nav");
         innerDiv.classList.add("operationLinks");
         innerDiv.innerHTML =
-            `<a class="nav-item btn btn-sm btn-outline-success"      href="/dex/u/${input}/p/${criteria}/rec/ie/${entryid}">View</a> |
+            `<a class="nav-item btn btn-sm btn-outline-success"      href="/dex/u/${input}/p/${criteria}/cont/soc/${entryid}">View</a> |
+             <a class="nav-item btn btn-sm btn-outline-warning" href="/dex/u/${input}/p/${criteria}/Edit/ie/${entryid}">Edit</a> | 
+             <a class="nav-item btn btn-sm btn-outline-danger"    href="/dex/u/${input}/p/${criteria}/Delete/ie/${entryid}">Delete</a>`;
+        //div.appendChild(innerDiv);
+        console.log("div buttons to add", innerDiv);
+        return innerDiv;
+    },
+
+
+    socialMediaDetailsButtons: (input, criteria, id) => {
+
+        //const div = document.getElementById(elementId);
+        const innerDiv = document.createElement('div');
+        innerDiv.innerHTML =
+            `<a class="btn btn-outline-primary" href="/dex/u/${input}/p/${criteria}/Edit/ie/${id}">Edit</a> | 
+             <a class="btn btn-outline-danger" href="/dex/u/${input}/p/${criteria}/Delete/ie/${id}">Delete</a> |
+             <a class="btn btn-link" href="/dex/u/${input}/p/${criteria}/cont/list/soc">Back to List</a> `;
+        //div.appendChild(innerDiv);
+        console.log("div buttons to add", innerDiv);
+        return innerDiv;
+    },
+
+
+
+    socialMediaListButtons: (input, criteria, entryid) => {
+
+        //const div = document.getElementById(elementId);
+        const innerDiv = document.createElement('div');
+        innerDiv.classList.add("nav");
+        innerDiv.classList.add("operationLinks");
+        innerDiv.innerHTML =
+            `<a class="nav-item btn btn-sm btn-outline-success"      href="/dex/u/${input}/p/${criteria}/cont/soc/${entryid}">View</a> |
              <a class="nav-item btn btn-sm btn-outline-warning" href="/dex/u/${input}/p/${criteria}/Edit/ie/${entryid}">Edit</a> | 
              <a class="nav-item btn btn-sm btn-outline-danger"    href="/dex/u/${input}/p/${criteria}/Delete/ie/${entryid}">Delete</a>`;
         //div.appendChild(innerDiv);
@@ -912,7 +943,7 @@ export let DOM = {
         //const div = document.getElementById(elementId);
         const innerDiv = document.createElement('div');
         innerDiv.innerHTML =
-            `<a class="btn btn-outline-primary" href="/dex/u/${input}/p/${criteria}/rec/list/ie">Entry Items</a> | 
+            `<a class="btn btn-outline-primary" href="/dex/u/${input}/p/${criteria}/cont/list/soc">Entry Items</a> | 
              <a class="btn btn-outline-secondary" href="/dex/u/${input}/p/${criteria}/cont/list/soc/">Social Media</a> |
              <a class="btn btn-outline-dark" style="text-decoration:strike-through;" href="/dex/u/${input}/p/${criteria}/relations/ie/">Dependants</a> `;
         //div.appendChild(innerDiv);

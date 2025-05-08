@@ -1,0 +1,142 @@
+﻿@model NetDexTest_01_MVC.Models.ViewModels.SocialMediaDTO
+@{
+    await Console.Out.WriteLineAsync("+++++++++++++++++++++++++\n\n\tCreateSocialMedia reached!!!\n\n+++++++++++++++++++++++++\n\n");
+    ViewData["Title"] = "Create Entry Item";
+    await Console.Out.WriteLineAsync($"ViewData - {ViewData["LoggedInEmail"]}\n\n");
+    await Console.Out.WriteLineAsync($"\tTempData - {TempData["LoggedInEmail"]}\n\n");
+    await Console.Out.WriteLineAsync($"ViewData - {ViewData["LastPerson"]}\n\n");
+    await Console.Out.WriteLineAsync($"\tTempData - {TempData["LastPerson"]}\n\n");
+    await Console.Out.WriteLineAsync($"ViewData - {ViewData["tUsername"]}\n\n");
+    await Console.Out.WriteLineAsync($"\tTempData - {TempData["tUsername"]}\n\n");
+    await Console.Out.WriteLineAsync($"ViewData - {ViewData["ContactInfoId"]}\n\n");
+    await Console.Out.WriteLineAsync($"\tTempData - {TempData["ContactInfoId"]}\n\n");
+    @* await Console.Out.WriteLineAsync($"ViewData - {ViewData[""]}\n\n");
+    await Console.Out.WriteLineAsync($"\tTempData - {TempData[""]}\n\n");
+    await Console.Out.WriteLineAsync($"ViewData - {ViewData[""]}\n\n");
+    await Console.Out.WriteLineAsync($"\tTempData - {TempData[""]}\n\n"); *@
+    await Console.Out.WriteLineAsync($"\n++++++++++++++++++++++++++\n\n");
+    
+    
+    var loggedInEmail = TempData["LoggedInEmail"]?.ToString();
+    var lastPerson = TempData["LastPerson"]?.ToString();
+    var contactInfo = TempData["ContactInfoId"]?.ToString();
+}
+
+
+<div id="emergencyLink">
+    <a href="/dex/u/@TempData["tUsername"]/p/@TempData["LastPerson"]/cont/list/soc">&lArr; Back to SocialMedia List view</Details></a>
+</div>
+
+<h1>CreateSocialMediaView</h1>
+
+<h4>SocialMediaVM</h4>
+<hr />
+
+
+@* moved these out of the form bc of the request model, it may mess it up *@
+<form id="backupvalues">
+    <input type="hidden" id="email" name="LoggedInEmail" value="@ViewData["LoggedInEmail"]" />
+    <input type="hidden" id="contacts" name="ContactInfoId" value="@ViewData["ContactInfoId"]" />
+    <hr />
+    <input type="hidden" id="_LoggedInEmail" name="LoggedInEmail" value="@TempData["LoggedInEmail"]" />
+    <input type="hidden" id="_LastPerson" name="LastPerson" value="@TempData["LastPerson"]" />
+    <input type="hidden" id="lastperson" value="@ViewData["LastPerson"]" />
+    <input type="hidden" readonly name="ApplicationUserEmail" value="@loggedInEmail" />
+</form>
+
+
+<form id="createEntryForm">
+    <input type="hidden" readonly id="ContactInfoId" name="contactInfoId"
+        value="@TempData["ContactInfoId"]" />
+
+    <div class="form-group">
+        <label for="CategoryField">Category Field</label>
+        <input type="text" class="form-control" id="CategoryField" name="categoryField" maxlength="256" required />
+    </div>
+
+    <div class="form-group">
+        <label for="SocialHandle">Social Handle</label>
+        <textarea class="form-control" id="SocialHandle" name="socialHandle" rows="5" required></textarea>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Submit</button>
+    <a class="btn btn-secondary" href="/dex/u/@loggedInEmail/p/@lastPerson/cont/list/soc">Back to List</a>
+</form>
+
+
+
+
+
+@* <div class="row">
+    <div class="col-md-4">
+        <form asp-action="CreateSocialMediaView" id="createEntryFormOld">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            @* <div class="form-group">
+                <label asp-for="SocialMediaId" class="control-label"></label>
+                <input asp-for="SocialMediaId" class="form-control" />
+                <span asp-validation-for="SocialMediaId" class="text-danger"></span>
+            </div> * @
+            <div class="form-group">
+                <label asp-for="ContactInfoId" class="control-label"></label>
+                <input asp-for="ContactInfoId" class="form-control" />
+                <span asp-validation-for="ContactInfoId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PersonId" class="control-label"></label>
+                <input asp-for="PersonId" class="form-control" />
+                <span asp-validation-for="PersonId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DexHolderId" class="control-label"></label>
+                <input asp-for="DexHolderId" class="form-control" />
+                <span asp-validation-for="DexHolderId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PersonNickname" class="control-label"></label>
+                <input asp-for="PersonNickname" class="form-control" />
+                <span asp-validation-for="PersonNickname" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ApplicationUserEmail" class="control-label"></label>
+                <input asp-for="ApplicationUserEmail" class="form-control" />
+                <span asp-validation-for="ApplicationUserEmail" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ApplicationUserName" class="control-label"></label>
+                <input asp-for="ApplicationUserName" class="form-control" />
+                <span asp-validation-for="ApplicationUserName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CategoryField" class="control-label"></label>
+                <input asp-for="CategoryField" class="form-control" />
+                <span asp-validation-for="CategoryField" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SocialHandle" class="control-label"></label>
+                <input asp-for="SocialHandle" class="form-control" />
+                <span asp-validation-for="SocialHandle" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="LogTimestamp" class="control-label"></label>
+                <input asp-for="LogTimestamp" class="form-control" />
+                <span asp-validation-for="LogTimestamp" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+ *@
+
+@*
+<div>
+    <a asp-action="Index">Back to List</a>
+</div> *@
+
+@section Scripts {
+    @* @{await Html.RenderPartialAsync("_CreateSocialMediaView");} *@
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script src="~/js/socialMediaCreate.js" type="module" defer></script>
+
+}

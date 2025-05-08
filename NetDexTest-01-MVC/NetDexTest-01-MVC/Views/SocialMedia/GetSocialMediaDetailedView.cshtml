@@ -1,0 +1,48 @@
+﻿@model IEnumerable<NetDexTest_01_MVC.Models.ViewModels.SocialMediaDTO>
+@{
+
+    ViewData["Title"] = "Socialmedia Item Details";
+    await Console.Out.WriteLineAsync("\n\n-----Socialmedia Item Details Reached!----------\n\n");
+    var loggedInEmail = ViewData["LoggedInEmail"]?.ToString();
+    var lastPerson = ViewData["LastPerson"]?.ToString();
+    @* using (IPersonService u = new SomeDisposableType())
+    {
+        OperateOnType(u);
+    } *@
+
+
+}
+
+<h1 id="socialmediaHeading">GetSocialMediaDetailedView</h1>
+<div id="emergencyLink">
+    <a href="/dex/u/@ViewData["LoggedInEmail"]/p/@TempData["LastPerson"]/cont/list/soc">&lArr; Back to Socialmedia List view</a>
+</div>
+
+<input type="hidden" id="contactinfoId" value="@TempData["ContactinfoId"]" /> @*"@TempData["tContactinfoId"]"*@
+<input type="hidden" id="socialMediaId" value="@ViewData["socialmediaId"]" />
+<input type="hidden" id="email" value="@ViewData["LoggedInEmail"]" />
+<input type="hidden" id="username" value="@TempData["tUsername"]" />
+<input type="hidden" id="lastPerson" value="@TempData["LastPerson"]" />
+@* @try
+{
+
+}
+catch (Exception ex)
+{
+    <p id="errorOccurred">Error: " @ex "</p>
+}
+ *@
+
+@TempData["tEmail"]
+<h1> </h1>
+@* @TempData["LastPerson"] *@
+<hr />
+
+@section Scripts {
+    <script src="~/js/socialMediaDetails.js" type="module" defer></script>
+    <script type="text/javascript">
+    </script>
+    @{
+        await Html.RenderPartialAsync("_GetSocialMediaDetailedView");
+    }
+}
