@@ -147,6 +147,20 @@ namespace NetDexTest_01_MVC.Services
                 var errMessage = await httpResponse.Content.ReadAsStringAsync();
                 //userResponses.Status = httpResponse.StatusCode;
                 //userResponses.Message = errMessage;
+                
+                
+                await Console.Out.WriteLineAsync($"\n\n\t\tTrying one more time......\n\n");
+                personPlus = await httpResponse.Content.ReadFromJsonAsync<PersonPlusDexListVM>();
+                await Console.Out.WriteLineAsync($"\n\n\n--------HTTP RESPONSE--PersonPlus-----\n\n{personPlus?.ToString() ?? " null!!! "}\n\n\n-----------------------");
+                
+                if(personPlus != null) return personPlus;
+
+                await Console.Out.WriteLineAsync($"\n\n\t\tOne more time for the hell of it......\n\n");
+                personPlus = await httpResponse.Content.ReadFromJsonAsync<PersonPlusDexListVM>();
+                await Console.Out.WriteLineAsync($"\n\n\n--------HTTP RESPONSE--PersonPlus-----\n\n{personPlus?.ToString() ?? " null!!! "}\n\n\n-----------------------");
+
+                if (personPlus != null) return personPlus;
+
                 return null;
                 //return userResponses;
             }

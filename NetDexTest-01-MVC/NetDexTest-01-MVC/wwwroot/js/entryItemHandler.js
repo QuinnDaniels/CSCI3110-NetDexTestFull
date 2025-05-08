@@ -13,6 +13,8 @@ export const EntryItemService = {
         return await res.json();
     },
 
+
+    
     async getByPerson(input, personId) {
         const res = await fetch(`${apiBase}/transfer/person/${input}/${personId}`);
         if (!res.ok) throw new Error("Failed to fetch entries for person.");
@@ -38,7 +40,7 @@ export const EntryItemService = {
         if (res.ok != true){ throw new Error("Failed to create entry."); }
         return await res.json();
     },
-    
+
     async update(form) {
         console.log("update(form): ", form);
         const formData = new FormData(form);
