@@ -1,7 +1,7 @@
 ﻿@model IEnumerable<NetDexTest_01_MVC.Models.ViewModels.SocialMediaDTO>
 @{
 
-    ViewData["Title"] = "Entry Items List";
+    ViewData["Title"] = "SocialMedias List";
     await Console.Out.WriteLineAsync("\n\n-----ListSocialMedias Reached!----------\n\n");
     var loggedInEmail = ViewData["LoggedInEmail"]?.ToString();
     var lastPerson = ViewData["LastPerson"]?.ToString();
@@ -16,7 +16,7 @@
 </div>
 
 <div id="emergencyLink">
-    <a href="/dex/u/@TempData["tUsername"]/p/@lastPerson">&lArr; Back to Details view</Details></a>
+    <a href="/dex/u/@TempData["tUsername"]/p/@lastPerson">&lArr; Back to Details view</a>
 </div>
 @TempData["tEmail"]
 <h1> </h1>

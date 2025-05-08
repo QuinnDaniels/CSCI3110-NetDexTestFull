@@ -97,14 +97,14 @@ try {
     async function DOMLoadFunction() {
         console.log("DOM populateSocialmediaData reached");
         const updateSocialmediaForm = document.getElementById("editSocialmediaForm");
-        
+
         const form = updateSocialmediaForm;
-        const record =  document.getElementById("_record").value;
+        var contact =  document.getElementById("_contact").value;
         const socialmedia =  document.getElementById("_socialmedia").value;
         const CategoryField =  document.getElementById("_CategoryField").value;
         const SocialHandle =  document.getElementById("_SocialHandle").value;
         await populateSocialmediaData();
-        //console.log("recordsId:", recordsId);
+        //console.log("contactId:", contactId);
         
         
         form.addEventListener("submit", async (e) => {
