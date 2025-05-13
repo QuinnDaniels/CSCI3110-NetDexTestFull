@@ -1,7 +1,7 @@
 ﻿@model NetDexTest_01_MVC.Models.ViewModels.SocialMediaDTO
 @{
     await Console.Out.WriteLineAsync("+++++++++++++++++++++++++\n\n\tCreateSocialMedia reached!!!\n\n+++++++++++++++++++++++++\n\n");
-    ViewData["Title"] = "Create Entry Item";
+    ViewData["Title"] = "Create Social media Item";
     await Console.Out.WriteLineAsync($"ViewData - {ViewData["LoggedInEmail"]}\n\n");
     await Console.Out.WriteLineAsync($"\tTempData - {TempData["LoggedInEmail"]}\n\n");
     await Console.Out.WriteLineAsync($"ViewData - {ViewData["LastPerson"]}\n\n");
@@ -45,7 +45,7 @@
 </form>
 
 
-<form id="createEntryForm">
+<form id="createSocialmediaForm">
     <input type="hidden" readonly id="ContactInfoId" name="contactInfoId"
         value="@TempData["ContactInfoId"]" />
 
@@ -56,7 +56,8 @@
 
     <div class="form-group">
         <label for="SocialHandle">Social Handle</label>
-        <textarea class="form-control" id="SocialHandle" name="socialHandle" rows="5" required></textarea>
+        <input class="form-control" id="SocialHandle" name="socialHandle" rows="5" required></input>
+@*         <textarea class="form-control" id="SocialHandle" name="socialHandle" rows="5" required></textarea> *@
     </div>
 
     <button type="submit" class="btn btn-primary">Submit</button>
@@ -69,7 +70,7 @@
 
 @* <div class="row">
     <div class="col-md-4">
-        <form asp-action="CreateSocialMediaView" id="createEntryFormOld">
+        <form asp-action="CreateSocialMediaView" id="createSocialmediaFormOld">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             @* <div class="form-group">
                 <label asp-for="SocialMediaId" class="control-label"></label>

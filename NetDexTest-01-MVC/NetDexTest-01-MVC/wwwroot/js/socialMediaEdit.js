@@ -12,8 +12,8 @@ window.onload = function () {
     document.getElementById("socialmediaHeading").onclick = function fun() {
         alert("hello");
         // tellMeForm();
-        //validation code to see State field is mandatory.  
-    
+        //validation code to see State field is mandatory.
+
     }
 }
 */
@@ -34,7 +34,7 @@ try {
     numId = personLocal.localCounter;
     console.log(personLocal);
     console.info("localcounter", numId);
-    
+
     //let numId = personLocal.localCounter;
 } catch (error) {
     //console.info("applicationUserEmail", localCounter);
@@ -45,16 +45,16 @@ try {
 
     const editHeading = document.getElementById("socialmediaHeading");
     console.log("checking editheading from main thread:", editHeading);
-    
+
     DOM.removeChildren(editHeading);
     editHeading.appendChild(
         DOM.createImg("/images/ajax-loader.gif", "Loading image"));
-    
+
 
     await DOMLoadFunction();
-        
-    
-    
+
+
+
     async function populateSocialmediaData() {
         console.log("DOM populateSocialmediaData reached");
         try {
@@ -63,55 +63,57 @@ try {
 
             const item = await SocialMediaService.getOne(_socialmedia);
             console.log("populateSocialmediaData(): item: ", item);
-            
-            
-            DOM.setElementText("#_oldCategoryField", item.categoryField);
-            //DOM.setElementText("#_oldSocialHandle", item.socialHandle);
+
+            console.info("CategoryField", item.categoryField);
+            console.info("SocialHandle", item.socialHandle);
+
+            DOM.setElementText("#_oldCategory", item.categoryField);
+            DOM.setElementText("#_oldSocialHandle", item.socialHandle);
             DOM.setElementText("#_CategoryField",    item.categoryField);
             DOM.setElementText("#_SocialHandle",    item.socialHandle);
-            
-            
+
+
             const editHeading = document.getElementById("socialmediaHeading");
             console.log("heading: ",editHeading);
             DOM.removeChildren(editHeading);
             //console.log("heading: removed children: head: ",editHeading);
             //console.log("heading: removed children: item: ",item);
-            
+
             //DOM.createImg("/images/ajax-loader.gif", "Loading image"));
 
             editHeading.appendChild(document.createTextNode(`Editing Socialmedia #_${_socialmedia} (global)`));
 
-            
+
         }
         catch (error) {
             console.log(error);
             //window.location.replace(`/dex/u/${email}/p/${numId}/cont/soc/${_socialmedia}`);
         }}
-        
+
 
 
         window.addEventListener("DOMContentLoaded", async ()  => {
             console.log("DOM ContentLoaded reached");
         });
-        
-    async function DOMLoadFunction() {
-        console.log("DOM populateSocialmediaData reached");
-        const updateSocialmediaForm = document.getElementById("editSocialmediaForm");
 
-        const form = updateSocialmediaForm;
-        var contact =  document.getElementById("_contact").value;
-        const socialmedia =  document.getElementById("_socialmedia").value;
-        const CategoryField =  document.getElementById("_CategoryField").value;
-        const SocialHandle =  document.getElementById("_SocialHandle").value;
-        await populateSocialmediaData();
-        //console.log("contactId:", contactId);
-        
-        
-        form.addEventListener("submit", async (e) => {
-            e.preventDefault();
-            console.log("DOM submit event reached");
-            const form = e.target;
-            console.log("form: ", form);
+        async function DOMLoadFunction() {
+            console.log("DOM populateSocialmediaData reached");
+            const updateSocialmediaForm = document.getElementById("editSocialmediaForm");
+
+            const form = updateSocialmediaForm;
+            const contact =  document.getElementById("_contact").value;
+            const socialmedia =  document.getElementById("_socialmedia").value;
+            const CategoryField =  document.getElementById("_CategoryField").value;
+            const SocialHandle =  document.getElementById("_SocialHandle").value;
+            await populateSocialmediaData();
+            //console.log("contactId:", contactId);
+
+
+            form.addEventListener("submit", async (e) => {
+                e.preventDefault();
+                console.log("DOM submit event reached");
+                const form = e.target;
+                console.log("form: ", form);
             const formData = new FormData(updateSocialmediaForm);
             //const formData = new FormData(form);
             for (const [key, value] of formData.entries()) {        // 3. Loop through and output the form data to the console

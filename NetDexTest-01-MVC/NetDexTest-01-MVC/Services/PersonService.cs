@@ -206,6 +206,107 @@ namespace NetDexTest_01_MVC.Services
 
 
 
+        public async Task<IEnumerable<RelationshipVM>> GetRelationshipsForUserAsync(string userInput)
+        {
+            var url = "https://localhost:7134/api/people";
+            string endpoint = $"{url}/api/people/retrieveRelations/User/{userInput}";
+            
+            
+            
+            //var result = await _apiService.GetFromApiAsync<List<RelationshipVM>>(endpoint);
+            var httpResponse = await _apiService.MakeHttpCallAsync(
+                httpMethod: HttpMethod.Get,
+                url: endpoint
+                //, bodyContent: request
+            );
+
+            List<RelationshipVM> relList = new();
+            //RelationshipRequest request = new RelationshipRequest();
+
+
+
+            if (httpResponse.StatusCode == HttpStatusCode.OK) //httpResponse.IsSuccessStatusCode
+            {
+                relList = await httpResponse.Content.ReadFromJsonAsync<ICollection<RelationshipVM>>();
+                await Console.Out.WriteLineAsync($"\n\n\n--------HTTP RESPONSE--PersonDexList-----\n\n{personPlus?.ToString() ?? " null!!! "}\n\n\n-----------------------");
+                //await Console.Out.WriteLineAsync($"\n\n\n--------HTTP RESPONSE--PersonDexList-----\n\n{personPlusResponse.ToString}\n\n\n-----------------------");
+
+                return personPlus;//.AdminUserVMs;
+                //userResponse.Status = httpResponse.StatusCode;
+
+            }
+            else
+            {
+                await Console.Out.WriteLineAsync($"\n\n\n--------HTTP RESPONSE----is success?--\n\n{httpResponse.IsSuccessStatusCode}\n\n\n-----------------------");
+                //else if login failed, map the error message
+                var errMessage = await httpResponse.Content.ReadAsStringAsync();
+                //userResponses.Status = httpResponse.StatusCode;
+                //userResponses.Message = errMessage;
+                return null;
+                //return userResponses;
+            }
+
+
+
+
+            return result ?? new List<RelationshipVM>();
+        
+        
+        
+        
+        
+        }
+
+        public async Task<HttpResponseMessage> CreateRelationshipAsync(RelationshipRequest request)
+        {
+            var url = "https://localhost:7134/api/people";
+            string endpoint = $"{url}/api/people/relations/create";
+            //var response = await _apiService.PostToApiAsync(endpoint, request);
+
+            var httpResponse = await _apiService.MakeHttpCallAsync(
+                httpMethod: HttpMethod.Get,
+                url: endpoint
+                , bodyContent: request
+                );
+
+
+            if (httpResponse.StatusCode == HttpStatusCode.OK) //httpResponse.IsSuccessStatusCode
+            {
+                personPlus = await httpResponse.Content.ReadFromJsonAsync<PersonDexListVM>();
+                await Console.Out.WriteLineAsync($"\n\n\n--------HTTP RESPONSE--PersonDexList-----\n\n{personPlus?.ToString() ?? " null!!! "}\n\n\n-----------------------");
+                //await Console.Out.WriteLineAsync($"\n\n\n--------HTTP RESPONSE--PersonDexList-----\n\n{personPlusResponse.ToString}\n\n\n-----------------------");
+
+                return personPlus;//.AdminUserVMs;
+                //userResponse.Status = httpResponse.StatusCode;
+
+            }
+            else
+            {
+                await Console.Out.WriteLineAsync($"\n\n\n--------HTTP RESPONSE----is success?--\n\n{httpResponse.IsSuccessStatusCode}\n\n\n-----------------------");
+                //else if login failed, map the error message
+                var errMessage = await httpResponse.Content.ReadAsStringAsync();
+                //userResponses.Status = httpResponse.StatusCode;
+                //userResponses.Message = errMessage;
+                return null;
+                //return userResponses;
+            }
+
+
+
+
+
+            return response;
+        }
+
+
+
+
+
+
+
+
+
+
     }
 
 

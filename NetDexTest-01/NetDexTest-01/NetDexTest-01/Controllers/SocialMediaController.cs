@@ -304,10 +304,10 @@ namespace NetDexTest_01.Controllers
         #region Create
 
         [HttpPost("create")]
-        public async Task<IActionResult> Create([FromBody] SocialMediaVM vm)
+        public async Task<IActionResult> Create([FromForm] SocialMediaVM vm)
         {
             var contact = await _context.ContactInfo.FindAsync(vm.ContactInfoId);
-            if (contact == null) return NotFound("ContactInfo not found");
+            if (contact == null) return NotFound("ContactInfo to add the Social Media to was not found");
 
             var social = new SocialMedia
             {
@@ -317,9 +317,17 @@ namespace NetDexTest_01.Controllers
                 LogTimestamp = DateTime.UtcNow
             };
 
-            _context.SocialMedia.Add(social);
+            var result = await _personRepo.ReadContactInfoByIdAsync(vm.ContactInfoId);
+            if (result == null) return NotFound("Could not find contact info");
+            if (result != null) _context.SocialMedia.Add(social);
+
             await _context.SaveChangesAsync();
-            return Ok("SocialMedia created.");
+            
+            var returner = result?.SocialMedias.FirstOrDefault(e => e.CategoryField == e.CategoryField  && e.SocialHandle == vm.SocialHandle && e.ContactInfoId == vm.ContactInfoId) ?? null;
+            if (returner == null) return NotFound("SocialMedia could not be found in the database. Unsuccessful creation");
+
+
+            return Ok(returner);
         }
 
         #endregion Create
@@ -347,7 +355,7 @@ namespace NetDexTest_01.Controllers
         public async Task<IActionResult> PutUpdate([FromForm] SocialMediaVM vm)
         {
             if (await UpdateSocialMediaAsync(vm))
-                return Ok("EntryItem updated.");
+                return Ok(vm);
             return BadRequest("Invalid Entry or Person.");
         }
 

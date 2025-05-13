@@ -149,8 +149,15 @@ namespace NetDexTest_01.Controllers
         [HttpDelete]
         public async Task<IActionResult> Delete(Int64 id)
         {
-            if (await _repo.DeleteEntryItemAsync(id))
-                return Ok("EntryItem deleted.");
+            try
+            {
+                if (await _repo.DeleteEntryItemAsync(id))
+                    return Ok("EntryItem deleted.");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex);
+            }
             return NotFound("EntryItem not found or invalid person.");
         }
 

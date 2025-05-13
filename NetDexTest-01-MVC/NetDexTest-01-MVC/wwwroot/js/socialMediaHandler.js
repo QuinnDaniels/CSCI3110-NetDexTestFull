@@ -44,6 +44,14 @@ export const SocialMediaService = {
     async update(form) {
         console.log("update(form): ", form);
         const formData = new FormData(form);
+
+        let stringer = ""
+        for (const [key, value] of formData.entries()) {        // 3. Loop through and output the form data to the console
+            console.log(key, value);
+            stringer += `\n\t${key} = ${value}`
+        }
+        formAlert(stringer);
+    
         const res = await fetch(`${apiBase}/put`, {
             method: "PUT",
             body: formData
@@ -93,7 +101,7 @@ export async function readPersonForChecks(input, criteria) {
             if (!response.ok) {
                 console.info("readPersonForChecks(): ", "status code",response.status);
                 console.info("readPersonForChecks(): ", "status message",response.statusText);
-                console.info("readPersonForChecks(): ", address);
+                console.info("readPersonForChecks(): ", addresser);
                 throw new Error("There was an HTTP error creating the person data.");
             }
             const result = await response.json();
@@ -111,7 +119,7 @@ export async function loadList(input, personId) {
     var temp = 0;
     
 
-    const addresser = `https://localhost:7134/api/people/retrieveRequestpath/${input}/${personId}`;
+    const addresser = `https://localhost:7134/api/socialmedia/transfer/person/${input}/${personId}`;
         //return await response.json();
         
     // const response = await fetch(personId, {
@@ -160,7 +168,7 @@ export async function loadList(input, personId) {
                 temp = locallist.localCounter;
             } // fix this later to include new LocalCounter field on socialMedias
 
-            row.appendChild(DOM.socialmediaListButtons(socialmedia.applicationUserEmail, temp, socialmedia.socialMediaId))
+            row.appendChild(DOM.socialMediaListButtons(socialmedia.applicationUserEmail, socialmedia.localCounter, socialmedia.socialMediaId))
             //row.appendChild(DOM.createButtonLink("View", `/dex/u/${socialmedia.applicationUserEmail}/p/${socialmedia.personId}/cont/soc/${socialmedia.socialMediaId}`, 'info'));
             
             

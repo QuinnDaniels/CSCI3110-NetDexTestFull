@@ -18,5 +18,8 @@ namespace NetDexTest_01_MVC.Services
         Task<DexHolderMiddleVM?> GetDexHolderMiddleVMAsync(string input);
         Task<PersonPlusDexListVM?> GetPersonPlusDexListVMAsync(string input, string criteria);
         Task<PersonDexListVM?> GetPersonDexListVMAsync(string input, string criteria);
+        Task<IEnumerable<RelationshipVM>> GetRelationshipsForUserAsync(string userInput);
+        Task<HttpResponseMessage> CreateRelationshipAsync(RelationshipRequest request);
+
     }
 }

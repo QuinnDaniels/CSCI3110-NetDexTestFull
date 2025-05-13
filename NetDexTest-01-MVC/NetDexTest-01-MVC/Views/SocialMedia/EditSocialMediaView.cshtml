@@ -45,7 +45,7 @@
 
     <div class="form-group">
         <label for="CategoryField">Category Field</label>
-        <input type="text" class="form-control" id="_CategoryField" name="CategoryField" value="@TempData["oldTitle"]" /> @* value="@Model.CategoryField" *@
+        <input type="text" class="form-control" id="_CategoryField" name="CategoryField" value="@TempData["oldCategory"]" /> @* value="@Model.CategoryField" *@
         @* required *@
     </div>
 
@@ -71,20 +71,20 @@
 
 <form id="oldContactInfo">
     <div class="form-group row">
-        <label class="col-sm-2 col-form-label" for="_oldCategoryField">Current Socialmedia:</label>
+        <label class="col-sm-2 col-form-label" for="_oldCategory">Current Socialmedia:</label>
         @* <p>Current Socialmedia:</p> *@
-        <input class="form-control" type="readonly" readonly name="CategoryField" id="_oldCategoryField"
-            value="@TempData["oldTitle"]" />
+        <input class="form-control" type="readonly" readonly name="CategoryField" id="_oldCategory"
+            value="@TempData["oldCategory"]" />
     </div>
 
     <div class="form-group">
-        <input hidden type="readonly" readonly name="SocialHandle" id="_oldSocialHandleDisplay"
+        <input hidden type="readonly" readonly name="SocialHandle" id="_oldHandleDisplay"
             value="@TempData["oldHandle"]" />
     </div>
     <div class="form-group row">
         <label for="CategoryField" class="col-sm-2 col-form-label">Current Socialmedia:</label>
         <textarea rows="10" class="form-control" type="readonly" readonly name="SocialHandle"
-            id="_oldSocialHandleDisplay">@TempData["oldHandle"] </textarea>
+            id="_oldHandleDisplay">@TempData["oldHandle"] </textarea>
     </div>
 </form>
 

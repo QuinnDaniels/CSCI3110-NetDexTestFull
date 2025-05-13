@@ -85,7 +85,9 @@ window.addEventListener("DOMContentLoaded", () => {
 
             console.log("REDIRECT COMMAND REACHED", router);
             //            window.location.href = router;
-            alert(``);
+            
+            //NOTE - Use this for debugging!!
+            //alert(``);
             window.location.replace(router);
             
         } catch (err) {
